@@ -26,6 +26,20 @@ resource "google_container_node_pool" "node-pool" {
     image_type      = "COS"
     machine_type    = "${var.node_pool_machine_type}"
     disk_size_gb    = "${var.node_pool_disk_size_gb}"
+    service_account = "${var.node_service_account}"
+
+    metadata {
+      google-compute-enable-virtio-rng = "${var.enable_node_rng}"
+      disable-legacy-endpoints = "true"
+    }
+
+    # Protect node metadata
+    workload_metadata_config {
+      node_metadata = "${var.workload_metadata_config_node_metadata}"
+    }
+
+    labels = "${var.node_labels}"
+    tags = "${var.node_tags}"
 
     oauth_scopes    = [
       "https://www.googleapis.com/auth/compute",

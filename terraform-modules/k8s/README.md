@@ -21,8 +21,8 @@ Below is an annotated sample invocation of this module
 
 ```terraform
 module "my-k8s-cluster" {
-  # Assuming the root of this repo
-  source = "./modules/k8s"
+  # "github.com/" + org + "/" + repo name + ".git" + "//" + path within repo to base dir + "?ref=" + git object ref
+  source = "github.com/broadinstitute/terraform-shared.git//terraform-modules/k8s?ref=k8s-0.0.1"
 
   # Alias of the provider you want to use--the provider's project controls the resource project
   providers {
@@ -69,6 +69,30 @@ module "my-k8s-cluster" {
 
   # Machine type of the nodes
   node_pool_machine_type = "n1-highmem-8"
+
+  # https://www.terraform.io/docs/providers/google/r/container_cluster.html#enable_private_endpoint
+  private_cluster_config = [{}]
+
+  # Whether to ask for a good RNG
+  enable_node_rng = false
+
+  # service account credentials to give the nodes, empty string means default
+  node_service_account = ""
+
+  # labels to give the nodes
+  node_labels = {}
+
+  # tags to give the nodes
+  node_tags = []
+
+  # Restrict visibility to node metadata
+  workload_metadata_config_node_metadata = "SECURE"
+
+  # https://www.terraform.io/docs/providers/google/r/container_cluster.html#use_ip_aliases
+  ip_allocation_policy = [{
+    cluster_ipv4_cidr_block = ""
+    services_ipv4_cidr_block = ""
+  }]
 }
 ```
 

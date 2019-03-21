@@ -23,7 +23,14 @@ resource "google_container_cluster" "cluster" {
 
   lifecycle {
     ignore_changes  = [
-      "node_pool"
+      "node_pool",
+      # this kept triggering a rebuild. No idea why
+      "master_auth.0.client_certificate_config.0.issue_client_certificate",
+
+      # It tries to update these to the specific format it likes even when the existing
+      # id is equivalent.
+      "network",
+      "subnetwork"
     ]
   }
 
@@ -38,7 +45,7 @@ resource "google_container_cluster" "cluster" {
   # See https://www.terraform.io/docs/providers/google/r/container_cluster.html#master_auth
   master_auth {
     client_certificate_config {
-      issue_client_certificate = true
+      issue_client_certificate = "true"
     }
     username = ""
     password = ""
@@ -52,10 +59,7 @@ resource "google_container_cluster" "cluster" {
   # CIS compliance: Enable Alias IP Ranges. According to the terrafform
   # docs, setting these values blank gets default-size ranges automatically
   # chosen: https://www.terraform.io/docs/providers/google/r/container_cluster.html#ip_allocation_policy
-  ip_allocation_policy {
-    cluster_ipv4_cidr_block = ""
-    services_ipv4_cidr_block = ""
-  }
+  ip_allocation_policy = ["${var.ip_allocation_policy}"]
 
   # CIS compliance: Enable PodSecurityPolicyController
   pod_security_policy_config {
@@ -63,13 +67,7 @@ resource "google_container_cluster" "cluster" {
   }
 
   # OMISSION: CIS compliance: Enable Private Cluster 
-  /*
-  private_cluster_config {
-    enable_private_nodes = true
-    master_ipv4_cidr_block =  "${var.master_ipv4_cidr_block}"
-  }
-  */
-
+  private_cluster_config = ["${var.private_cluster_config}"]
 
   master_authorized_networks_config {
     cidr_blocks = ["${var.master_authorized_network_cidrs}"]
@@ -79,6 +77,10 @@ resource "google_container_cluster" "cluster" {
     kubernetes_dashboard {
       # CIS compliance: Disable dashboard
       disabled    = "true"
+    }
+
+    network_policy_config {
+      disabled = false
     }
   }
 }

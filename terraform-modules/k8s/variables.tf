@@ -2,6 +2,43 @@ variable "zone" {
   default = "us-central1-a"
 }
 
+variable "private_cluster_config" {
+  type = "list"
+  default = []
+}
+
+variable "node_service_account" {
+  default = ""
+}
+
+variable "enable_node_rng" {
+  default =  false
+}
+
+variable "node_labels" {
+  type = "map"
+  default = {}
+}
+
+variable "ip_allocation_policy" {
+  type = "list"
+  default = [
+    {
+      cluster_ipv4_cidr_block = ""
+      services_ipv4_cidr_block = ""
+    }
+  ]
+}
+
+variable "node_tags" {
+  type = "list"
+  default = []
+}
+
+variable "workload_metadata_config_node_metadata" {
+  default = "SECURE"
+}
+
 # Cluster Variables
 variable "cluster_name" {}
 
