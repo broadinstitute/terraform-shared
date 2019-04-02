@@ -79,6 +79,14 @@ module "my-k8s-cluster" {
   # service account credentials to give the nodes, empty string means default
   node_service_account = ""
 
+  # scopes to  give the NodePool.
+  oauth_scopes = [
+    "https://www.googleapis.com/auth/compute",
+    "https://www.googleapis.com/auth/devstorage.read_only",
+    "https://www.googleapis.com/auth/logging.write",
+    "https://www.googleapis.com/auth/monitoring",
+  ]
+
   # labels to give the nodes
   node_labels = {}
 
