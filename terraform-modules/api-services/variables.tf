@@ -1,8 +1,6 @@
 
 # google project
 variable "project" {}
-# google provider
-variable "provider" {}
 #services to enalbe
 variable "services" {
  type = "list"
