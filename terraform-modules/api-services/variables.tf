@@ -1,6 +1,10 @@
 
 # google project
 variable "project" {}
+
+#depends_on work around
+variable "depends_on" { default = [], type = "list" }
+
 #services to enalbe
 variable "services" {
  type = "list"
