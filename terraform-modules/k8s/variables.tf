@@ -76,3 +76,5 @@ variable "node_pool_count" {
   default = "3"
   description = "The number of nodes deployed in a node pool"
 }
+#depends_on work around
+variable "depends_on" { default = [], type = "list" }
