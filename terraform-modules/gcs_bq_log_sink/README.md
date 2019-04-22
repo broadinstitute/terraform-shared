@@ -1,0 +1,58 @@
+## Module for GCS  / Bigquery log sink
+
+This module will configure one BigQuery log sink (with configurable TTL)
+and one Google Storage log sink (without TTL).
+
+The _first_ time you use a module, and every time one of the terraform
+modules changes, you will need to run `terraform get` from within your
+terraform stack.
+
+For other questions, see the [terraform docs](https://www.terraform.io/docs/modules/index.html) on modules
+to understand how to use this.
+
+### What This Module Creates
+
+1. A Google Storage Bucket
+2. A log sink sending a filter of stackdriver logs to the  bucket
+3. A bucket policy granting the log sink from 2 write access to the bucket from 1
+4. A BigQuery dataset
+5. A log sink sending a filter of stackdriver logs to the data set, with a configurable TTL
+
+### What You Need To Supply To This Module
+
+Below is an annotated sample invocation of this module
+
+```terraform
+module "my-app-log-sinks" {
+  # "github.com/" + org + "/" + repo name + ".git" + "//" + path within repo to base dir + "?ref=" + git object ref
+  source = "github.com/broadinstitute/terraform-shared.git//terraform-modules/gcs_bq_log_sink?ref=gcs_bq_log_sink-0.0.0"
+
+  # Alias of the provider you want to use--the provider's project controls the resource project
+  providers {
+    google = "google"
+  }
+
+  /*
+  * REQUIRED VARIABLES
+  */
+
+  # The name of the person or team responsible for the lifecycle of this infrastructure
+  owner = "rluckom"
+
+  # The name of the application
+  application_name = "vault"
+
+  # Name of the google project
+  project = "broad-dsp-techops-dev"
+
+  /*
+  * OPTIONAL VARIABLES (values are the defaults)
+  */
+  
+  // number of days to keep logs in bq before expiring
+  bigquery_retention_days = 31
+
+  // break glass in case of naming conflicts
+  nonce = ""
+}
+```
