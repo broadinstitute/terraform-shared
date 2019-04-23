@@ -19,14 +19,14 @@ resource "google_bigquery_dataset" "logs" {
 }
 
 resource "google_logging_project_sink" "bigquery-log-sink" {
-    name = "${var.application_name}-${var.owner}-bigquery-log-sink${var.nonce != "" ? "_${var.nonce}" : ""}"
-    destination = "bigquery.googleapis.com/projects/${var.project}/datasets/${replace(var.project, "-", "_")}_${var.application_name}_${var.owner}_audit"
-    filter = "${var.log_filter}"
-    unique_writer_identity = true
+  name = "${var.application_name}-${var.owner}-bigquery-log-sink${var.nonce != "" ? "_${var.nonce}" : ""}"
+  destination = "bigquery.googleapis.com/projects/${var.project}/datasets/${replace(var.project, "-", "_")}_${var.application_name}_${var.owner}_audit"
+  filter = "${var.log_filter}"
+  unique_writer_identity = true
 }
 
 resource "google_storage_bucket" "logs" {
-    name     = "${var.project}_${var.application_name}_${var.owner}_audit${var.nonce != "" ? "_${var.nonce}" : ""}"
+  name     = "${var.project}_${var.application_name}_${var.owner}_audit${var.nonce != "" ? "_${var.nonce}" : ""}"
 }
 
 # Grant service account access to the storage bucket
@@ -41,4 +41,28 @@ resource "google_logging_project_sink" "bucket-log-sink" {
     destination = "storage.googleapis.com/${google_storage_bucket.logs.name}"
     filter = "${var.log_filter}"
     unique_writer_identity = true
+}
+
+output "bigquery_writer_identity" {
+  value = "${google_logging_project_sink.bigquery-log-sink.writer_identity}"
+}
+
+output "gcs_writer_identity" {
+  value = "${google_logging_project_sink.bucket-log-sink.writer_identity}"
+}
+
+output "bucket_name" {
+  value = "${google_storage_bucket.logs.name}"
+}
+
+output "dataset_id" {
+  value = "${google_bigquery_dataset.logs.dataset_id}"
+}
+
+output "dataset_path" {
+  value = "bigquery.googleapis.com/projects/${var.project}/datasets/${replace(var.project, "-", "_")}_${var.application_name}_${var.owner}_audit"
+}
+
+output "log_filter" {
+  value = "${var.log_filter}"
 }

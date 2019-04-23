@@ -45,6 +45,9 @@ module "my-app-log-sinks" {
   # Name of the google project
   project = "broad-dsp-techops-dev"
 
+  # Filter to use for (both) sinks
+  log_filter = "resource.type=\"container\" AND resource.labels.cluster_name=\"${var.application_name}-k8s-cluster\" AND resource.labels.namespace_id=\"${var.owner}\""
+
   /*
   * OPTIONAL VARIABLES (values are the defaults)
   */
@@ -56,3 +59,36 @@ module "my-app-log-sinks" {
   nonce = ""
 }
 ```
+
+### Notes
+
+It may take time after applying this module before data starts showing up
+in BigQuery and the bucket you create. Logs are written to the bucket in one-hour
+files at the top of the hour, so it may be a while  before you see anything.
+BigQuery is a bit faster, but you still may need to give it 10+ minutes.
+This only picks up logs generated _after_ the sinks are working correctly,
+so if your application isn't continuously generating new logs it may be
+difficult to verify that this is working as intended. 
+
+To view data in your BigQuery dataset, you first need to find the available tables
+in the dataset:
+
+```
+SELECT * FROM <dataset-name>.__TABLES__;
+```
+Once the first table shows up, you can query for a few rows if that helps
+you sleep at night:
+
+```
+SELECT * FROM <dataset-name>.<table-name> limit 80;
+```
+
+#### Deletion
+
+Even if you set the "ok to delete data" flag on the datasets, terraform still
+doesn't seem willing to delete them. I do it manually.
+
+#### Privileges
+
+The bucket role that allows the log sink to write to the bucket  you create
+may require IAM create permissions.
