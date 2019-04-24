@@ -8,6 +8,11 @@ variable "destroy" { default = "false" }
 #depends_on work around
 variable "depends_on" { default = [], type = "list" }
 
+# enable/disable var
+variable "enable_flag" { 
+   default = "1" 
+}
+
 #services to enalbe
 variable "services" {
  type = "list"
