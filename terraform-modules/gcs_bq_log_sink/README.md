@@ -1,7 +1,8 @@
 ## Module for GCS  / Bigquery log sink
 
 This module will configure one BigQuery log sink (with configurable TTL)
-and one Google Storage log sink (without TTL).
+and one Google Storage log sink (without TTL). You MUST set one or both
+of `enable_bigquery` or `enable_gcs` to `1` to create log sinks.
 
 The _first_ time you use a module, and every time one of the terraform
 modules changes, you will need to run `terraform get` from within your
@@ -51,6 +52,10 @@ module "my-app-log-sinks" {
   /*
   * OPTIONAL VARIABLES (values are the defaults)
   */
+
+  enable_bigquery = 0
+
+  enable_gcs = 0
   
   // number of days to keep logs in bq before expiring
   bigquery_retention_days = 31
