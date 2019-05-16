@@ -49,19 +49,19 @@ resource "google_logging_project_sink" "bucket-log-sink" {
 }
 
 output "bigquery_writer_identity" {
-  value = "${google_logging_project_sink.bigquery-log-sink.*.writer_identity}"
+  value = "${google_logging_project_sink.bigquery-log-sink.writer_identity}"
 }
 
 output "gcs_writer_identity" {
-  value = "${google_logging_project_sink.bucket-log-sink.*.writer_identity}"
+  value = "${google_logging_project_sink.bucket-log-sink.writer_identity}"
 }
 
 output "bucket_name" {
-  value = "${google_storage_bucket.logs.*.name}"
+  value = "${google_storage_bucket.logs.name}"
 }
 
 output "dataset_id" {
-  value = "${google_bigquery_dataset.logs.*.dataset_id}"
+  value = "${google_bigquery_dataset.logs.dataset_id}"
 }
 
 output "dataset_path" {
