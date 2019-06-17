@@ -1,10 +1,8 @@
-This module creates a cluster of identical GCE instances with the following options:
-  - attached persistent disk that is intended to be used for docker storage
-  - at least one additional persistent disk to be used as data volume(s)
+This module creates a cluster of identical GCE instances for deploying a containerized service
 
 The following are the module defaults:
 
-instance_name: docker-data-node
+instance_name: docker-node
 instance_region: us-central1
 instance_zone: us-central1-a
 instance_num_hosts: 1
@@ -14,9 +12,6 @@ instance_image: centos-7
 instance_docker_disk_size: 50
 instance_docker_disk_type: pd-ssd
 instance_docker_disk_name: docker
-instance_data_disk_size: 50
-instance_data_disk_type: pd-sd
-instance_data_disk_name: data
 instance_network_name: app-services
 instance_scopes:
     "userinfo-email",
@@ -24,6 +19,7 @@ instance_scopes:
     "storage-ro",
     "https://www.googleapis.com/auth/monitoring.write",
     "logging-write" 
+instance_stop_for_update: true
 
 The following module variables have an empty string/list/map as default:
 
