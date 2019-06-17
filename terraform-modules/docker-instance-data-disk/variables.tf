@@ -23,6 +23,11 @@ variable "instance_zone" {
   description = "The zone where instances will be created"
 }
 
+variable "instance_service_account" {
+  default = ""
+  description = "The service account under which the instances will be created"
+}
+
 variable "instance_num_hosts" {
   default = "1"
   description = "default number of instances this module will create"

@@ -65,6 +65,7 @@ resource "google_compute_instance" "instance" {
 
   service_account {
     scopes = [ "${var.instance_scopes}" ]
+    email = "${var.instance_service_account}"
   }
 }
 
