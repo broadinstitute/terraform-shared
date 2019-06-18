@@ -20,6 +20,7 @@ instance_scopes:
     "https://www.googleapis.com/auth/monitoring.write",
     "logging-write" 
 instance_stop_for_update: true
+instance_subnetwork_name: The same as what instance_network_name is set to
 
 The following module variables have an empty string/list/map as default:
 

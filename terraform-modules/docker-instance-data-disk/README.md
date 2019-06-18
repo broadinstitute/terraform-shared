@@ -24,9 +24,11 @@ instance_scopes:
     "storage-ro",
     "https://www.googleapis.com/auth/monitoring.write",
     "logging-write" 
+instance_subnetwork_name: The same as what instance_network_name is set to
 
 The following module variables have an empty string/list/map as default:
 
 instance_tags
 instance_labels
 instance_service_account
+
