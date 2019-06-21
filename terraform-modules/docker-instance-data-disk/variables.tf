@@ -64,8 +64,13 @@ variable "instance_docker_disk_name" {
 }
 
 variable "instance_network_name" {
-  default = "app-services"
+  default = ""
   description = "The default network name to create instance"
+}
+
+variable "instance_subnetwork_name" {
+  default = ""
+  description = "The default subnetwork name to create instance"
 }
 
 variable "instance_scopes" {

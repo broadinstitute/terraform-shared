@@ -55,7 +55,8 @@ resource "google_compute_instance" "instance" {
   allow_stopping_for_update = "${var.instance_stop_for_update}"
 
   network_interface {
-    network = "${var.instance_network_name}"
+    network    = "${var.instance_network_name}"
+    subnetwork = "${var.instance_subnetwork_name}"
     access_config {
       nat_ip = "${element(google_compute_address.instance-public-ip.*.address, count.index)}"
     }

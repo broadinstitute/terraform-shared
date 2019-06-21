@@ -17,7 +17,6 @@ instance_docker_disk_name: docker
 instance_data_disk_size: 50
 instance_data_disk_type: pd-sd
 instance_data_disk_name: data
-instance_network_name: app-services
 instance_scopes:
     "userinfo-email",
     "compute-ro",
@@ -27,6 +26,9 @@ instance_scopes:
 
 The following module variables have an empty string/list/map as default:
 
+instance_subnetwork_name: 
 instance_tags
 instance_labels
 instance_service_account
+
+NOTE: instance_subnetwork_name is required and applying the plan will fail even though creating the plan will succeed.
