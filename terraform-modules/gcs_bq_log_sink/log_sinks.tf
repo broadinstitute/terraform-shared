@@ -31,7 +31,7 @@ resource "google_logging_project_sink" "bigquery-log-sink" {
 resource "google_project_iam_binding" "bigquery-log-writer" {
     count =  "${var.enable_bigquery}"
     role   = "roles/bigquery.dataEditor"
-    members ="${google_logging_project_sink.bigquery-log-sink.writer_identity}"
+    members = ["${google_logging_project_sink.bigquery-log-sink.writer_identity}"]
 }
 
 
