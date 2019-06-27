@@ -27,6 +27,14 @@ resource "google_logging_project_sink" "bigquery-log-sink" {
   unique_writer_identity = true
 }
 
+# grant writer access to bigquery.
+resource "google_project_iam_binding" "bigquery-log-writer" {
+    count =  "${var.enable_bigquery}"
+    role   = "roles/bigquery.dataEditor"
+    members ="${google_logging_project_sink.bigquery-log-sink.writer_identity}"
+}
+
+
 resource "google_storage_bucket" "logs" {
   count =  "${var.enable_gcs}"
   name     = "${var.project}_${var.application_name}_${var.owner}_audit${var.nonce != "" ? "_${var.nonce}" : ""}"
