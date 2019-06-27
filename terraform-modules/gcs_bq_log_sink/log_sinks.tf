@@ -30,7 +30,7 @@ resource "google_logging_project_sink" "bigquery-log-sink" {
 # grant writer access to bigquery.
 resource "google_project_iam_binding" "bigquery-log-writer" {
     count =  "${var.enable_bigquery}"
-    role   = "roles/bigquery.dataEditor"
+    role   = "roles/bigquery.dataOwner"
     members = ["${google_logging_project_sink.bigquery-log-sink.writer_identity}"]
 }
 
