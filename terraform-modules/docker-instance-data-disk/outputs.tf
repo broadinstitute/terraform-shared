@@ -7,3 +7,7 @@ output "instance_instance_group" {
   value = "${google_compute_instance_group.instance-group-unmanaged.*.self_link}"
 }
 
+output "instance_private_ips" {
+  value = "${google_compute_instance.instance.*.network_interface.0.network_ip}"
+}
+
