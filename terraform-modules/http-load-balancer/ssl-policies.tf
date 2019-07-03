@@ -1,7 +1,7 @@
-resource "google_compute_ssl_policy" "tls12-ssl-policy" {
-  provider = "google.target"
-  count = "${ var.load_balancer_ssl_policy_create }"
-  name            = "${ var.load_balancer_ssl_policy }"
+resource "google_compute_ssl_policy" "ssl-policy" {
+  provider        = "google.target"
+  count           = "${var.enable_flag}"
+  name            = "${var.ssl_policy_name}"
   profile         = "MODERN"
-  min_tls_version = "TLS_1_2"
+  min_tls_version = "${var.min_tls_version}"
 }
