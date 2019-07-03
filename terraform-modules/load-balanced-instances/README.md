@@ -3,6 +3,10 @@ puts them behind a HTTP load balancer, and assigns DNS records for each instance
 load balancer. It also creates a GCS bucket for storing configs for the service and gives access
 to the GCS bucket to the specified service account.
 
+This module requires that the DNS zone resource (where the individual DNS 
+entries will be created) has been created outside of this module. If it
+does not exist this module will fail.
+
 ### Required Providers
 
 `google.instances`: A google provider to deploy the instances.
@@ -21,11 +25,9 @@ to the GCS bucket to the specified service account.
 
 `dns_project`: the name of the project in which the DNS will be deployed
 
-`dns_region`: The Google region in which to deploy the DNS records e.g. `us-central1`
-
 `google_compute_ssl_certificate_red`: the name of the red ssl cert as stored in google
 
-`google_compute_ssl_certificate_black`: the name of the black ssl cert as stoblack in google
+`google_compute_ssl_certificate_black`: the name of the black ssl cert as stored in google
 
 `google_network_name`: the name of the network in which to deploy the instances
 

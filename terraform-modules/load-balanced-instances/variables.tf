@@ -20,8 +20,6 @@ variable "service" {
 # DNS
 variable "dns_project" {
 }
-variable "dns_region" {
-}
 # SSL
 variable "google_compute_ssl_certificate_red" {
 }
@@ -37,7 +35,7 @@ data "google_compute_ssl_certificate" "terra-env-wildcard-ssl-certificate-black"
 variable "google_network_name" {
 }
 
-# Thurloe SA
+# Name of SA to be given read access to config bucket
 variable "config_reader_service_account" {
 }
 data "google_service_account" "config_reader" {
@@ -45,7 +43,7 @@ data "google_service_account" "config_reader" {
 }
 
 #
-# Thurloe - Common Vars
+# Common Vars
 #
 variable "instance_tags" {
   type = "list"
@@ -53,18 +51,18 @@ variable "instance_tags" {
 }
 
 #
-# Thurloe Service Cluster 
+# Service Service Cluster 
 #
 variable "instance_num_hosts" {
-  description = "The default number of Thurloe service hosts per environment"
+  description = "The default number of Service service hosts per environment"
 }
 
 variable "instance_size" {
-  description = "The default size of Thurloe service hosts"
+  description = "The default size of Service service hosts"
 }
 
 #
-# Thurloe Service Config Bucket
+# Service Service Config Bucket
 #
 variable "storage_bucket_roles" {
   type = "list"
