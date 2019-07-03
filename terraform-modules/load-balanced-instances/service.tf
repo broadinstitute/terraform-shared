@@ -55,13 +55,14 @@ resource "google_storage_bucket_iam_member" "app_config" {
 #  must be created before load balancer
 #  Potential solution: https://github.com/hashicorp/terraform/issues/1178#issuecomment-207369534
 module "load-balancer" {
-  source        = "github.com/broadinstitute/terraform-shared.git//terraform-modules/http-load-balancer?ref=http-load-balancer-0.1.0"
+  source        = "github.com/broadinstitute/terraform-shared.git//terraform-modules/http-load-balancer?ref=http-load-balancer-0.2.0"
 
   providers {
     google.target =  "google.instances"
   }
   project       = "${var.instance_project}"
   load_balancer_name = "${var.owner}-${var.service}"
+  ssl_policy_name = "${var.owner}-${var.service}-ssl-policy"
   load_balancer_ssl_certificates = [
     "${data.google_compute_ssl_certificate.terra-env-wildcard-ssl-certificate-red.name}",
     "${data.google_compute_ssl_certificate.terra-env-wildcard-ssl-certificate-black.name}"
