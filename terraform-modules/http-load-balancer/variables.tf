@@ -1,7 +1,19 @@
-
 # module wide vars
 # google project
 variable "project" {}
+
+variable "ssl_policy_name" {
+  description = "Name of your ssl policy. Must be specified to prevent collisions"
+}
+
+variable "min_tls_version" {
+  description = "minimum tls version for SSL policy. Must be at least tls12-ssl-policy"
+  default = "TLS_1_2"
+}
+
+variable "load_balancer_ssl_policy_create" {
+  default = "1"
+}
 
 # enable/disable var
 variable "enable_flag" {
@@ -9,7 +21,6 @@ variable "enable_flag" {
 }
 
 variable "load_balancer_name" {
-  default = "load-balancer"
   description = "load balancer name"
 }
 
@@ -25,14 +36,6 @@ variable "load_balancer_ssl_policy_enable" {
   default = "1"
 }
 
-variable "load_balancer_ssl_policy_create" {
-  default = "1"
-}
-
-variable "load_balancer_ssl_policy" {
-  default = "tls12-ssl-policy"
-}
-
 variable "load_balancer_instance_groups" {
   description = "Comma separated list of google self_links"
   default = ""
@@ -40,9 +43,9 @@ variable "load_balancer_instance_groups" {
 
 # Health check vars
 
-variable "load_balancer_health_check_url" {
+variable "load_balancer_health_check_path" {
   default = "/status"
-  description = "URL for health checks"
+  description = "path for health checks"
 }
 
 variable "load_balancer_health_check_interval" {

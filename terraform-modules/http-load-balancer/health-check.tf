@@ -6,7 +6,7 @@ resource "google_compute_http_health_check" "load-balancer-health-check-http" {
   name                  = "${var.load_balancer_name}"
   count                 = "${var.enable_flag}"
   port                  = 80
-  request_path          = "${var.load_balancer_health_check_url}"
+  request_path          = "${var.load_balancer_health_check_path}"
   check_interval_sec    = "${var.load_balancer_health_check_interval}"
   timeout_sec           = "${var.load_balancer_health_check_timeout}"
   healthy_threshold     = "${var.load_balancer_health_check_healthy_threshold}"
@@ -19,7 +19,7 @@ resource "google_compute_https_health_check" "load-balancer-health-check-https" 
   name                  = "gce-lb-health-check-default-https"
   count                 = "${var.enable_flag}"
   port                  = 443
-  request_path          = "${var.load_balancer_health_check_url}"
+  request_path          = "${var.load_balancer_health_check_path}"
   check_interval_sec    = "${var.load_balancer_health_check_interval}"
   timeout_sec           = "${var.load_balancer_health_check_timeout}"
   healthy_threshold     = "${var.load_balancer_health_check_healthy_threshold}"

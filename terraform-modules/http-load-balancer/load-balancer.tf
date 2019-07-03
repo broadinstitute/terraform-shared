@@ -43,7 +43,7 @@ resource "google_compute_target_https_proxy" "load-balancer-target-proxy-https" 
   description = "Load Balancer Target Proxy - HTTPS"
   url_map = "${google_compute_url_map.load-balancer-url-map-https.self_link}"
   ssl_certificates = ["${var.load_balancer_ssl_certificates}"]
-  ssl_policy = "${var.load_balancer_ssl_policy_enable == "1" ? var.load_balancer_ssl_policy: "" }"
+  ssl_policy = "${var.load_balancer_ssl_policy_enable == "1" ? var.ssl_policy_name: "" }"
 }
 
 
