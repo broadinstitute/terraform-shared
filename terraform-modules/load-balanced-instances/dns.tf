@@ -4,7 +4,7 @@ provider "google" {
 
 data "google_dns_managed_zone" "dns-zone" {
   provider = "google.dns"
-  name = "${var.dns_zone}"
+  name = "${var.dns_zone_name}"
 }
 
 # Instance DNS

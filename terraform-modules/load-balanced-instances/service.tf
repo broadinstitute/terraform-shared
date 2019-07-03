@@ -9,7 +9,7 @@ module "instances" {
   providers {
     google.target =  "google.instances"
   }
-  project       = "${var.google_project}"
+  project       = "${var.instance_project}"
   instance_name = "${var.service}"
   instance_num_hosts = "${var.instance_num_hosts}"
   instance_size = "${var.instance_size}"
@@ -28,7 +28,7 @@ module "instances" {
 resource "google_storage_bucket" "config-bucket" {
   provider = "google.instances"
   name       = "${var.owner}-${var.service}-config"
-  project    = "${var.google_project}"
+  project    = "${var.instance_project}"
   versioning = {
     enabled = "true"
   }
@@ -60,7 +60,7 @@ module "load-balancer" {
   providers {
     google.target =  "google.instances"
   }
-  project       = "${var.google_project}"
+  project       = "${var.instance_project}"
   load_balancer_name = "${var.owner}-${var.service}"
   load_balancer_ssl_certificates = [
     "${data.google_compute_ssl_certificate.terra-env-wildcard-ssl-certificate-red.name}",

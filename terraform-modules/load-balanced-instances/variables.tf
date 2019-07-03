@@ -1,10 +1,10 @@
 #
 # Profile Vars
 #
-variable "google_project" {
+variable "instance_project" {
   description = "The google project as specified in the application json"
 }
-variable "dns_zone" {
+variable "dns_zone_name" {
   description = "The full DNS zone without a trailing . as specified in the application json"
 }
 variable "owner" {
@@ -12,9 +12,6 @@ variable "owner" {
 }
 variable "service" {
   description = "The name of the service within the profile"
-}
-variable "vault_path_prefix" {
-  description = "The path to this profile's secrets in vault"
 }
 
 #
