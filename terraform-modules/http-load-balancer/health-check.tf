@@ -16,7 +16,7 @@ resource "google_compute_http_health_check" "load-balancer-health-check-http" {
 # GCE Load Balancer Health Check: Default - HTTPS
 resource "google_compute_https_health_check" "load-balancer-health-check-https" {
   provider = "google.target"
-  name                  = "gce-lb-health-check-default-https"
+  name                  = "${var.load_balancer_name}-https"
   count                 = "${var.enable_flag}"
   port                  = 443
   request_path          = "${var.load_balancer_health_check_path}"
