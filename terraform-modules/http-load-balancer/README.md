@@ -15,7 +15,9 @@ This module creates an HTTP load balancer, SSL policy, and health check.
 `load_balancer_name`: name for the LB
 
 ### Optional variables
-`enable_flag`: turn on / off all resources
+`enable_flag`: turn on / off all resources except the SSL policy
+
+`load_balancer_ssl_policy_create`: turn on / off the SSL policy
 
 `load_balancer_ssl_certificates` : list of SSL certificate names (according to google) for the LB to use. Default `[]`
 
