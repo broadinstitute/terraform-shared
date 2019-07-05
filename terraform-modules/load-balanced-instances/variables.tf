@@ -18,13 +18,12 @@ variable "service" {
 # Dependency Profiles' Vars
 #
 # DNS
-variable "dns_project" {
-}
+variable "dns_project" {}
+
 # SSL
-variable "google_compute_ssl_certificate_red" {
-}
-variable "google_compute_ssl_certificate_black" {
-}
+variable "ssl_policy_name" {}
+variable "google_compute_ssl_certificate_red" {}
+variable "google_compute_ssl_certificate_black" {}
 data "google_compute_ssl_certificate" "terra-env-wildcard-ssl-certificate-red" {
   name = "${var.google_compute_ssl_certificate_red}"
 }
