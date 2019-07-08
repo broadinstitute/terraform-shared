@@ -16,7 +16,7 @@ resource "google_compute_instance_group" "instance-group-unmanaged" {
     port = "443"
   }
 
-  zone = "${join("",element(google_compute_instance.instance.*.zone,0))}"
-#  network = "${join("",element(google_compute_instance.instance.*.network_interface.0.network,0))}"
+  zone = "${var.instance_zone}"
+  network = "${var.instance_network}"
   depends_on = [ "google_compute_instance.instance" ]
 }
