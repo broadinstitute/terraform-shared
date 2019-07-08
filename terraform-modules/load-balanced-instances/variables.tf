@@ -61,6 +61,11 @@ variable "instance_size" {
   description = "The default size of Service service hosts"
 }
 
+variable "ansible_branch" {
+  description = "The branch of dsp-ansible-configs to use when provisioning"
+  default = "master"
+}
+
 #
 # Service Service Config Bucket
 #
