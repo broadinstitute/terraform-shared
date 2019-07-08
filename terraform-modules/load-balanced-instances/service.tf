@@ -62,7 +62,8 @@ module "load-balancer" {
   }
   project       = "${var.instance_project}"
   load_balancer_name = "${var.owner}-${var.service}"
-  ssl_policy_name = "${var.owner}-${var.service}-ssl-policy"
+  ssl_policy_name = "${var.ssl_policy_name}"
+  load_balancer_ssl_policy_create = false
   load_balancer_ssl_certificates = [
     "${data.google_compute_ssl_certificate.terra-env-wildcard-ssl-certificate-red.name}",
     "${data.google_compute_ssl_certificate.terra-env-wildcard-ssl-certificate-black.name}"
