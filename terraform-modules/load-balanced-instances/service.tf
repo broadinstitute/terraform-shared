@@ -18,7 +18,7 @@ module "instances" {
   instance_labels = {
     "app" = "${var.service}",
     "owner" = "${var.owner}",
-    "ansible_branch" = "master",
+    "ansible_branch" = "${var.ansible_branch}",
     "ansible_project" = "terra-env",
   }
   instance_tags = "${var.instance_tags}"
