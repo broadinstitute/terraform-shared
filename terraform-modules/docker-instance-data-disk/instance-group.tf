@@ -17,6 +17,6 @@ resource "google_compute_instance_group" "instance-group-unmanaged" {
   }
 
   zone = "${var.instance_zone}"
-  network = "${var.instance_network}"
+  network = "${var.instance_network_name}"
   depends_on = [ "google_compute_instance.instance" ]
 }
