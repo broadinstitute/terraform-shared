@@ -30,6 +30,11 @@ data "google_compute_ssl_certificate" "terra-env-wildcard-ssl-certificate-red" {
 data "google_compute_ssl_certificate" "terra-env-wildcard-ssl-certificate-black" {
   name = "${var.google_compute_ssl_certificate_black}"
 }
+
+variable "load_balancer_health_check_path" {
+  default = "/status"
+}
+
 # Network
 variable "google_network_name" {
 }
