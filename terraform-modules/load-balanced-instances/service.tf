@@ -16,7 +16,7 @@ module "instances" {
   instance_service_account = "${data.google_service_account.config_reader.email}"
   instance_network_name = "${var.google_network_name}"
   instance_labels = {
-    "app" = "${var.service}",
+    "app" = "${var.app_name_override != "" ? var.app_name_override : var.service}",
     "owner" = "${var.owner}",
     "ansible_branch" = "${var.ansible_branch}",
     "ansible_project" = "terra-env",
@@ -27,7 +27,8 @@ module "instances" {
 # Service config bucket
 resource "google_storage_bucket" "config-bucket" {
   provider = "google.instances"
-  name       = "${var.owner}-${var.service}-config"
+  count = "${var.config_bucket_enable}"
+  name       = "${var.config_bucket_name != "" ? var.config_bucket_name : "${var.owner}-${var.service}-config"}"
   project    = "${var.instance_project}"
   versioning = {
     enabled = "true"
@@ -44,7 +45,7 @@ resource "google_storage_bucket" "config-bucket" {
 # Grant service account access to the config bucket
 resource "google_storage_bucket_iam_member" "app_config" {
   provider = "google.instances"
-  count = "${length(var.storage_bucket_roles)}"
+  count = "${var.config_bucket_enable == 0 ? 0 :length(var.storage_bucket_roles)}"
   bucket = "${google_storage_bucket.config-bucket.name}"
   role   = "${element(var.storage_bucket_roles, count.index)}"
   member = "serviceAccount:${data.google_service_account.config_reader.email}"

@@ -65,9 +65,21 @@ variable "ansible_branch" {
   default = "master"
 }
 
+variable "app_name_override" {
+  default = ""
+}
+
 #
 # Service Service Config Bucket
 #
+variable "config_bucket_enable" {
+  default = 1
+}
+
+variable "config_bucket_name" {
+  default = ""
+}
+
 variable "storage_bucket_roles" {
   type = "list"
 
