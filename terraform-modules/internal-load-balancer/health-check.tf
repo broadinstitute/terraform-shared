@@ -11,7 +11,7 @@ resource "google_compute_health_check" "load-balancer-health-check" {
   unhealthy_threshold   = "${var.load_balancer_health_check_unhealthy_threshold}"
   https_health_check {
      port = "${var.load_balancer_health_check_port}"
-     request_path          = "${var.load_balancer_health_check_url}"
+     request_path          = "${var.load_balancer_health_check_path}"
   }
 }
 

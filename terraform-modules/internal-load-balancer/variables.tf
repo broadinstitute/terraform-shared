@@ -60,9 +60,9 @@ variable "load_balancer_ports" {
 
 # Health check vars
 
-variable "load_balancer_health_check_url" {
+variable "load_balancer_health_check_path" {
   default = "/status"
-  description = "URL for health checks"
+  description = "path for health checks"
 }
 
 variable "load_balancer_health_check_port" {
