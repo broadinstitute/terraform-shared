@@ -59,7 +59,7 @@ module "load-balancer" {
   source        = "github.com/broadinstitute/terraform-shared.git//terraform-modules/internal-load-balancer?ref=rl-internal-lb-instances"
 
   providers {
-    google =  "google.instances"
+    google.target =  "google.instances"
   }
   project       = "${var.instance_project}"
   load_balancer_name = "${var.owner}-${var.service}"
