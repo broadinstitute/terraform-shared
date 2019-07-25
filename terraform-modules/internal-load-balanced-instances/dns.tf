@@ -26,6 +26,6 @@ resource "google_dns_record_set" "app-dns" {
   name         = "${var.owner}-${var.service}.${data.google_dns_managed_zone.dns-zone.dns_name}"
   type         = "A"
   ttl          = "${var.dns_ttl}"
-  rrdatas      = [ "${module.load-balancer.load_balancer_public_ip}" ]
+  rrdatas      = [ "${module.load-balancer.load_balancer_ip}" ]
   depends_on   = ["module.load-balancer", "data.google_dns_managed_zone.dns-zone"]
 }
