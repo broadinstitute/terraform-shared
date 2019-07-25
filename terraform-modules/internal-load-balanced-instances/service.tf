@@ -61,6 +61,7 @@ module "load-balancer" {
   providers {
     google =  "google.instances"
   }
+  project       = "${var.instance_project}"
   load_balancer_name = "${var.owner}-${var.service}"
   load_balancer_health_check_path = "${var.load_balancer_health_check_path}"
   load_balancer_instance_groups = "${element(module.instances.instance_instance_group,0)}"
