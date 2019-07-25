@@ -65,5 +65,6 @@ module "load-balancer" {
   load_balancer_name = "${var.owner}-${var.service}"
   load_balancer_health_check_path = "${var.load_balancer_health_check_path}"
   load_balancer_instance_groups = "${element(module.instances.instance_instance_group,0)}"
+  load_balancer_network_name = "${var.google_network_name}"
   load_balancer_subnetwork_name = "${var.load_balancer_subnetwork_name}"
 }
