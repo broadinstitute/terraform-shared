@@ -49,3 +49,5 @@ does not exist this module will fail.
 ```
 
 `dns_ttl`: defaults to 300
+
+`ansible_branch`: the branch of [dsp-ansible-configs](https://github.com/broadinstitute/dsp-ansible-configs) the instances should use.
