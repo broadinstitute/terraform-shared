@@ -56,7 +56,7 @@ resource "google_storage_bucket_iam_member" "app_config" {
 #  must be created before load balancer
 #  Potential solution: https://github.com/hashicorp/terraform/issues/1178#issuecomment-207369534
 module "load-balancer" {
-  source        = "github.com/broadinstitute/terraform-shared.git//terraform-modules/internal-load-balancer?ref=rl-internal-lb-instances"
+  source        = "github.com/broadinstitute/terraform-shared.git//terraform-modules/internal-load-balancer?ref=internal-load-balancer-0.2.0"
 
   providers {
     google.target =  "google.instances"
