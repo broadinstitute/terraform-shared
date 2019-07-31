@@ -1,80 +1,102 @@
 variable "zone" {
+  type    = string
   default = "us-central1-a"
 }
 
 variable "private_cluster_config" {
-  type = "list"
+  type    = list(object({
+    enable_private_endpoint = bool,
+    enable_private_nodes = bool,
+    master_ipv4_cidr_block = string
+  }))
   default = []
 }
 
 variable "node_service_account" {
-  default = ""
+  type    = string
 }
 
 variable "enable_node_rng" {
-  default =  false
+  type    = bool
+  default = false
 }
 
 variable "node_labels" {
-  type = "map"
+  type    = map(string)
   default = {}
 }
 
 variable "ip_allocation_policy" {
-  type = "list"
-  default = [
-    {
-      cluster_ipv4_cidr_block = ""
-      services_ipv4_cidr_block = ""
-    }
-  ]
+  type = list(object({
+    cluster_ipv4_cidr_block = string,
+    cluster_secondary_range_name = string,
+    create_subnetwork = bool,
+    node_ipv4_cidr_block = string,
+    services_ipv4_cidr_block = string,
+    services_secondary_range_name = string,
+    subnetwork_name = string,
+    use_ip_aliases = bool
+  }))
+  default = []
 }
 
 variable "node_tags" {
-  type = "list"
+  type    = list(string)
   default = []
 }
 
 variable "workload_metadata_config_node_metadata" {
+  type    = string
   default = "SECURE"
 }
 
 # Cluster Variables
-variable "cluster_name" {}
+variable "cluster_name" {
+  type = string
+}
 
-variable "cluster_network" {}
+variable "cluster_network" {
+  type = string
+}
 
-variable "cluster_subnetwork" {}
+variable "cluster_subnetwork" {
+  type = string
+}
 
-variable "master_ipv4_cidr_block" {}
+variable "master_ipv4_cidr_block" {
+  type = string
+}
 
 variable "master_authorized_network_cidrs" {
-  type = "list"
+  type = list(string)
 }
 
 variable "master_version" {
+  type    = string
   default = "1.12.5-gke.10"
 }
 
 # Node Pool Variables
 variable "node_version" {
-  default = "1.12.5-gke.10"
+  type        = string
+  default     = "1.12.5-gke.10"
   description = "The version of the kubernetes software deployed on the kubernetes nodes"
 }
 
 variable "node_pool_machine_type" {
-  default = "n1-highmem-8"
+  type        = string
+  default     = "n1-highmem-8"
   description = ""
 }
 
 variable "node_pool_disk_size_gb" {
-  default = "100"
+  type        = number
+  default     = 100
   description = "The size of the disk"
 }
 
 variable "node_pool_count" {
-  default = "3"
+  type        = number
+  default     = 3
   description = "The number of nodes deployed in a node pool"
 }
-#depends_on work around
-variable "depends_on" { default = [], type = "list" }
