@@ -7,3 +7,6 @@ output "instance_instance_group" {
   value = "${google_compute_instance_group.instance-group-unmanaged.*.self_link}"
 }
 
+output "instance_names" {
+  value = "${google_compute_instance.instance.*.name}"
+}
