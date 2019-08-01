@@ -3,13 +3,19 @@ variable "zone" {
   default = "us-central1-a"
 }
 
-variable "private_cluster_config" {
-  type    = list(object({
-    enable_private_endpoint = bool,
-    enable_private_nodes = bool,
-    master_ipv4_cidr_block = string
-  }))
-  default = []
+variable "enable_private_endpoint" {
+  type = bool
+  default = null
+}
+
+variable "enable_private_nodes" {
+  type = bool
+  default = null
+}
+
+variable "private_master_ipv4_cidr_block" {
+  type = string
+  default = null
 }
 
 variable "node_service_account" {
@@ -68,7 +74,7 @@ variable "master_ipv4_cidr_block" {
 }
 
 variable "master_authorized_network_cidrs" {
-  type = list(string)
+  type = list(object({cidr_block = string}))
 }
 
 variable "master_version" {
@@ -99,4 +105,10 @@ variable "node_pool_count" {
   type        = number
   default     = 3
   description = "The number of nodes deployed in a node pool"
+}
+
+variable "dependencies" {
+  type = list(any)
+  default = []
+  description = "Work-around for Terraform 0.12's lack of support for 'depends_on' in custom modules"
 }

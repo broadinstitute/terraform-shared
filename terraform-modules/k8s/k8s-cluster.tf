@@ -3,7 +3,7 @@
 */
 
 resource "google_container_cluster" "cluster" {
-  provider = google
+  provider = google-beta
   name     = var.cluster_name
   zone     = var.zone
 
@@ -56,20 +56,7 @@ resource "google_container_cluster" "cluster" {
   # CIS compliance: Enable Alias IP Ranges. According to the terrafform
   # docs, setting these values blank gets default-size ranges automatically
   # chosen: https://www.terraform.io/docs/providers/google/r/container_cluster.html#ip_allocation_policy
-  dynamic "ip_allocation_policy" {
-    for_each = [var.ip_allocation_policy]
-    iterator = "policy"
-    content {
-      cluster_ipv4_cidr_block = policy.cluster_ipv4_cidr_block
-      cluster_secondary_range_name = policy.cluster_secondary_range_name
-      create_subnetwork = policy.create_subnetwork
-      node_ipv4_cidr_block = policy.node_ipv4_cidr_block
-      services_ipv4_cidr_block = policy.services_ipv4_cidr_block
-      services_secondary_range_name = policy.services_secondary_range_name
-      subnetwork_name = policy.subnetwork_name
-      use_ip_aliases = policy.use_ip_aliases
-    }
-  }
+  ip_allocation_policy = var.ip_allocation_policy
 
   # CIS compliance: Enable PodSecurityPolicyController
   pod_security_policy_config {
@@ -77,19 +64,15 @@ resource "google_container_cluster" "cluster" {
   }
 
   # OMISSION: CIS compliance: Enable Private Cluster
-  dynamic "private_cluster_config" {
-    for_each = [var.private_cluster_config]
-    iterator = "config"
-    content {
-      enable_private_endpoint = config.enable_private_endpoint
-      enable_private_nodes = config.enable_private_nodes
-      master_ipv4_cidr_block = config.master_ipv4_cidr_block
-    }
+  private_cluster_config {
+    enable_private_endpoint = var.enable_private_endpoint
+    enable_private_nodes = var.enable_private_nodes
+    master_ipv4_cidr_block = var.private_master_ipv4_cidr_block
   }
 
   master_authorized_networks_config {
     dynamic "cidr_blocks" {
-      for_each = [var.master_authorized_network_cidrs]
+      for_each = var.master_authorized_network_cidrs
       content {
         cidr_block = cidr_blocks.value
       }
