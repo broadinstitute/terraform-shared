@@ -44,6 +44,9 @@ variable "ip_allocation_policy" {
     subnetwork_name = string,
     use_ip_aliases = bool
   }))
+  # IMPORTANT: This defaults to `null` instead of `[]`
+  # because `[]` overwrites the default argument of the
+  # underlying Google resource.
   default = null
 }
 
@@ -93,7 +96,6 @@ variable "node_version" {
 variable "node_pool_machine_type" {
   type        = string
   default     = "n1-highmem-8"
-  description = ""
 }
 
 variable "node_pool_disk_size_gb" {
