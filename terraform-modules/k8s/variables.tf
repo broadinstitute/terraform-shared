@@ -20,6 +20,7 @@ variable "private_master_ipv4_cidr_block" {
 
 variable "node_service_account" {
   type    = string
+  default = null
 }
 
 variable "enable_node_rng" {
