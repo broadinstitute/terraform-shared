@@ -19,9 +19,6 @@ resource "google_container_cluster" "cluster" {
   # Defines the minimum version allowed for the K8s master
   min_master_version = var.master_version
 
-  # CIS compliance: disable legacy Auth
-  enable_legacy_abac = false
-
   lifecycle {
     ignore_changes = [
       node_pool,
@@ -33,9 +30,11 @@ resource "google_container_cluster" "cluster" {
 
   # Silly, but necessary to have a default pool of 0 nodes. This allows the node definition to be handled cleanly
   # in a separate file
-  node_pool {
-    name = "default-pool"
-  }
+  remove_default_node_pool = true
+  initial_node_count = 0
+
+  # CIS compliance: disable legacy Auth
+  enable_legacy_abac = false
 
   # CIS compliance: disable basic auth -- this creates a certificate and
   # disables basic auth by not specifying a user / pasword.
@@ -89,12 +88,4 @@ resource "google_container_cluster" "cluster" {
       disabled = false
     }
   }
-}
-
-output "cluster_name" {
-  value = google_container_cluster.cluster.name
-}
-
-output "cluster_endpoint" {
-  value = google_container_cluster.cluster.endpoint
 }

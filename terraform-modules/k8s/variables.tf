@@ -44,7 +44,7 @@ variable "ip_allocation_policy" {
     subnetwork_name = string,
     use_ip_aliases = bool
   }))
-  default = []
+  default = null
 }
 
 variable "node_tags" {
@@ -75,7 +75,7 @@ variable "master_ipv4_cidr_block" {
 }
 
 variable "master_authorized_network_cidrs" {
-  type = list(object({cidr_block = string}))
+  type = list(string)
 }
 
 variable "master_version" {

@@ -29,7 +29,7 @@ resource "google_container_node_pool" "node-pool" {
 
     metadata = {
       google-compute-enable-virtio-rng = var.enable_node_rng
-      disable-legacy-endpoints         = "true"
+      disable-legacy-endpoints         = true
     }
 
     # Protect node metadata
