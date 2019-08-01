@@ -36,7 +36,7 @@ resource "google_compute_instance" "instance" {
   # Local OS disk
   boot_disk {
     auto_delete = true
-    initialize_params = {
+    initialize_params {
       image = "${var.instance_image}"
       size = "${var.instance_root_disk_size}"
     }
@@ -71,7 +71,7 @@ resource "google_compute_instance" "instance" {
   metadata_startup_script = "${file("${path.module}/${var.instance_metadata_script}")}"
 
   service_account {
-    scopes = [ "${var.instance_scopes}" ]
+    scopes = "${var.instance_scopes}"
     email = "${var.instance_service_account}"
   }
 }
