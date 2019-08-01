@@ -25,3 +25,4 @@ variable "enable_bigquery" {
 variable "enable_gcs" {
   default = 0
 }
+
