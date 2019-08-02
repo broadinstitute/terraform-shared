@@ -74,7 +74,7 @@ variable "instance_subnetwork_name" {
 }
 
 variable "instance_scopes" {
-  type    = "list"
+  type    = list(string)
   description = "The default scopes for instance"
   default = [
     "userinfo-email", 
