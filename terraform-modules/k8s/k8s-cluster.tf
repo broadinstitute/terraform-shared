@@ -3,9 +3,9 @@
 */
 
 resource "google_container_cluster" "cluster" {
-  provider = google-beta
   name     = var.cluster_name
   zone     = var.zone
+  depends_on = [var.dependencies]
 
   network    = var.cluster_network
   subnetwork = var.cluster_subnetwork

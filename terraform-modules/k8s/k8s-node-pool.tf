@@ -27,16 +27,12 @@ resource "google_container_node_pool" "node-pool" {
     disk_size_gb    = var.node_pool_disk_size_gb
     service_account = var.node_service_account
 
-    metadata = {
-      google-compute-enable-virtio-rng = var.enable_node_rng
-      disable-legacy-endpoints         = true
-    }
-
     # Protect node metadata
     workload_metadata_config {
       node_metadata = var.workload_metadata_config_node_metadata
     }
 
+    metadata = var.node_metadata
     labels = var.node_labels
     tags   = var.node_tags
 
