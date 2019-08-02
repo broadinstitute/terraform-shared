@@ -4,7 +4,7 @@ provider "google" {
 
 # Docker instance(s)
 module "instances" {
-  source        = "github.com/broadinstitute/terraform-shared.git//terraform-modules/docker-instance?ref=rl-tf12-load-balanced-instances"
+  source        = "github.com/broadinstitute/terraform-shared.git//terraform-modules/docker-instance?ref=docker-instance-0.2.0-tf-0.12"
 
   providers = {
     google.target =  "google.instances"
@@ -56,7 +56,7 @@ resource "google_storage_bucket_iam_member" "app_config" {
 #  must be created before load balancer
 #  Potential solution: https://github.com/hashicorp/terraform/issues/1178#issuecomment-207369534
 module "load-balancer" {
-  source        = "github.com/broadinstitute/terraform-shared.git//terraform-modules/internal-load-balancer?ref=rl-tf12-load-balanced-instances"
+  source        = "github.com/broadinstitute/terraform-shared.git//terraform-modules/internal-load-balancer?ref=http-load-balancer-0.3.0-tf-0.12"
 
   providers = {
     google.target =  "google.instances"
