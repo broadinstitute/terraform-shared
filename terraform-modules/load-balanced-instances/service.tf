@@ -6,7 +6,7 @@ provider "google" {
 module "instances" {
   source        = "github.com/broadinstitute/terraform-shared.git//terraform-modules/docker-instance?ref=docker-instance-0.1.1"
 
-  providers {
+  providers = {
     google.target =  "google.instances"
   }
   project       = "${var.instance_project}"
@@ -57,7 +57,7 @@ resource "google_storage_bucket_iam_member" "app_config" {
 module "load-balancer" {
   source        = "github.com/broadinstitute/terraform-shared.git//terraform-modules/http-load-balancer?ref=http-load-balancer-0.2.1"
 
-  providers {
+  providers = {
     google.target =  "google.instances"
   }
   project       = "${var.instance_project}"
