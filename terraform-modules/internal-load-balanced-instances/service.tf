@@ -4,9 +4,9 @@ provider "google" {
 
 # Docker instance(s)
 module "instances" {
-  source        = "github.com/broadinstitute/terraform-shared.git//terraform-modules/docker-instance?ref=docker-instance-0.1.1"
+  source        = "github.com/broadinstitute/terraform-shared.git//terraform-modules/docker-instance?ref=docker-instance-0.2.0-tf-0.12"
 
-  providers {
+  providers = {
     google.target =  "google.instances"
   }
   project       = "${var.instance_project}"
@@ -30,7 +30,7 @@ resource "google_storage_bucket" "config-bucket" {
   count = "${var.config_bucket_enable}"
   name       = "${var.config_bucket_name != "" ? var.config_bucket_name : "${var.owner}-${var.service}-config"}"
   project    = "${var.instance_project}"
-  versioning = {
+  versioning {
     enabled = "true"
   }
   # Do we want to add encryption to this bucket?
@@ -46,7 +46,7 @@ resource "google_storage_bucket" "config-bucket" {
 resource "google_storage_bucket_iam_member" "app_config" {
   provider = "google.instances"
   count = "${var.config_bucket_enable == 0 ? 0 :length(var.storage_bucket_roles)}"
-  bucket = "${google_storage_bucket.config-bucket.name}"
+  bucket = "${var.config_bucket_enable == 0 ? "" : google_storage_bucket.config-bucket.0.name}"
   role   = "${element(var.storage_bucket_roles, count.index)}"
   member = "serviceAccount:${data.google_service_account.config_reader.email}"
 }
@@ -56,9 +56,9 @@ resource "google_storage_bucket_iam_member" "app_config" {
 #  must be created before load balancer
 #  Potential solution: https://github.com/hashicorp/terraform/issues/1178#issuecomment-207369534
 module "load-balancer" {
-  source        = "github.com/broadinstitute/terraform-shared.git//terraform-modules/internal-load-balancer?ref=internal-load-balancer-0.2.0"
+  source        = "github.com/broadinstitute/terraform-shared.git//terraform-modules/internal-load-balancer?ref=http-load-balancer-0.3.0-tf-0.12"
 
-  providers {
+  providers = {
     google.target =  "google.instances"
   }
   project       = "${var.instance_project}"
