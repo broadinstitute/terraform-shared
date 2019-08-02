@@ -3,45 +3,40 @@
 */
 
 resource "google_container_node_pool" "node-pool" {
-  provider            = "google"
-  depends_on  = [
-    "google_container_cluster.cluster"
-  ]
-  name        = "${var.cluster_name}-np"
-  zone        = "${var.zone}"
-  cluster     = "${google_container_cluster.cluster.name}"
-  node_count  = "${var.node_pool_count}"
+  provider   = google
+  depends_on = [google_container_cluster.cluster]
+  name       = "${var.cluster_name}-np"
+  zone       = var.zone
+  cluster    = google_container_cluster.cluster.name
+  node_count = var.node_pool_count
 
   management {
     # CIS compliance: enable automatic repair
     auto_repair = true
+
     # CIS compliance: enable automatic upgrade
     auto_upgrade = true
   }
 
-  version = "${var.node_version}"
+  version = var.k8s_version
 
   node_config {
     # CIS compliance: COS image
     image_type      = "COS"
-    machine_type    = "${var.node_pool_machine_type}"
-    disk_size_gb    = "${var.node_pool_disk_size_gb}"
-    service_account = "${var.node_service_account}"
-
-    metadata {
-      google-compute-enable-virtio-rng = "${var.enable_node_rng}"
-      disable-legacy-endpoints = "true"
-    }
+    machine_type    = var.node_pool_machine_type
+    disk_size_gb    = var.node_pool_disk_size_gb
+    service_account = var.node_service_account
 
     # Protect node metadata
     workload_metadata_config {
-      node_metadata = "${var.workload_metadata_config_node_metadata}"
+      node_metadata = var.workload_metadata_config_node_metadata
     }
 
-    labels = "${var.node_labels}"
-    tags = "${var.node_tags}"
+    metadata = var.node_metadata
+    labels = var.node_labels
+    tags   = var.node_tags
 
-    oauth_scopes    = [
+    oauth_scopes = [
       "https://www.googleapis.com/auth/compute",
       "https://www.googleapis.com/auth/devstorage.read_only",
       "https://www.googleapis.com/auth/logging.write",
