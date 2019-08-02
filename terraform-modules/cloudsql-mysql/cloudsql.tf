@@ -3,7 +3,6 @@
 #
 
 resource "random_id" "cloudsql-id" {
-  count = "${var.enable_flag}"
   byte_length   = 8
 }
 

@@ -12,12 +12,12 @@ variable "min_tls_version" {
 }
 
 variable "load_balancer_ssl_policy_create" {
-  default = "1"
+  default = 1
 }
 
 # enable/disable var
 variable "enable_flag" {
-   default = "1"
+   default = 1
 }
 
 variable "load_balancer_name" {
@@ -33,7 +33,7 @@ variable "load_balancer_ssl_certificates" {
 }
 
 variable "load_balancer_ssl_policy_enable" {
-  default = "1"
+  default = 1
 }
 
 variable "load_balancer_instance_groups" {
