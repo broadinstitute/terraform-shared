@@ -16,8 +16,7 @@ resource "google_container_cluster" "cluster" {
   # CIS compliance: stackdriver monitoring
   monitoring_service = "monitoring.googleapis.com"
 
-  # Defines the minimum version allowed for the K8s master
-  min_master_version = var.master_version
+  min_master_version = var.k8s_version
 
   lifecycle {
     ignore_changes = [

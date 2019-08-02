@@ -18,7 +18,7 @@ resource "google_container_node_pool" "node-pool" {
     auto_upgrade = true
   }
 
-  version = var.node_version
+  version = var.k8s_version
 
   node_config {
     # CIS compliance: COS image

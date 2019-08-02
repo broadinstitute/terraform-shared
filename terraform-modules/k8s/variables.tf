@@ -81,18 +81,12 @@ variable "master_authorized_network_cidrs" {
   type = list(string)
 }
 
-variable "master_version" {
+variable "k8s_version" {
   type    = string
-  default = "1.12.5-gke.10"
+  description = "Version of k8s to use in the GKE master and nodes"
 }
 
 # Node Pool Variables
-variable "node_version" {
-  type        = string
-  default     = "1.12.5-gke.10"
-  description = "The version of the kubernetes software deployed on the kubernetes nodes"
-}
-
 variable "node_pool_machine_type" {
   type        = string
   default     = "n1-highmem-8"
