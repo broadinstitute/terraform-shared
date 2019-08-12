@@ -38,7 +38,7 @@ resource "google_logging_project_sink" "bigquery-log-sink" {
 resource "google_project_iam_binding" "bigquery-log-writer" {
     count =  var.enable_bigquery
     role   = "roles/bigquery.dataEditor"
-    members = google_logging_project_sink.bigquery-log-sink[0].writer_identity
+    members = "${var.enable_bigquery ? google_logging_project_sink.bigquery-log-sink.0.writer_identity : ""}"
 }
 
 resource "google_storage_bucket" "logs" {
@@ -51,7 +51,8 @@ resource "google_storage_bucket_iam_member" "bucket-log-writer" {
   count  = var.enable_gcs
   bucket = google_storage_bucket.logs[0].name
   role   = "roles/storage.objectCreator"
-  member = google_logging_project_sink.bucket-log-sink[0].writer_identity
+  member = "${var.enable_gcs ? google_logging_project_sink.bucket-log-sink.0.writer_identity : ""}"
+
 }
 
 resource "google_logging_project_sink" "bucket-log-sink" {
