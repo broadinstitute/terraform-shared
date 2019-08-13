@@ -38,12 +38,12 @@ variable "master_authorized_network_cidrs" {
 
 variable "enable_private_endpoint" {
   type = bool
-  default = null
+  default = false
 }
 
 variable "enable_private_nodes" {
   type = bool
-  default = null
+  default = false
 }
 
 variable "private_master_ipv4_cidr_block" {
