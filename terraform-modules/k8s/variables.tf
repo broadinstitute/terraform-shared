@@ -46,11 +46,6 @@ variable "enable_private_nodes" {
   default = false
 }
 
-variable "private_master_ipv4_cidr_block" {
-  type = string
-  default = null
-}
-
 variable "ip_allocation_policy" {
   type = list(object({
     cluster_ipv4_cidr_block = string,

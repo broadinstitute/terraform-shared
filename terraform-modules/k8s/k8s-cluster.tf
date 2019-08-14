@@ -30,7 +30,7 @@ resource "google_container_cluster" "cluster" {
   # Silly, but necessary to have a default pool of 0 nodes. This allows the node definition to be handled cleanly
   # in a separate file
   remove_default_node_pool = true
-  initial_node_count = 1 
+  initial_node_count = 1
 
   # CIS compliance: disable legacy Auth
   enable_legacy_abac = false
@@ -65,7 +65,7 @@ resource "google_container_cluster" "cluster" {
   private_cluster_config {
     enable_private_endpoint = var.enable_private_endpoint
     enable_private_nodes = var.enable_private_nodes
-    master_ipv4_cidr_block = var.private_master_ipv4_cidr_block
+    master_ipv4_cidr_block = var.master_ipv4_cidr_block
   }
 
   master_authorized_networks_config {
