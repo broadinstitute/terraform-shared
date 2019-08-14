@@ -28,10 +28,6 @@ variable "cluster_subnetwork" {
   type = string
 }
 
-variable "master_ipv4_cidr_block" {
-  type = string
-}
-
 variable "master_authorized_network_cidrs" {
   type = list(string)
 }
@@ -48,7 +44,6 @@ variable "enable_private_nodes" {
 
 variable "private_master_ipv4_cidr_block" {
   type = string
-  default = null
 }
 
 variable "ip_allocation_policy" {
