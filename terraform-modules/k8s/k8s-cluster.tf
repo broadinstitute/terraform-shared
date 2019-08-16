@@ -30,7 +30,7 @@ resource "google_container_cluster" "cluster" {
   # Silly, but necessary to have a default pool of 0 nodes. This allows the node definition to be handled cleanly
   # in a separate file
   remove_default_node_pool = true
-  initial_node_count = 1 
+  initial_node_count = 1
 
   # CIS compliance: disable legacy Auth
   enable_legacy_abac = false
@@ -51,10 +51,10 @@ resource "google_container_cluster" "cluster" {
     enabled = true
   }
 
-  # CIS compliance: Enable Alias IP Ranges. According to the terrafform
-  # docs, setting these values blank gets default-size ranges automatically
-  # chosen: https://www.terraform.io/docs/providers/google/r/container_cluster.html#ip_allocation_policy
-  ip_allocation_policy = var.ip_allocation_policy
+  ip_allocation_policy = [{
+    # CIS compliance: Enable Alias IP Ranges.
+    use_ip_aliases = true
+  }]
 
   # CIS compliance: Enable PodSecurityPolicyController
   pod_security_policy_config {

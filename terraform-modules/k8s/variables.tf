@@ -32,35 +32,18 @@ variable "master_authorized_network_cidrs" {
   type = list(string)
 }
 
-variable "enable_private_endpoint" {
-  type = bool
-  default = false
-}
-
-variable "enable_private_nodes" {
-  type = bool
-  default = false
-}
-
 variable "private_master_ipv4_cidr_block" {
   type = string
 }
 
-variable "ip_allocation_policy" {
-  type = list(object({
-    cluster_ipv4_cidr_block = string,
-    cluster_secondary_range_name = string,
-    create_subnetwork = bool,
-    node_ipv4_cidr_block = string,
-    services_ipv4_cidr_block = string,
-    services_secondary_range_name = string,
-    subnetwork_name = string,
-    use_ip_aliases = bool
-  }))
-  # IMPORTANT: This defaults to `null` instead of `[]`
-  # because `[]` overwrites the default argument of the
-  # underlying Google resource.
-  default = null
+variable "enable_private_nodes" {
+  type = bool
+  default = true
+}
+
+variable "enable_private_endpoint" {
+  type = bool
+  default = false
 }
 
 # Node Pool Variables
