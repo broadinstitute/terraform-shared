@@ -3,8 +3,8 @@
 */
 
 resource "google_container_cluster" "cluster" {
-  name     = var.cluster_name
-  zone     = var.zone
+  name       = var.cluster_name
+  location   = var.location
   depends_on = [var.dependencies]
 
   network    = var.cluster_network

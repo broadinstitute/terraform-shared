@@ -6,7 +6,7 @@ resource "google_container_node_pool" "node-pool" {
   provider   = google
   depends_on = [google_container_cluster.cluster]
   name       = "${var.cluster_name}-np"
-  zone       = var.zone
+  location   = var.location
   cluster    = google_container_cluster.cluster.name
   node_count = var.node_pool_count
 

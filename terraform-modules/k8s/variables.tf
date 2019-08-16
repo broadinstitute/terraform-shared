@@ -10,9 +10,10 @@ variable "cluster_name" {
   type = string
 }
 
-variable "zone" {
-  type    = string
-  default = "us-central1-a"
+variable "location" {
+  type = string
+  default = "us-central1"
+  description = "Zone or region to host the k8s master and node pool"
 }
 
 variable "k8s_version" {
