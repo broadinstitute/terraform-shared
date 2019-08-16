@@ -54,6 +54,16 @@ resource "google_container_cluster" "cluster" {
   ip_allocation_policy = [{
     # CIS compliance: Enable Alias IP Ranges.
     use_ip_aliases = true
+    # According to trial and error, setting these values to null
+    # lets Google derive values that actually work.
+    # Otherwise you'll end up flipping a table trying to set things manually.
+    create_subnetwork             = null
+    cluster_ipv4_cidr_block       = null
+    cluster_secondary_range_name  = null
+    node_ipv4_cidr_block          = null
+    services_ipv4_cidr_block      = null
+    services_secondary_range_name = null
+    subnetwork_name               = null
   }]
 
   # CIS compliance: Enable PodSecurityPolicyController
