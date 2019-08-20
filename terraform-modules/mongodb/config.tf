@@ -5,6 +5,7 @@ resource "google_storage_bucket_object" "docker-compose" {
 version: '2'
 services:
   mongodb:
+    user: root
     image: bitnami/mongodb:3.6.13
     ports:
       - "${var.mongodb_host_port}:${var.mongodb_container_port}"
