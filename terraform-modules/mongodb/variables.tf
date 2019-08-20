@@ -1,11 +1,11 @@
-# module wide vars
-# google project
-variable "project" {}
+# SA
 
-# enable/disable var
-variable "enable_flag" {
-   default = "1"
+variable "mongodb_service_account" {}
+data "google_service_account" "mongodb" {
+  account_id = "${var.mongodb_service_account}"
 }
+
+# Instance
 
 variable "instance_name" {
   default = "docker-data-node"
