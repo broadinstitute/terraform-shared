@@ -6,6 +6,9 @@ variable "owner" {
 variable "service" {
   description = "The name of the service within the profile"
 }
+variable "dns_zone_name" {
+  description = "The full DNS zone without a trailing . as specified in the application json"
+}
 
 # SA
 

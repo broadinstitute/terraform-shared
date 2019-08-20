@@ -17,10 +17,12 @@ services:
       - MONGODB_PRIMARY_PORT=${var.mongodb_container_port}
       - MONGODB_REPLICA_SET_MODE=${element(var.mongodb_roles, count.index)}
       - MONGODB_REPLICA_SET_KEY=${var.mongodb_replica_set_key}
+      - MONGODB_ADVERTISED_HOSTNAME=${google_dns_record_set.dns-a[count.index].name}
+      ${var.mongodb_roles[count.index] == "primary" ? "" : "- MONGODB_PRIMARY_HOST=${google_dns_record_set.dns-a[0].name}"}
     volumes:
       - ${var.mongodb_data_path}:/bitnami
     restart: always
 EOT
   bucket = "${google_storage_bucket.config-bucket.name}"
-  depends_on = [ "module.instances", "google_storage_bucket.config-bucket" ]
+  depends_on = [ "module.instances", "google_storage_bucket.config-bucket", "google_dns_record_set.dns-a" ]
 }
