@@ -144,13 +144,9 @@ variable "mongodb_data_path" {
   default = "/local/mongodb_data"
 }
 
-variable "mongodb_app_username" {
-  default = "${var.service}"
-}
+variable "mongodb_app_username" {}
 
-variable "mongodb_database" {
-  default = "${var.service}"
-}
+variable "mongodb_database" {}
 
 resource "random_id" "mongodb-user-password" {
   byte_length   = 16
