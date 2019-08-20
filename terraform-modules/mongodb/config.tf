@@ -16,7 +16,7 @@ services:
       - MONGODB_DATABASE=${var.mongodb_database}
       - MONGODB_PRIMARY_PORT=${var.mongodb_container_port}
       - MONGODB_REPLICA_SET_MODE=${element(var.mongodb_roles, count.index)}
-      - MONGODB_REPLICA_SET_MODE=${var.mongodb_replica_set_key}
+      - MONGODB_REPLICA_SET_KEY=${var.mongodb_replica_set_key}
     volumes:
       - ${var.mongodb_data_path}:/bitnami
     restart: always
