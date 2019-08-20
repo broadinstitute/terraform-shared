@@ -21,6 +21,6 @@ services:
       - ${var.mongodb_data_path}:/bitnami
     restart: always
 EOT
-  bucket = "${var.config_bucket_name}"
-  depends_on = [ "module.instances" ]
+  bucket = "${google_storage_bucket.config-bucket.name}"
+  depends_on = [ "module.instances", "google_storage_bucket.config-bucket" ]
 }
