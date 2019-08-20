@@ -121,6 +121,18 @@ variable "instance_data_disk_name" {
   description = "default disk type for docker volume"
 }
 
+#
+# Service Config Bucket
+#
+variable "storage_bucket_roles" {
+  type = "list"
+
+  default = [
+    "roles/storage.legacyBucketReader",
+    "roles/storage.objectViewer"
+  ]
+}
+
 # Mongo variables
 
 variable "mongodb_roles" {

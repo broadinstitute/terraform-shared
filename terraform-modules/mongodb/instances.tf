@@ -6,7 +6,7 @@ module "instances" {
   providers = {
     google.target =  "google.target"
   }
-  project       = "${var.google_project}"
+  project       = "${var.project}"
   instance_name = "${var.service}"
   instance_num_hosts = "${length(var.mongodb_roles)}"
   instance_size = "${var.instance_size}"
