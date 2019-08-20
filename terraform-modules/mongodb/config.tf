@@ -9,14 +9,14 @@ services:
     ports:
       - "${var.mongodb_host_port}:${var.mongodb_container_port}"
     environment:
-      - MONGODB_ROOT_PASSWORD=${random_id.mongodb-root-password.hex}
-      - MONGODB_PRIMARY_ROOT_PASSWORD=${random_id.mongodb-root-password.hex}
+      - MONGODB_ROOT_PASSWORD=${var.mongodb_root_password}
+      - MONGODB_PRIMARY_ROOT_PASSWORD=${var.mongodb_root_password}
       - MONGODB_USERNAME=${var.mongodb_app_username}
-      - MONGODB_PASSWORD=${random_id.mongodb-user-password.hex}
+      - MONGODB_PASSWORD=${var.mongodb_app_password}
       - MONGODB_DATABASE=${var.mongodb_database}
       - MONGODB_PRIMARY_PORT=${var.mongodb_container_port}
       - MONGODB_REPLICA_SET_MODE=${element(var.mongodb_roles, count.index)}
-      - MONGODB_REPLICA_SET_MODE=${random_string.mongodb-replica-set-key.result}
+      - MONGODB_REPLICA_SET_MODE=${var.mongodb_replica_set_key}
     volumes:
       - ${var.mongodb_data_path}:/bitnami
     restart: always

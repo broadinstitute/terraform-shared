@@ -144,44 +144,13 @@ variable "mongodb_data_path" {
 
 variable "mongodb_app_username" {}
 
+variable "mongodb_app_password" {}
+
+variable "mongodb_root_password" {}
+
+variable "mongodb_replica_set_key" {}
+
 variable "mongodb_database" {}
-
-resource "random_id" "mongodb-user-password" {
-  byte_length   = 16
-}
-
-resource "random_id" "mongodb-root-password" {
-  byte_length   = 16
-}
-
-resource "random_string" "mongodb-replica-set-key" {
-  length = 16
-  special = false
-}
-
-provider "vault" {}
-
-resource "vault_generic_secret" "app-database-credentials" {
-  path = "${var.vault_path_prefix}/${var.service}/secrets/mongo/app_user"
-
-  data_json = <<EOT
-{
-  "username": "${var.mongodb_app_username}",
-  "password": "${random_id.mongodb-user-password.hex}"
-}
-EOT
-}
-
-resource "vault_generic_secret" "root-database-credentials" {
-  path = "${var.vault_path_prefix}/${var.service}/secrets/mongo/root_user"
-
-  data_json = <<EOT
-{
-  "username": "root",
-  "password": "${random_id.mongodb-root-password.hex}"
-}
-EOT
-}
 
 variable "roles" {
   default = ["username1", "username2"]
