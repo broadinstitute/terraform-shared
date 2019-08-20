@@ -1,9 +1,10 @@
+
 # Docker instance(s)
 module "instances" {
   source        = "github.com/broadinstitute/terraform-shared.git//terraform-modules/docker-instance-data-disk?ref=docker-instance-data-disk-0.2.0-tf-0.12"
 
   providers = {
-    google.target =  "google"
+    google.target =  "google.target"
   }
   project       = "${var.google_project}"
   instance_name = "${var.service}"

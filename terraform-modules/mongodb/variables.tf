@@ -1,3 +1,7 @@
+variable "service" {
+  description = "Name of app or service using this mongodb. Used to namespace the instances."
+}
+
 # SA
 
 variable "mongodb_service_account" {}
@@ -129,23 +133,23 @@ variable "mongodb_roles" {
 }
 
 variable "mongodb_host_port" {
-  default = "{{if env "MONGODB_HOST_PORT"}}{{env "MONGODB_HOST_PORT"}}{{else}}27017{{end}}"
+  default = "27017"
 }
 
 variable "mongodb_container_port" {
-  default = "{{if env "MONGODB_CONTAINER_PORT"}}{{env "MONGODB_CONTAINER_PORT"}}{{else}}27017{{end}}"
+  default = "27017"
 }
 
 variable "mongodb_data_path" {
-  default = "{{if env "MONGODB_DATA_PATH"}}{{env "MONGODB_DATA_PATH"}}{{else}}/local/mongodb_data{{end}}"
+  default = "/local/mongodb_data"
 }
 
 variable "mongodb_app_username" {
-  default = "{{if env "MONGODB_APP_USERNAME"}}{{env "MONGODB_APP_USERNAME"}}{{else}}{{env "SERVICE"}}{{end}}"
+  default = "${var.service}"
 }
 
 variable "mongodb_database" {
-  default = "{{if env "MONGODB_DATABASE"}}{{env "MONGODB_DATABASE"}}{{else}}{{env "SERVICE"}}{{end}}"
+  default = "${var.service}"
 }
 
 resource "random_id" "mongodb-user-password" {
