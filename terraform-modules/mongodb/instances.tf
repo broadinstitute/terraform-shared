@@ -13,7 +13,7 @@ module "instances" {
   instance_data_disk_size = "${var.instance_data_disk_size}"
   instance_data_disk_type = "${var.instance_data_disk_type}"
   instance_data_disk_name = "${var.instance_data_disk_name}"
-  instance_service_account = "${var.mongodb_service_account}"
+  instance_service_account = "${data.google_service_account.mongodb.email}"
   instance_network_name = "${var.instance_network_name}"
   instance_labels = "${var.instance_labels}"
   instance_tags = "${var.instance_tags}"
