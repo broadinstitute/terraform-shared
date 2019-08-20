@@ -1,3 +1,6 @@
+# General
+
+variable "project" {}
 variable "service" {
   description = "Name of app or service using this mongodb. Used to namespace the instances."
 }
@@ -24,11 +27,6 @@ variable "instance_region" {
 variable "instance_zone" {
   default = "us-central1-a"
   description = "The zone where instances will be created"
-}
-
-variable "instance_service_account" {
-  default = ""
-  description = "The service account under which the instances will be created"
 }
 
 variable "instance_root_disk_size" {
