@@ -1,8 +1,10 @@
 # General
-
 variable "project" {}
+variable "owner" {
+  description = "The owner from the application json"
+}
 variable "service" {
-  description = "Name of app or service using this mongodb. Used to namespace the instances."
+  description = "The name of the service within the profile"
 }
 
 # SA

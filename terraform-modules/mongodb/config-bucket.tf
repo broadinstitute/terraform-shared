@@ -1,7 +1,7 @@
 # Service config bucket
 resource "google_storage_bucket" "config-bucket" {
   name       = "${var.owner}-${var.service}-config"
-  project    = "${var.google_project}"
+  project    = "${var.project}"
   versioning {
     enabled = "true"
   }
