@@ -17,7 +17,7 @@ services:
       - MONGODB_PRIMARY_PORT=${var.mongodb_container_port}
       - MONGODB_REPLICA_SET_MODE=${element(var.mongodb_roles, count.index)}
       - MONGODB_REPLICA_SET_KEY=${var.mongodb_replica_set_key}
-      - MONGODB_ADVERTISED_HOSTNAME=${google_dns_record_set.dns-a[count.index].name}
+      - MONGODB_ADVERTISED_HOSTNAME=${"${substr(google_dns_record_set.dns-a[count.index].name, 0, length(google_dns_record_set.dns-a[count.index].name) - 1)}"}
       ${var.mongodb_roles[count.index] == "primary" ? "" : "- MONGODB_PRIMARY_HOST=${google_dns_record_set.dns-a[0].name}"}
     volumes:
       - ${var.mongodb_data_path}:/bitnami
