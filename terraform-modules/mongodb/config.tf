@@ -19,7 +19,7 @@ services:
       - MONGODB_REPLICA_SET_MODE=${element(var.mongodb_roles, count.index)}
       - MONGODB_REPLICA_SET_KEY=${var.mongodb_replica_set_key}
       - MONGODB_ADVERTISED_HOSTNAME=${data.null_data_source.hostnames_with_no_trailing_dot[count.index].outputs.hostname_priv}
-      ${var.mongodb_roles[count.index] == "primary" ? "" : "- MONGODB_PRIMARY_HOST=${data.null_data_source.hostnames_with_no_trailing_dot[0].outputs.hostname_priv}"
+      ${var.mongodb_roles[count.index] == "primary" ? "" : "- MONGODB_PRIMARY_HOST=${data.null_data_source.hostnames_with_no_trailing_dot[0].outputs.hostname_priv}"}
     volumes:
       - ${var.mongodb_data_path}:/bitnami
     restart: always
