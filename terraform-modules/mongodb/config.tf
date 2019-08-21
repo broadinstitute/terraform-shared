@@ -18,8 +18,8 @@ services:
       - MONGODB_PRIMARY_PORT_NUMBER=${var.mongodb_container_port}
       - MONGODB_REPLICA_SET_MODE=${element(var.mongodb_roles, count.index)}
       - MONGODB_REPLICA_SET_KEY=${var.mongodb_replica_set_key}
-      - MONGODB_ADVERTISED_HOSTNAME=${"${substr(google_dns_record_set.dns-a-priv[count.index].name, 0, length(google_dns_record_set.dns-a-priv[count.index].name) - 1)}"}
-      ${var.mongodb_roles[count.index] == "primary" ? "" : "- MONGODB_PRIMARY_HOST=${substr(google_dns_record_set.dns-a-priv[0].name, 0, length(google_dns_record_set.dns-a-priv[0].name) - 1)}"}
+      - MONGODB_ADVERTISED_HOSTNAME=${data.null_data_source.hostnames_with_no_trailing_dot[count.index].outputs.hostname_priv}
+      ${var.mongodb_roles[count.index] == "primary" ? "" : "- MONGODB_PRIMARY_HOST=${data.null_data_source.hostnames_with_no_trailing_dot[0].outputs.hostname_priv}"
     volumes:
       - ${var.mongodb_data_path}:/bitnami
     restart: always

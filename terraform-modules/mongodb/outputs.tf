@@ -11,11 +11,11 @@ output "instance_names" {
 }
 
 output "instance_hostnames" {
-  value = ["${substr(google_dns_record_set.dns-a.*.name, 0, length(google_dns_record_set.dns-a.*.name) - 1)}"]
+  value = ["${data.null_data_source.hostnames_with_no_trailing_dot.*.outputs.hostname}"]
 }
 
 output "instance_priv_hostnames" {
-  value = ["${substr(google_dns_record_set.dns-a-priv.*.name, 0, length(google_dns_record_set.dns-a-priv.*.name) - 1)}"]
+  value = ["${data.null_data_source.hostnames_with_no_trailing_dot.*.outputs.hostname_priv}"]
 }
 
 output "instance_instance_group" {
