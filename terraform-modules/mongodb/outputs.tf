@@ -14,6 +14,10 @@ output "instance_hostnames" {
   value = "${substr(google_dns_record_set.dns-a.*.name, 0, length(google_dns_record_set.dns-a.*.name) - 1)}"
 }
 
+output "instance_priv_hostnames" {
+  value = "${substr(google_dns_record_set.dns-a-priv.*.name, 0, length(google_dns_record_set.dns-a-priv.*.name) - 1)}"
+}
+
 output "instance_instance_group" {
   value = "${module.instances.instance_instance_group}"
 }
