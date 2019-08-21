@@ -11,11 +11,11 @@ output "instance_names" {
 }
 
 output "instance_hostnames" {
-  value = ["${data.null_data_source.hostnames_with_no_trailing_dot.*.outputs.hostname}"]
+  value = data.null_data_source.hostnames_with_no_trailing_dot.*.outputs.hostname
 }
 
 output "instance_priv_hostnames" {
-  value = ["${data.null_data_source.hostnames_with_no_trailing_dot.*.outputs.hostname_priv}"]
+  value = data.null_data_source.hostnames_with_no_trailing_dot.*.outputs.hostname_priv
 }
 
 output "instance_instance_group" {
