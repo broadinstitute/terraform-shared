@@ -11,6 +11,7 @@ services:
       - "${var.mongodb_host_port}:${var.mongodb_container_port}"
     environment:
       - ${var.mongodb_roles[count.index] == "primary" ? "MONGODB_ROOT_PASSWORD=${var.mongodb_root_password}" : "MONGODB_PRIMARY_ROOT_PASSWORD=${var.mongodb_root_password}"}
+      - MONGODB_SYSTEM_LOG_VERBOSITY=5
       - MONGODB_USERNAME=${var.mongodb_app_username}
       - MONGODB_PASSWORD=${var.mongodb_app_password}
       - MONGODB_DATABASE=${var.mongodb_database}
