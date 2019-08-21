@@ -6,7 +6,7 @@ version: '2'
 services:
   mongodb:
     user: root
-    image: bitnami/mongodb:latest
+    image: bitnami/mongodb:3.6.13
     ports:
       - "${var.mongodb_host_port}:${var.mongodb_container_port}"
     environment:
@@ -14,7 +14,8 @@ services:
       - MONGODB_USERNAME=${var.mongodb_app_username}
       - MONGODB_PASSWORD=${var.mongodb_app_password}
       - MONGODB_DATABASE=${var.mongodb_database}
-      - MONGODB_PRIMARY_PORT=${var.mongodb_container_port}
+      - MONGODB_PORT_NUMBER=${var.mongodb_container_port}
+      - MONGODB_PRIMARY_PORT_NUMBER=${var.mongodb_container_port}
       - MONGODB_REPLICA_SET_MODE=${element(var.mongodb_roles, count.index)}
       - MONGODB_REPLICA_SET_KEY=${var.mongodb_replica_set_key}
       - MONGODB_ADVERTISED_HOSTNAME=${"${substr(google_dns_record_set.dns-a-priv[count.index].name, 0, length(google_dns_record_set.dns-a-priv[count.index].name) - 1)}"}
