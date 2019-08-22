@@ -1,16 +1,36 @@
+provider "google" {
+  alias = "target"
+}
+
+variable "google_project" {}
+
+provider "google-beta" {
+  alias = "target"
+}
+
 variable "network_name" {
   type = "string"
   default = "app-services"
 }
 
-variable "google_project" {}
-
-provider "google" {
-  alias = "target"
+variable "enable_flow_logs" {
+  type = bool
+  default = true
 }
 
-provider "google-beta" {
-  alias = "target"
+variable "aggregation_interval" {
+  type = string
+  default = "INTERVAL_10_MIN"
+}
+
+variable "flow_sampling" {
+  type = number
+  default = 0.5
+}
+
+variable "metadata" {
+  type = string
+  default = "INCLUDE_ALL_METADATA"
 }
 
 variable "subnet_cidrs" {
