@@ -18,8 +18,8 @@ services:
       - MONGODB_PRIMARY_PORT_NUMBER=${var.mongodb_container_port}
       - MONGODB_REPLICA_SET_MODE=${element(var.mongodb_roles, count.index)}
       - MONGODB_REPLICA_SET_KEY=${var.mongodb_replica_set_key}
-      - MONGODB_ADVERTISED_HOSTNAME=${data.null_data_source.hostnames_with_no_trailing_dot[count.index].outputs.hostname_priv}
-      ${var.mongodb_roles[count.index] == "primary" ? "" : "- MONGODB_PRIMARY_HOST=${data.null_data_source.hostnames_with_no_trailing_dot[0].outputs.hostname_priv}"}
+      - MONGODB_ADVERTISED_HOSTNAME=${substr(element(google_dns_record_set.dns-a-priv.*.name, count.index), 0, length(element(google_dns_record_set.dns-a-priv.*.name, count.index)) - 1)}
+      ${var.mongodb_roles[count.index] == "primary" ? "" : "- MONGODB_PRIMARY_HOST=${substr(element(google_dns_record_set.dns-a-priv.*.name, 0), 0, length(element(google_dns_record_set.dns-a-priv.*.name, 0)) - 1)}"}
     volumes:
       - ${var.mongodb_data_path}:/bitnami
     restart: always
@@ -28,6 +28,6 @@ EOT
   depends_on = [
     "module.instances",
     "google_storage_bucket.config-bucket",
-    "data.null_data_source.hostnames_with_no_trailing_dot"
+    "google_dns_record_set.dns-a-priv"
   ]
 }
