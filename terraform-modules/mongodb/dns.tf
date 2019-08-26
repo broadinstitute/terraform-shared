@@ -15,7 +15,7 @@ resource "google_dns_record_set" "dns-a" {
   type         = "A"
   ttl          = "${var.dns_ttl}"
   rrdatas      = [ "${element(module.instances.instance_public_ips, count.index)}" ]
-  depends_on   = ["module.instances", "data.google_dns_managed_zone.dns-zone"]
+  depends_on   = [ module.instances, data.google_dns_managed_zone.dns-zone ]
 }
 
 resource "google_dns_record_set" "dns-a-priv" {
@@ -26,7 +26,7 @@ resource "google_dns_record_set" "dns-a-priv" {
   type         = "A"
   ttl          = "${var.dns_ttl}"
   rrdatas      = [ "${element(module.instances.instance_private_ips, count.index)}" ]
-  depends_on   = ["module.instances", "data.google_dns_managed_zone.dns-zone"]
+  depends_on   = [ module.instances, data.google_dns_managed_zone.dns-zone ]
 }
 
 data "null_data_source" "hostnames_with_no_trailing_dot" {
@@ -35,5 +35,5 @@ data "null_data_source" "hostnames_with_no_trailing_dot" {
     hostname = "${substr(element(google_dns_record_set.dns-a.*.name, count.index), 0, length(element(google_dns_record_set.dns-a.*.name, count.index)) - 1)}"
     hostname_priv = "${substr(element(google_dns_record_set.dns-a-priv.*.name, count.index), 0, length(element(google_dns_record_set.dns-a-priv.*.name, count.index)) - 1)}"
   }
-  depends_on = ["google_dns_record_set.dns-a", "google_dns_record_set.dns-a-priv"]
+  depends_on = [ google_dns_record_set.dns-a, google_dns_record_set.dns-a-priv ]
 }
