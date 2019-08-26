@@ -4,7 +4,7 @@ provider "google" {
 
 # Docker instance(s)
 module "instances" {
-  source        = "github.com/broadinstitute/terraform-shared.git//terraform-modules/docker-instance?ref=docker-instance-0.2.0-tf-0.12"
+  source        = "github.com/broadinstitute/terraform-shared.git//terraform-modules/docker-instance?ref=docker-instance-0.2.1-tf-0.12"
 
   providers = {
     google.target =  "google.instances"
