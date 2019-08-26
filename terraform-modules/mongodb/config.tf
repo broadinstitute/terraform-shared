@@ -28,6 +28,6 @@ EOT
   depends_on = [
     "module.instances",
     "google_storage_bucket.config-bucket",
-    "null_data_source.hostnames_with_no_trailing_dot"
+    "data.null_data_source.hostnames_with_no_trailing_dot"
   ]
 }
