@@ -19,7 +19,7 @@ services:
       - network.host=${data.null_data_source.hostnames_with_no_trailing_dot[count.index].outputs.hostname_priv}
       - node.name=${module.instances.instance_names[count.index]}
       - cluster.name=${var.owner}-${var.service}
-      - discovery.zen.ping.unicast.hosts=${jsonencode(data.null_data_source.hostnames_with_no_trailing_dot.*.outputs.hostname_priv)}
+      - discovery.zen.ping.unicast.hosts=${join(",", data.null_data_source.hostnames_with_no_trailing_dot.*.outputs.hostname_priv)}
       - bootstrap.memory_lock=true
       - network.bind_host=_eth0_
       - http.cors.allow-origin='*'
