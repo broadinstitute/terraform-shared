@@ -25,5 +25,9 @@ services:
     restart: always
 EOT
   bucket = "${google_storage_bucket.config-bucket.name}"
-  depends_on = [ "module.instances", "google_storage_bucket.config-bucket", "google_dns_record_set.dns-a-priv" ]
+  depends_on = [
+    module.instances,
+    google_storage_bucket.config-bucket,
+    data.null_data_source.hostnames_with_no_trailing_dot
+  ]
 }
