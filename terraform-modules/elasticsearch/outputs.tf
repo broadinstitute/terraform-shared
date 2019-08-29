@@ -2,6 +2,10 @@ output "instance_public_ips" {
   value = "${module.instances.instance_public_ips}"
 }
 
+output "cluster_name" {
+  value = "${var.owner}-${var.service}"
+}
+
 output "instance_private_ips" {
   value = "${module.instances.instance_private_ips}"
 }

@@ -151,3 +151,11 @@ variable "storage_bucket_roles" {
 variable "application_data_path" {
   default = "/local/application_data"
 }
+
+variable "java_xms" {
+  default = "3500m"
+}
+
+variable "java_xmx" {
+  default = "3500m"
+}

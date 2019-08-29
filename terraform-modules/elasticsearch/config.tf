@@ -29,6 +29,7 @@ services:
       - xpack.ml.enabled=false
       - xpack.monitoring.enabled=false
       - xpack.watcher.enabled=false
+      - ES_JAVA_OPTS=-Xms${var.java_xms} -Xmx${var.java_xmx}
     cap_add:
       - IPC_LOCK
     ports:
