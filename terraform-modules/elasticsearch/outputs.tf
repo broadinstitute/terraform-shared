@@ -15,11 +15,11 @@ output "instance_names" {
 }
 
 output "instance_hostnames" {
-  value = data.null_data_source.hostnames_with_no_trailing_dot.*.outputs.hostname
+  value = substr(google_dns_record_set.dns-a.*.name, 0, length(google_dns_record_set.dns-a.*.name) - 1)
 }
 
 output "instance_priv_hostnames" {
-  value = data.null_data_source.hostnames_with_no_trailing_dot.*.outputs.hostname_priv
+  value = substr(google_dns_record_set.dns-a-priv.*.name, 0, length(google_dns_record_set.dns-a-priv.*.name) - 1)
 }
 
 output "instance_instance_group" {

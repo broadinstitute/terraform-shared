@@ -15,11 +15,11 @@ services:
       memlock: -1
       nofile: 65536
     environment:
-      - network.publish_host=${data.null_data_source.hostnames_with_no_trailing_dot[count.index].outputs.hostname_priv}
-      - network.host=${data.null_data_source.hostnames_with_no_trailing_dot[count.index].outputs.hostname_priv}
+      - network.publish_host=${substr(element(google_dns_record_set.dns-a-priv.*.name, count.index), 0, length(element(google_dns_record_set.dns-a-priv.*.name, count.index)) - 1)}
+      - network.host=${substr(element(google_dns_record_set.dns-a-priv.*.name, count.index), 0, length(element(google_dns_record_set.dns-a-priv.*.name, count.index)) - 1)}
       - node.name=${module.instances.instance_names[count.index]}
       - cluster.name=${var.owner}-${var.service}
-      - discovery.zen.ping.unicast.hosts=${join(",", data.null_data_source.hostnames_with_no_trailing_dot.*.outputs.hostname_priv)}
+      - discovery.zen.ping.unicast.hosts=${join(",", substr(google_dns_record_set.dns-a-priv.*.name 0, length(google_dns_record_set.dns-a-priv.*.name) - 1))}
       - bootstrap.memory_lock=true
       - network.bind_host=_eth0_
       - http.cors.allow-origin='*'
@@ -39,5 +39,5 @@ services:
       - ${var.application_data_path}:/usr/share/elasticsearcih/data
 EOT
   bucket = "${google_storage_bucket.config-bucket.name}"
-  depends_on = [ module.instances, google_storage_bucket.config-bucket ]
+  depends_on = [ module.instances, google_storage_bucket.config-bucket, google_dns_record_set.dns-a-priv ]
 }
