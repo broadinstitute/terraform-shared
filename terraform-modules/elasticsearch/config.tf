@@ -19,7 +19,7 @@ services:
       - network.host=${substr(element(google_dns_record_set.dns-a-priv.*.name, count.index), 0, length(element(google_dns_record_set.dns-a-priv.*.name, count.index)) - 1)}
       - node.name=${module.instances.instance_names[count.index]}
       - cluster.name=${var.owner}-${var.service}
-      - discovery.zen.ping.unicast.hosts=${join(",", substr(google_dns_record_set.dns-a-priv.*.name 0, length(google_dns_record_set.dns-a-priv.*.name) - 1))}
+      - discovery.zen.ping.unicast.hosts=${join(",", substr(google_dns_record_set.dns-a-priv.*.name, 0, length(google_dns_record_set.dns-a-priv.*.name) - 1))}
       - bootstrap.memory_lock=true
       - network.bind_host=_eth0_
       - http.cors.allow-origin='*'
