@@ -30,10 +30,10 @@ resource "google_dns_record_set" "dns-a-priv" {
 }
 
 data "null_data_source" "hostnames_with_no_trailing_dot" {
-  count = var.num_hosts
+  count = "${var.num_hosts}"
   inputs = {
-    hostname = substr(element(google_dns_record_set.dns-a.*.name, count.index), 0, length(element(google_dns_record_set.dns-a.*.name, count.index)) - 1)
-    hostname_priv = substr(element(google_dns_record_set.dns-a-priv.*.name, count.index), 0, length(element(google_dns_record_set.dns-a-priv.*.name, count.index)) - 1)
+    hostname = "${substr(element(google_dns_record_set.dns-a.*.name, count.index), 0, length(element(google_dns_record_set.dns-a.*.name, count.index)) - 1)}"
+    hostname_priv = "${substr(element(google_dns_record_set.dns-a-priv.*.name, count.index), 0, length(element(google_dns_record_set.dns-a-priv.*.name, count.index)) - 1)}"
   }
   depends_on = [google_dns_record_set.dns-a, google_dns_record_set.dns-a-priv, module.instances ]
 }
