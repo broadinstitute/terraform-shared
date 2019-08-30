@@ -15,8 +15,8 @@ services:
       memlock: -1
       nofile: 65536
     environment:
-      - network.publish_host=${data.null_data_source.hostnames_with_no_trailing_dot[count.index].outputs.hostname_priv}
-      - network.host=${data.null_data_source.hostnames_with_no_trailing_dot[count.index].outputs.hostname_priv}
+    - network.publish_host=${length(data.null_data_source.hostnames_with_no_trailing_dot) > 0 ? data.null_data_source.hostnames_with_no_trailing_dot[count.index].outputs.hostname_priv : ""}
+      - network.host=${length(data.null_data_source.hostnames_with_no_trailing_dot) > 0 ? data.null_data_source.hostnames_with_no_trailing_dot[count.index].outputs.hostname_priv : ""}
       - node.name=${module.instances.instance_names[count.index]}
       - cluster.name=${var.owner}-${var.service}
       - discovery.zen.ping.unicast.hosts=${join(",", data.null_data_source.hostnames_with_no_trailing_dot.*.outputs.hostname_priv)}
