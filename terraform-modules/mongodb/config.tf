@@ -5,8 +5,7 @@ resource "google_storage_bucket_object" "docker-compose" {
 version: '2'
 services:
   mongodb:
-    user: root
-    image: bitnami/mongodb:3.6.13
+    image: bitnami/mongodb:${var.mongodb_image_tag}
     ports:
       - "${var.mongodb_host_port}:${var.mongodb_container_port}"
     environment:
@@ -18,8 +17,8 @@ services:
       - MONGODB_PRIMARY_PORT_NUMBER=${var.mongodb_container_port}
       - MONGODB_REPLICA_SET_MODE=${element(var.mongodb_roles, count.index)}
       - MONGODB_REPLICA_SET_KEY=${var.mongodb_replica_set_key}
-      - MONGODB_ADVERTISED_HOSTNAME=${data.null_data_source.hostnames_with_no_trailing_dot[count.index].outputs.hostname_priv}
-      ${var.mongodb_roles[count.index] == "primary" ? "" : "- MONGODB_PRIMARY_HOST=${data.null_data_source.hostnames_with_no_trailing_dot[0].outputs.hostname_priv}"}
+      - MONGODB_ADVERTISED_HOSTNAME=${length(data.null_data_source.hostnames_with_no_trailing_dot) > 0 ? data.null_data_source.hostnames_with_no_trailing_dot[count.index].outputs.hostname_priv : ""}
+      ${var.mongodb_roles[count.index] == "primary" ? "" : "- MONGODB_PRIMARY_HOST=${length(data.null_data_source.hostnames_with_no_trailing_dot) > 0 ? data.null_data_source.hostnames_with_no_trailing_dot[0].outputs.hostname_priv : ""}"}
     volumes:
       - ${var.mongodb_data_path}:/bitnami
     restart: always
