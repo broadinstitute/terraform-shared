@@ -22,7 +22,6 @@ services:
       ${var.mongodb_roles[count.index] == "primary" ? "" : "- MONGODB_PRIMARY_HOST=${length(data.null_data_source.hostnames_with_no_trailing_dot) > 0 ? data.null_data_source.hostnames_with_no_trailing_dot[0].outputs.hostname_priv : ""}"}
     volumes:
       - ${var.mongodb_data_path}:/bitnami
-    restart: always
 EOT
   bucket = "${google_storage_bucket.config-bucket.name}"
   depends_on = [
