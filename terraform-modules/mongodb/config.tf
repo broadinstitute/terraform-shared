@@ -6,7 +6,7 @@ version: '2'
 services:
   mongodb:
     user: root
-    image: bitnami/mongodb:3.6.13
+    image: bitnami/mongodb:${var.mongodb_image_tag}
     ports:
       - "${var.mongodb_host_port}:${var.mongodb_container_port}"
     environment:

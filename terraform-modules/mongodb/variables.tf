@@ -144,6 +144,10 @@ variable "storage_bucket_roles" {
 
 # Mongo variables
 
+variable "mongodb_image_tag" {
+  default = "3.6.14"
+}
+
 variable "mongodb_roles" {
   default = [
     "primary",
