@@ -23,7 +23,7 @@ variable "k8s_version" {
 
 variable "use_new_stackdriver_apis" {
   type = bool
-  default = false
+  default = true
   description = "If true, GKE's new APIs for logging / monitoring will be enabled. Otherwise legacy APIs will be used."
 }
 
