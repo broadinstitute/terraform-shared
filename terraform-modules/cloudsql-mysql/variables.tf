@@ -99,7 +99,7 @@ variable "cloudsql_instance_labels" {
 }
 
 variable "cloudsql_authorized_networks" {
-  type = list(map)
+  type = list(map(string))
   default = []
 }
 
