@@ -21,6 +21,12 @@ variable "k8s_version" {
   description = "Version of k8s to use in the GKE master and nodes"
 }
 
+variable "use_new_stackdriver_apis" {
+  type = bool
+  default = false
+  description = "If true, GKE's new APIs for logging / monitoring will be enabled. Otherwise legacy APIs will be used."
+}
+
 variable "cluster_network" {
   type = string
 }

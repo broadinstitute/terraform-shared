@@ -11,10 +11,10 @@ resource "google_container_cluster" "cluster" {
   subnetwork = var.cluster_subnetwork
 
   # CIS compliance: stackdriver logging
-  logging_service = "logging.googleapis.com"
+  logging_service = var.use_new_stackdriver_apis ? "logging.googleapis.com/kubernetes" : "logging.googleapis.com"
 
   # CIS compliance: stackdriver monitoring
-  monitoring_service = "monitoring.googleapis.com"
+  monitoring_service = var.use_new_stackdriver_apis ? "monitoring.googleapis.com/kubernetes" : "monitoring.googleapis.com"
 
   min_master_version = var.k8s_version
 
