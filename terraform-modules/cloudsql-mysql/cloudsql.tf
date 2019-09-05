@@ -38,7 +38,11 @@ resource "google_sql_database_instance" "cloudsql-instance" {
       ipv4_enabled  = true
       require_ssl   = true
       authorized_networks {
-        var.cloudsql_authorized_networks
+        [
+          for cidr in var.cloudsql_authorized_networks: {
+            value = cidr
+          }
+        ]
       }
     }
 
