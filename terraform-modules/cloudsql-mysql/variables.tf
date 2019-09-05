@@ -98,3 +98,8 @@ variable "cloudsql_instance_labels" {
   default = {}
 }
 
+variable "cloudsql_authorized_networks" {
+  type = list(map)
+  default = []
+}
+
