@@ -36,7 +36,7 @@ services:
       - "9200:9200"
       - "9300:9300"
     volumes:
-      - ${var.application_data_path}:/usr/share/elasticsearcih/data
+      - ${var.application_data_path}:/usr/share/elasticsearch/data
 EOT
   bucket = "${google_storage_bucket.config-bucket.name}"
   depends_on = [ data.null_data_source.hostnames_with_no_trailing_dot, module.instances, google_storage_bucket.config-bucket]
