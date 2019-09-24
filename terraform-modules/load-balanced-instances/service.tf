@@ -13,6 +13,7 @@ module "instances" {
   instance_name = "${var.service}"
   instance_num_hosts = "${var.instance_num_hosts}"
   instance_size = "${var.instance_size}"
+  instance_image = "${var.instance_image}"
   instance_service_account = "${data.google_service_account.config_reader.email}"
   instance_network_name = "${var.google_network_name}"
   instance_labels = {
