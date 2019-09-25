@@ -50,7 +50,7 @@ variable "instance_tags" {
 }
 
 #
-# Service Service Cluster 
+# Service Cluster 
 #
 variable "instance_num_hosts" {
   description = "The default number of Service service hosts per environment"
@@ -60,13 +60,18 @@ variable "instance_size" {
   description = "The default size of Service service hosts"
 }
 
+variable "instance_image" {
+  default = "centos-7"
+  description = "Image used to build instance"
+}
+
 variable "ansible_branch" {
   description = "The branch of dsp-ansible-configs to use when provisioning"
   default = "master"
 }
 
 #
-# Service Service Config Bucket
+# Service Config Bucket
 #
 variable "storage_bucket_roles" {
   type = "list"

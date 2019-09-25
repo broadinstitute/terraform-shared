@@ -56,6 +56,11 @@ variable "instance_size" {
   description = "The default size of Service service hosts"
 }
 
+variable "instance_image" {
+  default = "centos-7"
+  description = "Image used to build instance"
+}
+
 variable "ansible_branch" {
   description = "The branch of dsp-ansible-configs to use when provisioning"
   default = "master"
