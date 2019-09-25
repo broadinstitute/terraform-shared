@@ -41,6 +41,12 @@ resource "google_project_iam_binding" "bigquery-log-writer" {
     members = [google_logging_project_sink.bigquery-log-sink[0].writer_identity]
 }
 
+resource "google_project_iam_binding" "bigquery-log-writer-permisson" {
+    count =  var.enable_bigquery
+    role   = "roles/logging.configWriter"
+    members = [google_logging_project_sink.bigquery-log-sink[0].writer_identity]
+}
+
 resource "google_storage_bucket" "logs" {
   count = var.enable_gcs
   name  = "${var.project}_${var.application_name}_${var.owner}_audit${var.nonce != "" ? "_${var.nonce}" : ""}"
@@ -70,14 +76,14 @@ resource "google_pubsub_topic" "pubsub" {
 
 # Because our sink uses a unique_writer, we must grant that writer access to the bucket.
 resource "google_project_iam_binding" "log-writer" {
-    role = "roles/pubsub.admin"
+    role = "roles/logging.configWriter"
     count       = var.enable_pubsub
     members = [
         "${google_logging_project_sink.pubsub-log-sink[0].writer_identity}",
     ]
 }
 
-# Our sink; this logs all activity; This requires your SA to have Logging/Logs Configuration Writer 
+# Our sink; this logs all activity; This requires your SA to have Logging/Logs Configuration Writer
 resource "google_logging_project_sink" "pubsub-log-sink" {
     count       = var.enable_pubsub
     name        = "${var.application_name}-${var.owner}-pubsub-log-sink${var.nonce != "" ? "_${var.nonce}" : ""}"
