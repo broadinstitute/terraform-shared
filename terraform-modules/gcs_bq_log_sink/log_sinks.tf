@@ -77,7 +77,7 @@ resource "google_project_iam_binding" "log-writer" {
     ]
 }
 
-# Our sink; this logs all activity
+# Our sink; this logs all activity; This requires your SA to have Logging/Logs Configuration Writer 
 resource "google_logging_project_sink" "pubsub-log-sink" {
     count       = var.enable_pubsub
     name        = "${var.application_name}-${var.owner}-pubsub-log-sink${var.nonce != "" ? "_${var.nonce}" : ""}"
