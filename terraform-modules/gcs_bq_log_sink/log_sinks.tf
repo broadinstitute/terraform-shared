@@ -81,7 +81,7 @@ resource "google_project_iam_binding" "log-writer" {
 resource "google_logging_project_sink" "pubsub-log-sink" {
     count       = var.enable_pubsub
     name        = "${var.application_name}-${var.owner}-pubsub-log-sink${var.nonce != "" ? "_${var.nonce}" : ""}"
-    destination = "pubsub.googleapis.com/${google_pubsub_topic.pubsub[0].name}"
+    destination = "pubsub.googleapis.com/projects/${project}/topics/${google_pubsub_topic.pubsub[0].name}"
     filter      = var.log_filter
     unique_writer_identity = true
 }
