@@ -61,6 +61,35 @@ resource "google_logging_project_sink" "bucket-log-sink" {
   filter                 = var.log_filter
   unique_writer_identity = true
 }
+######
+
+resource "google_pubsub_topic" "pubsub" {
+  count   = var.enable_pubsub
+  name    = "${var.application_name}-${var.owner}-logs-pubsub${var.nonce != "" ? "_${var.nonce}" : ""}"
+}
+
+# Because our sink uses a unique_writer, we must grant that writer access to the bucket.
+resource "google_project_iam_binding" "log-writer" {
+    role = "roles/pubsub.editor"
+    count       = var.enable_pubsub
+    members = [
+        "${google_logging_project_sink.pubsub-log-sink[0].writer_identity}",
+    ]
+}
+
+# Our sink; this logs all activity
+resource "google_logging_project_sink" "pubsub-log-sink" {
+    count       = var.enable_pubsub
+    name        = "${var.application_name}-${var.owner}-pubsub-log-sink${var.nonce != "" ? "_${var.nonce}" : ""}"
+    destination = "pubsub.googleapis.com/${google_pubsub_topic.pubsub[0].name}"
+    filter      = var.log_filter
+    unique_writer_identity = true
+}
+
+# Outputs
+output "pubsub_writer_identity" {
+  value = google_logging_project_sink.pubsub-log-sink.*.writer_identity
+}
 
 output "bigquery_writer_identity" {
   value = google_logging_project_sink.bigquery-log-sink.*.writer_identity
@@ -72,6 +101,10 @@ output "gcs_writer_identity" {
 
 output "bucket_name" {
   value = google_storage_bucket.logs.*.name
+}
+
+output "pubsub_name" {
+  value = google_pubsub_topic.pubsub.*.name
 }
 
 output "dataset_id" {

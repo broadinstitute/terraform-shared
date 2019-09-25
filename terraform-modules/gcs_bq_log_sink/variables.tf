@@ -26,3 +26,6 @@ variable "enable_gcs" {
   default = 0
 }
 
+variable "enable_pubsub" {
+  default = 0
+}
