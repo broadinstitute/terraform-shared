@@ -70,7 +70,7 @@ resource "google_pubsub_topic" "pubsub" {
 
 # Because our sink uses a unique_writer, we must grant that writer access to the bucket.
 resource "google_project_iam_binding" "log-writer" {
-    role = "roles/pubsub.editor"
+    role = "roles/pubsub.admin"
     count       = var.enable_pubsub
     members = [
         "${google_logging_project_sink.pubsub-log-sink[0].writer_identity}",
