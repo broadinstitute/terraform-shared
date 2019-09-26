@@ -10,6 +10,7 @@ module "instances" {
   instance_name = "${var.service}"
   instance_num_hosts = "${length(var.mongodb_roles)}"
   instance_size = "${var.instance_size}"
+  instance_image = "${var.instance_image}"
   instance_data_disk_size = "${var.instance_data_disk_size}"
   instance_data_disk_type = "${var.instance_data_disk_type}"
   instance_data_disk_name = "${var.instance_data_disk_name}"
