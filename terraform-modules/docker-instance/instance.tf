@@ -5,6 +5,7 @@
 # pub IP
 resource "google_compute_address" "instance-public-ip" {
   provider                = "google.target"
+  project =  "${var.project}"
   count = "${var.enable_flag == "1"?var.instance_num_hosts:0}"
   name = "${format("%s-%02d", var.instance_name, count.index+1)}"
   region = "${var.instance_region}"
@@ -13,6 +14,7 @@ resource "google_compute_address" "instance-public-ip" {
 # instance scratch - docker disk
 resource "google_compute_disk" "instance-docker-disk" {
   provider                = "google.target"
+  project =  "${var.project}"
   count = "${var.enable_flag == "1"?var.instance_num_hosts:0}"
   name = "${format("%s-%02d-docker-disk", var.instance_name, count.index+1)}"
   size = "${var.instance_docker_disk_size}"
@@ -23,6 +25,7 @@ resource "google_compute_disk" "instance-docker-disk" {
 # GCE instance
 resource "google_compute_instance" "instance" {
     provider                = "google.target"
+  project =  "${var.project}"
   name = "${format("%s-%02d", var.instance_name, count.index+1)}"
   count = "${var.enable_flag == "1"?var.instance_num_hosts:0}"
   machine_type = "${var.instance_size}"

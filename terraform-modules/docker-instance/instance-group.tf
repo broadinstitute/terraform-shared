@@ -4,6 +4,7 @@ data "google_compute_network" "app" {
 
 resource "google_compute_instance_group" "instance-group-unmanaged" {
     provider                = "google.target"
+  project =  "${var.project}"
   count = "${var.enable_flag}"
   name        = "${var.instance_name}-instance-group-unmanaged"
   description = "${var.instance_name} Instance Group - Unmanaged"
