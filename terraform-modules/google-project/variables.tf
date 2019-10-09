@@ -1,8 +1,14 @@
-variable "project_name" {}
+variable "project_name" {
+  type = string
+}
 
-variable "folder_id" {}
+variable "folder_id" {
+  type = string
+}
 
-variable "billing_account_id" {}
+variable "billing_account_id" {
+  type = string
+}
 
 variable "apis_to_enable" {
    type = list(string)
