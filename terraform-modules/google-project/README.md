@@ -10,36 +10,28 @@ module "my-project" {
   source = "github.com/broadinstitute/terraform-shared.git//terraform-modules/google-project?ref=google-project-0.0.1-tf-0.12"
 
   project_name = "my-project-name"
-  folder_id = var.google_folder_id
-  billing_account_id = var.billing_project_id
+  folder_id = var.google_folder_id_str
+  billing_account_id = var.billing_project_id_str
   apis_to_enable = [
    "logging.googleapis.com",
    "monitoring.googleapis.com",
   ]
-  service_accounts_to_grant = [
-    {
-      email = var.my_sa_email_str
-      sa_roles = [
-        "Editor"
-      ]
-    }
-  ] 
+  service_accounts_to_create_without_keys = [var.sa_nokey_name_str]
   service_accounts_to_create_with_keys = [
     {
-      sa_name = var.my_key_sa_name_str
-      sa_roles = [
-        "Editor"
-      ]
-      key_vault_path = var.path_to_key_in_vault_str
+      sa_name = var.sa_1_name_str
+      key_vault_path = var.sa_1_vault_path_str
     }
   ]
-  service_accounts_to_create_without_keys = [
-    {
-      sa_name = var.my_no_key_sa_name_str
-      sa_roles = [
-        "Editor"
-      ]
-    }
-  ]
+  roles_to_grant_by_email_and_type = [{
+    role = "roles/Editor",
+    email = var.sa_2_email
+    id_type = "" // defaults to "serviceAccount", can be serviceAccount, user, group, or domain
+  }]
+  service_accounts_to_grant_by_name_and_project = [{
+    sa_role = "roles/Editor"
+    sa_name = var.sa_1_name_str
+    sa_project = "" // defaults to the created project
+  }]
 }
 ```
