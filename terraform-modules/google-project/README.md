@@ -24,12 +24,12 @@ module "my-project" {
     }
   ]
   roles_to_grant_by_email_and_type = [{
-    role = "roles/Editor",
+    role = "roles/editor",
     email = var.sa_2_email
     id_type = "" // defaults to "serviceAccount", can be serviceAccount, user, group, or domain
   }]
   service_accounts_to_grant_by_name_and_project = [{
-    sa_role = "roles/Editor"
+    sa_role = "roles/editor"
     sa_name = var.sa_1_name_str
     sa_project = "" // defaults to the created project
   }]
