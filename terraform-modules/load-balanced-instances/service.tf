@@ -63,6 +63,7 @@ module "load-balancer" {
   }
   project       = "${var.instance_project}"
   load_balancer_name = "${var.owner}-${var.service}"
+  load_balancer_health_check_path = "${var.lb_health_check}"
   ssl_policy_name = "${var.ssl_policy_name}"
   load_balancer_ssl_policy_create = 0
   load_balancer_ssl_certificates = [
