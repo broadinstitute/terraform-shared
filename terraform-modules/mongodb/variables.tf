@@ -11,6 +11,7 @@ variable "service" {
 
 variable "dns_zone_name" {
   description = "The full DNS zone without a trailing . as specified in the application json"
+  default = "none"
 }
 variable "dns_ttl" {
    default = "300"
@@ -175,7 +176,9 @@ variable "mongodb_app_password" {}
 
 variable "mongodb_root_password" {}
 
-variable "mongodb_replica_set_key" {}
+variable "mongodb_replica_set_key" {
+  default = "default"
+}
 
 variable "mongodb_database" {}
 
