@@ -176,7 +176,9 @@ variable "mongodb_app_password" {}
 
 variable "mongodb_root_password" {}
 
-variable "mongodb_replica_set_key" {}
+variable "mongodb_replica_set_key" {
+  default = "default"
+}
 
 variable "mongodb_database" {}
 
