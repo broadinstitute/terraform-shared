@@ -23,7 +23,7 @@ output "mongo_uri" {
 }
 
 output "mongo_priv_uri" {
-  value = value = var.dns_zone_name != "none" ? "mongodb://${var.mongodb_app_username}:${var.mongodb_app_password}@${ join(",", data.null_data_source.hostnames_with_no_trailing_dot.*.outputs.hostname_priv) }/${var.mongodb_database}" : "mongodb://${var.mongodb_app_username}:${var.mongodb_app_password}@${ join(",", module.instances.instance_private_ips) }/${var.mongodb_database}"
+  value = var.dns_zone_name != "none" ? "mongodb://${var.mongodb_app_username}:${var.mongodb_app_password}@${ join(",", data.null_data_source.hostnames_with_no_trailing_dot.*.outputs.hostname_priv) }/${var.mongodb_database}" : "mongodb://${var.mongodb_app_username}:${var.mongodb_app_password}@${ join(",", module.instances.instance_private_ips) }/${var.mongodb_database}"
 }
 
 output "instance_instance_group" {
