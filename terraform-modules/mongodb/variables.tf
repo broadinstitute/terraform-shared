@@ -11,6 +11,7 @@ variable "service" {
 
 variable "dns_zone_name" {
   description = "The full DNS zone without a trailing . as specified in the application json"
+  default = "none"
 }
 variable "dns_ttl" {
    default = "300"
