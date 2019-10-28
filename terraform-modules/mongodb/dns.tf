@@ -12,7 +12,7 @@ resource "google_dns_record_set" "dns-a" {
   provider     = "google.dns"
   count        = var.dns_zone_name != "none" ? "${length(var.mongodb_roles)}" : 0
   managed_zone = "${data.google_dns_managed_zone.dns-zone[0].name}"
-  name         = "${format("${var.owner}-${var.service}-%02d.%s",count.index+1,data.google_dns_managed_zone.dns-zone.dns_name)}"
+  name         = "${format("${var.owner}-${var.service}-%02d.%s",count.index+1,data.google_dns_managed_zone.dns-zone[0].dns_name)}"
   type         = "A"
   ttl          = "${var.dns_ttl}"
   rrdatas      = [ "${element(module.instances.instance_public_ips, count.index)}" ]
@@ -23,7 +23,7 @@ resource "google_dns_record_set" "dns-a-priv" {
   provider     = "google.dns"
   count        = var.dns_zone_name != "none" ? "${length(var.mongodb_roles)}" : 0
   managed_zone = "${data.google_dns_managed_zone.dns-zone[0].name}"
-  name         = "${format("${var.owner}-${var.service}-priv-%02d.%s",count.index+1,data.google_dns_managed_zone.dns-zone.dns_name)}"
+  name         = "${format("${var.owner}-${var.service}-priv-%02d.%s",count.index+1,data.google_dns_managed_zone.dns-zone[0].dns_name)}"
   type         = "A"
   ttl          = "${var.dns_ttl}"
   rrdatas      = [ "${element(module.instances.instance_private_ips, count.index)}" ]
