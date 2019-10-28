@@ -29,7 +29,7 @@ resource "google_compute_backend_service" "load-balancer-backend-service-https" 
 resource "google_compute_url_map" "load-balancer-url-map-https" {
   provider = "google.target"
   count = "${var.enable_flag}"
-  name = "${var.load_balancer_name}-load-balancer-100-https"
+  name = "${var.load_balancer_name}-load-balancer-https"
   description = "Load Balancer URL Map - HTTPS - All Paths"
 
   default_service = "${var.enable_flag == 0 ? "" : google_compute_backend_service.load-balancer-backend-service-https.0.self_link}"
@@ -39,7 +39,7 @@ resource "google_compute_url_map" "load-balancer-url-map-https" {
 resource "google_compute_target_https_proxy" "load-balancer-target-proxy-https" {
   provider = "google.target"
   count = "${var.enable_flag}"
-  name = "${var.load_balancer_name}-load-balancer-100"
+  name = "${var.load_balancer_name}-load-balancer"
   description = "Load Balancer Target Proxy - HTTPS"
   url_map = "${var.enable_flag == 0 ? "" : google_compute_url_map.load-balancer-url-map-https.0.self_link}"
   ssl_certificates = var.load_balancer_ssl_certificates
