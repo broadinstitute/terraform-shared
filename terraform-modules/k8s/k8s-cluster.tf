@@ -2,6 +2,9 @@
 * Kubernetes Cluster
 */
 
+# Needed for getting the ID of the project backing the k8s resource.
+data "google_project" "project" {}
+
 resource "google_container_cluster" "cluster" {
   name       = var.cluster_name
   location   = var.location
