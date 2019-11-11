@@ -71,6 +71,13 @@ resource "google_container_cluster" "cluster" {
     enabled = true
   }
 
+  dynamic "workload_identity_config" {
+    for_each = var.enable_workload_identity ? ["If only TF supported if/else"] : []
+    content {
+      identity_namespace = "${data.google_project.project.project_id}.svc.id.goog"
+    }
+  }
+
   # OMISSION: CIS compliance: Enable Private Cluster
   private_cluster_config {
     enable_private_endpoint = var.enable_private_endpoint
