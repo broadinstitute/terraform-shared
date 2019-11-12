@@ -11,9 +11,9 @@ data "google_dns_managed_zone" "dns_zone" {
 resource "google_dns_record_set" "set_dns_record" {
   for_each = var.records
 
-  name = "${each.value.name}.${data.google_dns_managed_zone.dns_zone.dns_name}"
-  type = each.value.type
-  rrdatas = ["${each.value.rrdatas}"]
+  name = "${each.key}.${data.google_dns_managed_zone.dns_zone.dns_name}"
+  type = each.value["type"]
+  rrdatas = ["${each.value["rrdatas"]}"]
   provider     = "google.targetdns"
   ttl          = "300"
   managed_zone = data.google_dns_managed_zone.dns_zone.name
