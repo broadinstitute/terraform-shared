@@ -29,7 +29,8 @@ resource "google_container_node_pool" "node-pool" {
 
     # Protect node metadata
     workload_metadata_config {
-      node_metadata = var.workload_metadata_config_node_metadata
+      # Workload Identity only works when using the metadata server.
+      node_metadata = var.enable_workload_identity ? "GKE_METADATA_SERVER" : "SECURE"
     }
 
     metadata = var.node_metadata

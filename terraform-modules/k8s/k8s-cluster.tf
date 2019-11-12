@@ -2,6 +2,9 @@
 * Kubernetes Cluster
 */
 
+# Needed for getting the ID of the project backing the k8s resource.
+data "google_project" "project" {}
+
 resource "google_container_cluster" "cluster" {
   name       = var.cluster_name
   location   = var.location
@@ -69,6 +72,13 @@ resource "google_container_cluster" "cluster" {
   # CIS compliance: Enable PodSecurityPolicyController
   pod_security_policy_config {
     enabled = true
+  }
+
+  dynamic "workload_identity_config" {
+    for_each = var.enable_workload_identity ? ["If only TF supported if/else"] : []
+    content {
+      identity_namespace = "${data.google_project.project.project_id}.svc.id.goog"
+    }
   }
 
   # OMISSION: CIS compliance: Enable Private Cluster

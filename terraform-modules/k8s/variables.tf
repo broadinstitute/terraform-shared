@@ -27,6 +27,12 @@ variable "use_new_stackdriver_apis" {
   description = "If true, GKE's new APIs for logging / monitoring will be enabled. Otherwise legacy APIs will be used."
 }
 
+variable "enable_workload_identity" {
+  type = bool
+  default = false
+  description = "If true, enables k8s<->GCP SA linking in the cluster. See: https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity"
+}
+
 variable "cluster_network" {
   type = string
 }
@@ -74,11 +80,6 @@ variable "node_pool_disk_size_gb" {
 variable "node_service_account" {
   type    = string
   default = null
-}
-
-variable "workload_metadata_config_node_metadata" {
-  type    = string
-  default = "SECURE"
 }
 
 variable "node_metadata" {
