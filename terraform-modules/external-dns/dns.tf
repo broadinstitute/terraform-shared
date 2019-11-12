@@ -9,7 +9,6 @@ data "google_dns_managed_zone" "dns_zone" {
 }
 
 resource "google_dns_record_set" "set_dns_record" {
-  iterator = setting
   for_each = [for s in var.records: {
     name = "${s.name}.${data.google_dns_managed_zone.dns_zone.name}"
     type = s.type
