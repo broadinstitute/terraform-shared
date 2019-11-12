@@ -9,25 +9,30 @@
 ```
 variable "records" {
   default = {
-      record1 = "192.163.155.12"
-      record2 = "192.55.22.22"
+    record1 = {
+      type = "A"
+      rrdatas = "192.163.155.12"
+    },
+    recordcname2 = {
+      type = "CNAME"
+      rrdatas = "record1.datarepo-dev.broadinstitute.org."
+    },
+    record3 = {
+      type = "A"
+      rrdatas = "192.55.77.11"
+    }
   }
-}
-
-variable "record_type" {
-  default = "A"
 }
 
 module "dns-test" {
   # terraform-shared repo
-  source     = "github.com/broadinstitute/terraform-shared.git//terraform-modules/external-dns?ref=ms-external-dns"
+  source     = "github.com/broadinstitute/terraform-shared.git//terraform-modules/external-dns?ref=ms-dns-creator-v2"
 
   target_project = var.env_project
   region = var.region
   target_credentials = file("${var.env}_svc.json")
   target_dns_zone_name = "datarepo-dev"
   records = var.records
-  record_type = var.record_type
 }
 ```
 ### Variables to set
@@ -40,10 +45,6 @@ variable "region" {}
 variable "target_credentials" {}
 #name of external dns_zone name
 variable "target_dns_zone_name" {}
-#record type
-variable "record_type" {}
 #name and destination values ie: record = 192.168.44.22
-variable "records" {
-  type = map
-}
+variable "records" {}
 ```
