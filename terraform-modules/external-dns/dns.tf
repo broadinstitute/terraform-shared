@@ -9,12 +9,12 @@ data "google_dns_managed_zone" "dns_zone" {
 }
 
 resource "google_dns_record_set" "set_dns_record" {
-  for_each = [for s in var.records: {
-    name = "${s.name}.${data.google_dns_managed_zone.dns_zone.name}"
-    type = s.type
-    rrdatas = s.rrdatas
-    provider     = "google.targetdns"
-    ttl          = "300"
-    managed_zone = data.google_dns_managed_zone.dns_zone.name
-  }]
+  for_each = var.records
+
+  name = "${each.value.name}.${data.google_dns_managed_zone.dns_zone.dns_name}"
+  type = each.value.type
+  rrdatas = ["${each.value.rrdatas}"]
+  provider     = "google.targetdns"
+  ttl          = "300"
+  managed_zone = data.google_dns_managed_zone.dns_zone.name
 }
