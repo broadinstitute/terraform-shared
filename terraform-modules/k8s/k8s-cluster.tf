@@ -5,6 +5,13 @@
 # Needed for getting the ID of the project backing the k8s resource.
 data "google_project" "project" {}
 
+# Needed for getting the latest valid master version in the target location.
+# This lets us do fuzzy version specs (i.e. '1.14.' instead of '1.14.5-gke.10')
+data "google_container_engine_versions" "cluster_versions" {
+  location = var.location
+  version_prefix = var.k8s_version
+}
+
 resource "google_container_cluster" "cluster" {
   name       = var.cluster_name
   location   = var.location
@@ -19,7 +26,7 @@ resource "google_container_cluster" "cluster" {
   # CIS compliance: stackdriver monitoring
   monitoring_service = var.use_new_stackdriver_apis ? "monitoring.googleapis.com/kubernetes" : "monitoring.googleapis.com"
 
-  min_master_version = var.k8s_version
+  min_master_version = data.google_container_engine_versions.cluster_versions.latest_master_version
 
   lifecycle {
     ignore_changes = [
