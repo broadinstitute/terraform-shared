@@ -62,8 +62,16 @@ resource "google_container_cluster" "cluster" {
   }
 
   ip_allocation_policy = [{
+    # FIXME: This is now enabled by default if ip_allocation_policy is
+    # specified at all. It'll be removed in TF-Google 3.
     # CIS compliance: Enable Alias IP Ranges.
     use_ip_aliases = true
+
+    # FIXME: Many of these are removed in TF-Google 3, because they want
+    # users to always create subnetworks themselves. See this PR for info
+    # about what got ripped out and what got left behind:
+    # https://github.com/terraform-providers/terraform-provider-google/issues/4638
+    #
     # According to trial and error, setting these values to null
     # lets Google derive values that actually work.
     # Otherwise you'll end up flipping a table trying to set things manually.
@@ -105,6 +113,8 @@ resource "google_container_cluster" "cluster" {
   }
 
   addons_config {
+    # FIXME: This is now disabled by default, and will be removed entirely in
+    # GKE 1.15 / Terraform-Google 3.
     kubernetes_dashboard {
       # CIS compliance: Disable dashboard
       disabled = true
