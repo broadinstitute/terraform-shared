@@ -63,12 +63,7 @@ resource "google_container_cluster" "cluster" {
     enabled = true
   }
 
-  ip_allocation_policy = [{
-    # FIXME: This is now enabled by default if ip_allocation_policy is
-    # specified at all. It'll be removed in TF-Google 3.
-    # CIS compliance: Enable Alias IP Ranges.
-    use_ip_aliases = true
-
+  ip_allocation_policy {
     # FIXME: Many of these are removed in TF-Google 3, because they want
     # users to always create subnetworks themselves. See this PR for info
     # about what got ripped out and what got left behind:
@@ -77,14 +72,9 @@ resource "google_container_cluster" "cluster" {
     # According to trial and error, setting these values to null
     # lets Google derive values that actually work.
     # Otherwise you'll end up flipping a table trying to set things manually.
-    create_subnetwork             = null
     cluster_ipv4_cidr_block       = null
-    cluster_secondary_range_name  = null
-    node_ipv4_cidr_block          = null
     services_ipv4_cidr_block      = null
-    services_secondary_range_name = null
-    subnetwork_name               = null
-  }]
+  }
 
   # CIS compliance: Enable PodSecurityPolicyController
   pod_security_policy_config {
@@ -92,7 +82,7 @@ resource "google_container_cluster" "cluster" {
   }
 
   dynamic "workload_identity_config" {
-    for_each = var.enable_workload_identity ? ["If only TF supported if/else"] : []
+    for_each = var.enable_workload_identity ? ["Placeholder value to force the loop to iterate once"] : []
     content {
       identity_namespace = "${data.google_project.project.project_id}.svc.id.goog"
     }
@@ -115,13 +105,6 @@ resource "google_container_cluster" "cluster" {
   }
 
   addons_config {
-    # FIXME: This is now disabled by default, and will be removed entirely in
-    # GKE 1.15 / Terraform-Google 3.
-    kubernetes_dashboard {
-      # CIS compliance: Disable dashboard
-      disabled = true
-    }
-
     network_policy_config {
       disabled = false
     }
