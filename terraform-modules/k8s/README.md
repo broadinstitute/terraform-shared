@@ -1,7 +1,7 @@
 ## Module for CIS-Compliant K8s Clusters
 
 This module hopes to get you running a CIS-compliant k8s cluster as
-quickly as possible. 
+quickly as possible.
 
 The _first_ time you use a module, and every time one of the terraform
 modules changes, you will need to run `terraform get` from within your
@@ -37,7 +37,7 @@ variable "cluster_subnetwork" {
 
 variable "broad_range_cidrs" {
   type    = "list"
-  default = [ "69.173.64.0/19", 
+  default = [ "69.173.64.0/19",
     "69.173.96.0/20",
     "69.173.112.0/21",
     "69.173.120.0/22",
@@ -75,7 +75,7 @@ module "my-k8s-cluster" {
   /*
   * REQUIRED VARIABLES
   */
-  
+
   k8s_version = var.k8s_version
 
   # Name for your cluster (use dashes not underscores)
@@ -95,14 +95,14 @@ module "my-k8s-cluster" {
 
   # CIDR to use for the hosted master netwok. must be a /28 that does NOT overlap with the network k8s is on
   private_master_ipv4_cidr_block = "10.128.1.0/28"
-  
+
   # CIDRs of networks allowed to talk to the k8s master
   master_authorized_network_cidrs = var.broad_range_cidrs
 
   /*
   * OPTIONAL VARIABLES (values are the defaults)
   */
-  
+
   # Disk size for the nodes in the cluster
   node_pool_disk_size_gb = "100"
 
@@ -117,7 +117,7 @@ module "my-k8s-cluster" {
 
   # labels to give the nodes
   node_labels = {}
-  
+
   # tags to give the nodes
   node_tags = []
 
@@ -129,24 +129,6 @@ module "my-k8s-cluster" {
 ### CIS Benchmarks
 
 Kubernetes on Google is a subject of [CIS Benchmarks](https://learn.cisecurity.org/benchmarks)
-recommending security best practices. The following is an unauthoritative
-summary of the CIS benchmarks for Kubernetes with notes on whether they fall
-into the scope of terraform and if so, how they  are addressed here. Within 
-the code, values relevant to CIS compliance are noted in comments.
-
-1. **Stackdriver Logging Enabled** - Enabled in the cluster resource definition "logging_service"
-1. **Stackdriver Monitoring Enabled** - Enabled in the cluster resource definition "monitoring_service"
-1. **Legacy Auth Disabled** - Disabled in the cluster resource definition "enable_legacy_abac"
-1. **Dashboard Disabled** - Disabled in the cluster resource definition "disabled"
-1. **Automatic Node Repair Enabled** - enabled in the "management" section of the node pool resource 
-1. **Automatic Node Upgrades Enabled** - enabled in the "management" section of the node pool resource 
-1. **Use Container Optimized OS** - Set in the node pool "Image_type"
-1. **Basic Auth Disabled** - Set a client certificate in the "master_auth" block according to the [tf docs](https://www.terraform.io/docs/providers/google/r/container_cluster.html#master_auth). By using the "master auth" block and not setting a username and password, basic auth is disabled.
-1. **Network Policy Enabled** - Enabled under "network_policy" in the k8s cluster resource.
-1. **Client Certificate Enabled** - Set a client certificate in the "master_auth" block according to the [tf docs](https://www.terraform.io/docs/providers/google/r/container_cluster.html#master_auth).
-1. **Enable Alias IP Ranges** - Set in the "ip_allocation_policy" in the cluster resource
-1. **PodSecurityPolicyController is enabled** - Enabled in the `pod_security_policy_config` block in the cluster resource.
-1. **Created with Private Cluster Enabled** - NOT COVERED - we need access to the internet for Vault.
-1. **Enable Private Access To Google Services** - NOT COVERED -- subnet setting.
-1. **Don't Use Default Service Account** - NOT COVERED -- I think we can limit oauth scopes instead
-1. **Limit OAuth Scopes Used By Nodes** - The `oauth_scopes` array in the node pool resource specifies oauth scopes.
+recommending security best practices. See the READMEs for the underlying
+[k8s-master](../k8s-master/README.md) and [k8s-node-pool](../k8s-node-pool/README.md)
+modules for summaries of which CIS benchmarks are addressed by each.
