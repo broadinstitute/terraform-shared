@@ -1,18 +1,22 @@
 
 # google project
-variable "project" {}
+variable project {}
 
 # destroy on disable
-variable "destroy" { default = "false" }
+variable destroy {
+  type = bool
+  default = false
+}
 
 # enable/disable var
-variable "enable_flag" { 
-   default = "1" 
+variable enable_flag {
+  type = bool
+  default = true
 }
 
 #services to enalbe
-variable "services" {
- type = "list"
+variable services {
+ type = list(string)
  default = [
    "appengineflex.googleapis.com",
    "bigquery-json.googleapis.com",
