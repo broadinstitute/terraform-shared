@@ -1,5 +1,10 @@
 ## Module for CIS-Compliant K8s Clusters
 
+### This Module is Deprecated
+We recommend using separate modules for GKE [master](../k8s-cluster) and [node pool](../k8s-node-pool).
+This module is left untouched so existing users can apply bug-fixes without being forced to rebuild
+their clusters.
+
 This module hopes to get you running a CIS-compliant k8s cluster as
 quickly as possible.
 
@@ -129,6 +134,24 @@ module "my-k8s-cluster" {
 ### CIS Benchmarks
 
 Kubernetes on Google is a subject of [CIS Benchmarks](https://learn.cisecurity.org/benchmarks)
-recommending security best practices. See the READMEs for the underlying
-[k8s-master](../k8s-master/README.md) and [k8s-node-pool](../k8s-node-pool/README.md)
-modules for summaries of which CIS benchmarks are addressed by each.
+recommending security best practices. The following is an unauthoritative
+summary of the CIS benchmarks for Kubernetes with notes on whether they fall
+into the scope of terraform and if so, how they  are addressed here. Within
+the code, values relevant to CIS compliance are noted in comments.
+
+1. **Stackdriver Logging Enabled** - Enabled in the cluster resource definition "logging_service"
+1. **Stackdriver Monitoring Enabled** - Enabled in the cluster resource definition "monitoring_service"
+1. **Legacy Auth Disabled** - Disabled in the cluster resource definition "enable_legacy_abac"
+1. **Dashboard Disabled** - Disabled in the cluster resource definition "disabled"
+1. **Automatic Node Repair Enabled** - enabled in the "management" section of the node pool resource
+1. **Automatic Node Upgrades Enabled** - enabled in the "management" section of the node pool resource
+1. **Use Container Optimized OS** - Set in the node pool "Image_type"
+1. **Basic Auth Disabled** - Set a client certificate in the "master_auth" block according to the [tf docs](https://www.terraform.io/docs/providers/google/r/container_cluster.html#master_auth). By using the "master auth" block and not setting a username and password, basic auth is disabled.
+1. **Network Policy Enabled** - Enabled under "network_policy" in the k8s cluster resource.
+1. **Client Certificate Enabled** - Set a client certificate in the "master_auth" block according to the [tf docs](https://www.terraform.io/docs/providers/google/r/container_cluster.html#master_auth).
+1. **Enable Alias IP Ranges** - Set in the "ip_allocation_policy" in the cluster resource
+1. **PodSecurityPolicyController is enabled** - Enabled in the `pod_security_policy_config` block in the cluster resource.
+1. **Created with Private Cluster Enabled** - NOT COVERED - we need access to the internet for Vault.
+1. **Enable Private Access To Google Services** - NOT COVERED -- subnet setting.
+1. **Don't Use Default Service Account** - NOT COVERED -- I think we can limit oauth scopes instead
+1. **Limit OAuth Scopes Used By Nodes** - The `oauth_scopes` array in the node pool resource specifies oauth scopes.

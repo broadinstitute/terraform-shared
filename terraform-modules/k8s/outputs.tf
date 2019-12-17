@@ -1,7 +1,7 @@
 output "cluster_name" {
-  value = module.master.name
+  value = google_container_cluster.cluster.name
 }
 
 output "cluster_endpoint" {
-  value = module.master.endpoint
+  value = google_container_cluster.cluster.endpoint
 }
