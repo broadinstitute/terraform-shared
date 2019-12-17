@@ -1,4 +1,4 @@
-resource "google_container_node_pool" "pool" {
+resource google_container_node_pool pool {
   provider   = google-beta
 
   depends_on = [var.dependencies]
