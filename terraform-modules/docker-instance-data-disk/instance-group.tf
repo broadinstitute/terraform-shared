@@ -1,9 +1,10 @@
-data "google_compute_network" "app" {
-  name = "${var.instance_network_name}"
-}
+# data "google_compute_network" "app" {
+#   name = "${var.instance_network_name}"
+# }
 
 resource "google_compute_instance_group" "instance-group-unmanaged" {
-    provider                = "google.target"
+  provider                = "google.target"
+  project =  "${var.project}"
   count = "${var.enable_flag}"
   name        = "${var.instance_name}-instance-group-unmanaged"
   description = "${var.instance_name} Instance Group - Unmanaged"
@@ -21,7 +22,8 @@ resource "google_compute_instance_group" "instance-group-unmanaged" {
   }
 
  # zone = "${var.instance_zone}"
-  zone = "${element(google_compute_instance.instance.*.zone,0)}"
-  network = "${data.google_compute_network.app.self_link}"
+  zone = "${element(concat(google_compute_instance.instance.*.zone,list("")),0)}"
+  network = "${element(concat(google_compute_instance.instance.*.network_interface.0.network,list("")),0)}"
+
   depends_on = [ "google_compute_instance.instance" ]
 }

@@ -1,8 +1,8 @@
 
 output "cloudsql-public-ip" {
-  value = "${google_sql_database_instance.cloudsql-instance.0.first_ip_address}"
+  value = var.enable_flag == "0" ? "" : google_sql_database_instance.cloudsql-instance.0.first_ip_address
 }
 
 output "cloudsql-instance-name" {
-  value = "${google_sql_database_instance.cloudsql-instance.0.name}"
+  value = var.enable_flag == "0" ? "" : google_sql_database_instance.cloudsql-instance.0.name
 }

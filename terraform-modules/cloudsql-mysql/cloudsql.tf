@@ -8,6 +8,7 @@ resource "random_id" "cloudsql-id" {
 
 resource "google_sql_database_instance" "cloudsql-instance" {
   provider              = "google.target"
+  project =  "${var.project}"
   count                 = "${var.enable_flag}"
   region                = "${var.cloudsql_region}"
   database_version      = "${var.cloudsql_version}"

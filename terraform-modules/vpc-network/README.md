@@ -23,23 +23,16 @@ module "network" {
 
 `google-beta`: used to create the network (settings such as enabling flow logging requires beta provider)
 
-## Required Variables
+## Inputs
+| Name | Description | Type | Default | Required |
+|------|-------------|:----:|:-----:|:-----:|
+| google_project | Name of google project in which to create the network | string | - | yes |
+| network_name | Name for the network. | string | app-services | no |
+| aggregation_interval | Only used if vpc flow logging is enabled on subnet. Set globably for all subnets that have vpc flow logging enabled on. | string | INTERVAL_10_MIN | no |
+| flow_sampling | Only used if vpc flow logging is enabled on subnet. Set globably for all subnets that have vpc flow logging enabled on. | string | 0.5 | no |
+| metadata | Only used if vpc flow logging is enabled on subnet. Set globably for all subnets that have vpc flow logging enabled on. | string | INCLUDE_ALL_METADATA | no |
+| subnets | Map of objects whos key is the Google Compute region (ie us-central1) with ALL of the following values: <ul><li>cidr: private IP block in CIDR format)</li><li>private_ip_access: Boolean determining if subnet is enabled for accessing Google APIs over private IPs</li><li>vpc_logging: Boolean determining if subnet has vpc_logging enabled</li></ul> | map | defaults to a map including all regions in the world. With vpc flow logs disabled and private_ip_access disabled. | no |
 
-`google_project`: Name of google project in which to create the network
-
-## Optional Variables
-
-`network_name`: Name for the network. Defaults to `app-services`
-
-NOTE: The following 3 variables are used as global defaults for any subnet that will have flow logs enabled on.
- * `aggregation_interval`: default `INTERVAL_10_MIN`
- * `flow_sampling`: default `0.5`
- * `metadata`: default `INCLUDE_ALL_METADATA`
-
-`subnets`: Map of objects whose key is the Google Compute region (ex: us-central1) with all the following values:
- * `cidr`: private IP block in CIDR format) 
- * `private_ip_access`: Boolean determining if subnet is enabled for accessing Google APIs over private IPs 
- * `vpc_logging`: Boolean determining if subnet has vpc_logging enabled
 
 ```
 Ex:
@@ -62,9 +55,19 @@ Ex:
   }
 ```
 
-Only the subnets specified in the `subnets` map will be created.
+If `subnets` variable is provided only the subnets specified in the `subnets` map will be created.
 
-NOTE: until the terraform Google provider is updated to 3.X, you will see the following warngin message
+## Outputs
+
+| Name | Description | Type | 
+|------|-------------|:----:|
+| network | Network name created | string | 
+| network_self_link | Google resource HTTP self link | string | 
+| subnets_ips | map of CIDR ip range for each subnet created.  key is region of subnet (ie us-central1) | map | 
+| subnets_self_links | map of Google resource HTTP self link for each subnet created.  key is region of subnet (ie us-central1) | map | 
+
+## Notes
+NOTE: until the terraform Google provider is updated to 3.X, you will see the following warning message
 ``` 
 Warning: "enable_flow_logs": [DEPRECATED] This field is being removed in favor of log_config. If log_config is present, flow logs are enabled.
 ```
