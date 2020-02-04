@@ -35,6 +35,7 @@ variable enable_master_authorized_networks {
 
 variable authorized_network_cidrs {
   type = list(string)
+  default = []
 }
 
 variable private_ipv4_cidr_block {
