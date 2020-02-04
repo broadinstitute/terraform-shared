@@ -28,6 +28,11 @@ variable subnetwork {
   type = string
 }
 
+variable enable_master_authorized_networks {
+  type = bool
+  default = true
+}
+
 variable authorized_network_cidrs {
   type = list(string)
 }
