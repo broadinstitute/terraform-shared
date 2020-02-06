@@ -91,11 +91,15 @@ resource google_container_cluster cluster {
     master_ipv4_cidr_block = var.private_ipv4_cidr_block
   }
 
-  master_authorized_networks_config {
-    dynamic "cidr_blocks" {
-      for_each = var.authorized_network_cidrs
-      content {
-        cidr_block = cidr_blocks.value
+
+  dynamic "master_authorized_networks_config" {
+    for_each = length(var.authorized_network_cidrs) != 0 ? [1] : []
+    content {
+      dynamic "cidr_blocks" {
+        for_each = var.authorized_network_cidrs
+        content {
+          cidr_block = cidr_blocks.value
+        }
       }
     }
   }

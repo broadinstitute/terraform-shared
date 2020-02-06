@@ -30,6 +30,7 @@ variable subnetwork {
 
 variable authorized_network_cidrs {
   type = list(string)
+  default = []
 }
 
 variable private_ipv4_cidr_block {
