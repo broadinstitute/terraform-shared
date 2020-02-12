@@ -9,8 +9,10 @@ data google_container_engine_versions cluster_versions {
 }
 
 resource google_container_cluster cluster {
-  provider = google-beta
 
+  provider   = google-beta.target
+  project    = var.project
+  count      = var.enable_flag
   name       = var.name
   location   = var.location
   depends_on = [var.dependencies]

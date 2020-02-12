@@ -1,11 +1,12 @@
 resource google_container_node_pool pool {
-  provider   = google-beta
 
+  provider   = google-beta.target
+  project    = var.project
   depends_on = [var.dependencies]
   name       = var.name
   location   = var.location
   cluster    = var.master_name
-  node_count = var.node_count
+  node_count = "${var.enable_flag == "1"?var.node_count:0}"
 
   management {
     # CIS compliance: enable automatic repair

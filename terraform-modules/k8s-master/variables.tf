@@ -1,3 +1,12 @@
+# google project
+variable "project" {}
+
+# enable/disable var
+variable "enable_flag" {
+   type    = string
+   default = "1"
+}
+
 # See: https://github.com/hashicorp/terraform/issues/21418#issuecomment-495818852
 variable dependencies {
   type = any
