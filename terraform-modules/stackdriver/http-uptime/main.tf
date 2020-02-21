@@ -1,5 +1,7 @@
 
 resource google_monitoring_uptime_check_config http_check {
+  provider = google 
+
   display_name = var.check_name
   timeout = var.check_timeout
   period = var.check_frequency
