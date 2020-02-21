@@ -19,3 +19,23 @@ variable "domain_name" {
   type = string
   description = "Either domain or external ip of url to be checked"
 }
+
+# Optional Variables
+
+variable "check_timeout" {
+  type = string 
+  default = "30s"
+  description = "Period after which check will automatically fail"
+}
+
+variable "check_frequency" {
+  type = string
+  default = "60s"
+  description = "How often check will occur. Valid inputs are 60s, 300s, 600s, and 900s"
+}
+
+variable "port" {
+  type = string
+  default = "80"
+  description = "Port to be used in uptime check"
+}
