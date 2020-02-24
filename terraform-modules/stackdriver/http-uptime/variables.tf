@@ -39,3 +39,9 @@ variable "port" {
   default = "80"
   description = "Port to be used in uptime check"
 }
+
+variable "https_enabled" {
+  type = bool
+  default = false
+  description = "Used to indicate whether check will use http or https prototcol. Default is false which will use http."
+}
