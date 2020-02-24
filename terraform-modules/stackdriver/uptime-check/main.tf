@@ -16,6 +16,10 @@ resource google_monitoring_uptime_check_config http_check {
     labels = {
       project_id = var.project
       host = var.domain_name
+
+      # Used to toggle http vs https, default to http
+      use_ssl = var.https_enabled
+      validate_ssl = var.https_enabled
     }
   }
 }
