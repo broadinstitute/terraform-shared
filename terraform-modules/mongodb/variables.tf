@@ -1,3 +1,10 @@
+# See: https://github.com/hashicorp/terraform/issues/21418#issuecomment-495818852
+variable dependencies {
+  type = any
+  default = []
+  description = "Work-around for Terraform 0.12's lack of support for 'depends_on' in custom modules."
+}
+
 # General
 variable "project" {}
 variable "owner" {
@@ -21,7 +28,7 @@ variable "dns_ttl" {
 
 variable "mongodb_service_account" {}
 data "google_service_account" "mongodb" {
-  account_id = "${var.mongodb_service_account}"
+  account_id = var.mongodb_service_account
 }
 
 # Instance
