@@ -1,5 +1,5 @@
 provider "google" {
-  alias = dns
+  alias = "dns"
 }
 
 data "google_dns_managed_zone" "dns-zone" {
