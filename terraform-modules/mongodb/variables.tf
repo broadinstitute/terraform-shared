@@ -100,19 +100,19 @@ variable "instance_scopes" {
 }
 
 variable "instance_tags" {
-  type    = "list" 
+  type    = list(string)
   description = "The default tags for instance"
   default = [ ]
 }
 
 variable "instance_labels" {
-  type    = "map" 
+  type    = map
   description = "The default labels for instance"
   default = { }
 }
 
 variable "instance_stop_for_update" {
-  default = "true"
+  default = true
   description = "The default is to allow stopping instance for updating"
 }
 
@@ -142,7 +142,7 @@ variable "instance_data_disk_name" {
 # Service Config Bucket
 #
 variable "storage_bucket_roles" {
-  type = "list"
+  type = list(string)
 
   default = [
     "roles/storage.legacyBucketReader",
