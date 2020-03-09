@@ -26,11 +26,10 @@ variable "dns_ttl" {
 
 # SA
 
-variable "mongodb_service_account" {}
-data "google_service_account" "mongodb" {
-  account_id = var.mongodb_service_account
-  project = var.project
+variable "mongodb_service_account" {
+  description = "Service Account email"
 }
+
 
 # Instance
 
