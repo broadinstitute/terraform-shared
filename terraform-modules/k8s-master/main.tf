@@ -1,10 +1,11 @@
 # Needed for getting the ID of the project backing the k8s resource.
-data google_project project {}
+# data google_project project {}
 
 # Needed for getting the latest valid master version in the target location.
 # This lets us do fuzzy version specs (i.e. '1.14.' instead of '1.14.5-gke.10')
 data google_container_engine_versions cluster_versions {
-  location = var.location
+  location       = var.location
+  project        = var.project
   version_prefix = var.version_prefix
 }
 
