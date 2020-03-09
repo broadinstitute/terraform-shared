@@ -1,5 +1,5 @@
 provider "google" {
-  alias = "dns"
+  alias = dns
 }
 
 data "google_dns_managed_zone" "dns-zone" {
@@ -9,7 +9,7 @@ data "google_dns_managed_zone" "dns-zone" {
 }
 
 resource "google_dns_record_set" "dns-a" {
-  provider     = "google.dns"
+  provider     = google.dns
   count        = var.dns_zone_name != "none" ? "${length(var.mongodb_roles)}" : 0
   managed_zone = data.google_dns_managed_zone.dns-zone[0].name
   name         = format("${var.owner}-${var.service}-%02d.%s",count.index+1,data.google_dns_managed_zone.dns-zone[0].dns_name)
@@ -20,7 +20,7 @@ resource "google_dns_record_set" "dns-a" {
 }
 
 resource "google_dns_record_set" "dns-a-priv" {
-  provider     = "google.dns"
+  provider     = google.dns
   count        = var.dns_zone_name != "none" ? length(var.mongodb_roles) : 0
   managed_zone = data.google_dns_managed_zone.dns-zone[0].name
   name         = format("${var.owner}-${var.service}-priv-%02d.%s",count.index+1,data.google_dns_managed_zone.dns-zone[0].dns_name)
