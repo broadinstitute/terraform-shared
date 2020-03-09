@@ -29,6 +29,7 @@ variable "dns_ttl" {
 variable "mongodb_service_account" {}
 data "google_service_account" "mongodb" {
   account_id = var.mongodb_service_account
+  project = var.project
 }
 
 # Instance
