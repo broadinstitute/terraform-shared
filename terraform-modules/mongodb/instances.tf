@@ -4,7 +4,7 @@ module "instances" {
   source        = "github.com/broadinstitute/terraform-shared.git//terraform-modules/docker-instance-data-disk?ref=docker-instance-data-disk-0.2.1-tf-0.12"
 
   providers = {
-    google.target =  "google.target"
+    google.target = google.target
   }
   project       = var.project
   instance_name = var.service
@@ -18,4 +18,6 @@ module "instances" {
   instance_network_name = var.instance_network_name
   instance_labels = var.instance_labels
   instance_tags = var.instance_tags
+
+  dependencies = [var.dependencies]
 }
