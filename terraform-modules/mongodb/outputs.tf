@@ -11,11 +11,11 @@ output "instance_names" {
 }
 
 output "instance_hostnames" {
-  value = var.dns_zone_name != "none" ? data.null_data_source.hostnames_with_no_trailing_dot.*.outputs.hostname : ""
+  value = var.dns_zone_name != "none" ? data.null_data_source.hostnames_with_no_trailing_dot.*.outputs.hostname : []
 }
 
 output "instance_priv_hostnames" {
-  value = var.dns_zone_name != "none" ? data.null_data_source.hostnames_with_no_trailing_dot.*.outputs.hostname_priv : ""
+  value = var.dns_zone_name != "none" ? data.null_data_source.hostnames_with_no_trailing_dot.*.outputs.hostname_priv : []
 }
 
 output "mongo_uri" {
