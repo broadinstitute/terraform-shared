@@ -3,8 +3,7 @@ terraform {
 }
 
 data "google_dns_managed_zone" "dns_zone" {
-    provider     = "google.targetdns"
-    project      = var.target_project
+    provider     = google
     name         = var.target_dns_zone_name
 }
 
@@ -14,7 +13,7 @@ resource "google_dns_record_set" "set_dns_record" {
   name = "${each.key}.${data.google_dns_managed_zone.dns_zone.dns_name}"
   type = each.value["type"]
   rrdatas = ["${each.value["rrdatas"]}"]
-  provider     = "google.targetdns"
+  provider     = google
   ttl          = "300"
   managed_zone = data.google_dns_managed_zone.dns_zone.name
 }
