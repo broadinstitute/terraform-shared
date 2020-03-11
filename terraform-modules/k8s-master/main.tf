@@ -4,7 +4,7 @@ data google_project project {}
 # Needed for getting the latest valid master version in the target location.
 # This lets us do fuzzy version specs (i.e. '1.14.' instead of '1.14.5-gke.10')
 data google_container_engine_versions cluster_versions {
-  location = var.location
+  location       = var.location
   version_prefix = var.version_prefix
 }
 
@@ -26,6 +26,10 @@ resource google_container_cluster cluster {
 
   min_master_version = data.google_container_engine_versions.cluster_versions.latest_master_version
 
+  release_channel {
+    channel = var.release_channel
+  }
+
   lifecycle {
     ignore_changes = [
       node_pool,
@@ -38,7 +42,7 @@ resource google_container_cluster cluster {
   # Silly, but necessary to have a default pool of 0 nodes. This allows the node definition to be handled cleanly
   # in a separate file
   remove_default_node_pool = true
-  initial_node_count = 1
+  initial_node_count       = 1
 
   # CIS compliance: disable legacy Auth
   enable_legacy_abac = false
@@ -59,17 +63,12 @@ resource google_container_cluster cluster {
     enabled = true
   }
 
+  # Set IP allocation policy based on variable.
   ip_allocation_policy {
-    # FIXME: Many of these are removed in TF-Google 3, because they want
-    # users to always create subnetworks themselves. See this PR for info
-    # about what got ripped out and what got left behind:
-    # https://github.com/terraform-providers/terraform-provider-google/issues/4638
-    #
-    # According to trial and error, setting these values to null
-    # lets Google derive values that actually work.
-    # Otherwise you'll end up flipping a table trying to set things manually.
-    cluster_ipv4_cidr_block       = null
-    services_ipv4_cidr_block      = null
+    cluster_ipv4_cidr_block       = lookup(var.ip_allocation_policy, "cluster_ipv4_cidr_block", null)
+    services_ipv4_cidr_block      = lookup(var.ip_allocation_policy, "services_ipv4_cidr_block", null)
+    cluster_secondary_range_name  = lookup(var.ip_allocation_policy, "cluster_secondary_range_name", null)
+    services_secondary_range_name = lookup(var.ip_allocation_policy, "services_secondary_range_name", null)
   }
 
   # CIS compliance: Enable PodSecurityPolicyController
@@ -87,8 +86,8 @@ resource google_container_cluster cluster {
   # OMISSION: CIS compliance: Enable Private Cluster
   private_cluster_config {
     enable_private_endpoint = var.enable_private_endpoint
-    enable_private_nodes = var.enable_private_nodes
-    master_ipv4_cidr_block = var.private_ipv4_cidr_block
+    enable_private_nodes    = var.enable_private_nodes
+    master_ipv4_cidr_block  = var.private_ipv4_cidr_block
   }
 
 
