@@ -28,21 +28,12 @@ module "dns-test" {
   # terraform-shared repo
   source     = "github.com/broadinstitute/terraform-shared.git//terraform-modules/external-dns?ref=ms-dns-creator-v2"
 
-  target_project = var.env_project
-  region = var.region
-  target_credentials = file("${var.env}_svc.json")
   target_dns_zone_name = "datarepo-dev"
   records = var.records
 }
 ```
 ### Variables to set
 ```
-# google project
-variable "target_project" {}
-#region
-variable "region" {}
-#credentials
-variable "target_credentials" {}
 #name of external dns_zone name
 variable "target_dns_zone_name" {}
 #name and destination values ie: record = 192.168.44.22
