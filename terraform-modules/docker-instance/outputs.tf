@@ -14,3 +14,7 @@ output "instance_instance_group" {
 output "instance_names" {
   value = "${google_compute_instance.instance.*.name}"
 }
+
+output "tags" {
+  value = "${google_compute_instance.instance.*.tags}"
+}
