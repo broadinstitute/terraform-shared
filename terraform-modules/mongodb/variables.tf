@@ -32,12 +32,6 @@ variable "mongodb_service_account" {
 
 
 # Instance
-
-variable "instance_name" {
-  default = "mongodb"
-  description = "root instance names"
-}
-
 variable "instance_region" {
   default = "us-central1"
   description = "The region where instances will be created"

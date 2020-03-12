@@ -7,7 +7,7 @@ module "instances" {
     google.target = google.target
   }
   project       = var.project
-  instance_name = var.instance_name
+  instance_name = var.service
   instance_num_hosts = length(var.mongodb_roles)
   instance_size = var.instance_size
   instance_image = var.instance_image
