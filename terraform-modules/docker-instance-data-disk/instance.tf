@@ -22,6 +22,11 @@ resource "google_compute_disk" "instance-docker-disk" {
   zone = var.instance_zone
 }
 
+data "google_compute_subnetwork" "instance-subnetwork" {
+  name   = var.instance_subnetwork_name == "" ? var.instance_network_name : var.instance_subnetwork_name
+  region = var.instance_region
+}
+
 # GCE instance
 resource "google_compute_instance" "instance" {
   provider = google.target
@@ -65,7 +70,7 @@ resource "google_compute_instance" "instance" {
 
   network_interface {
     network = var.instance_network_name
-    subnetwork = var.instance_subnetwork_name == "" ? var.instance_network_name : var.instance_subnetwork_name
+    subnetwork = data.google_compute_subnetwork.instance-subnetwork.self_link
     access_config {
       nat_ip = element(google_compute_address.instance-public-ip.*.address, count.index)
     }
