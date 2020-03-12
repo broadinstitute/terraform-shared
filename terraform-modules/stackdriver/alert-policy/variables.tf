@@ -6,7 +6,7 @@ variable "policy_name" {
 }
 
 variable "condition_combine_method" {
-  type string
+  type = string
   description = "logic to trigger the alert when multiple conditions are present only 'AND' and 'OR' are valid arguments"
 }
 
