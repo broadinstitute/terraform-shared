@@ -65,7 +65,7 @@ resource "google_compute_instance" "instance" {
 
   network_interface {
     network = var.instance_network_name
-    subnetwork = var.instance_subnetwork_name == "" ? var.instance_network_name : var.instance_subnetwork_name
+    subnetwork = var.instance_subnetwork_name == "" ? null : var.instance_subnetwork_name
     access_config {
       nat_ip = element(google_compute_address.instance-public-ip.*.address, count.index)
     }
@@ -78,4 +78,3 @@ resource "google_compute_instance" "instance" {
     email = var.instance_service_account
   }
 }
-
