@@ -34,7 +34,7 @@ variable "mongodb_service_account" {
 # Instance
 
 variable "instance_name" {
-  default = "docker-data-node"
+  default = "mongodb"
   description = "root instance names"
 }
 

@@ -7,7 +7,7 @@ resource "google_storage_bucket" "config-bucket" {
   }
   force_destroy = true
   labels = {
-    "app" = var.service,
+    "app" = "${var.service}-mongo",
     "owner" = var.owner,
     "role" = "config"
   }
