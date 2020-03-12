@@ -22,6 +22,8 @@ services:
     volumes:
       - ${var.mongodb_data_path}:/bitnami
     restart: always
+    logging:
+      driver: gcplogs
 EOT
   bucket = google_storage_bucket.config-bucket.name
   depends_on = [
@@ -50,6 +52,8 @@ services:
     volumes:
       - ${var.mongodb_data_path}:/bitnami
     restart: always
+    logging:
+      driver: gcplogs
 EOT
   bucket = google_storage_bucket.config-bucket.name
   depends_on = [
