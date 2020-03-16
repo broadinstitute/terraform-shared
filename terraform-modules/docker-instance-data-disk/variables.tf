@@ -1,3 +1,9 @@
+# See: https://github.com/hashicorp/terraform/issues/21418#issuecomment-495818852
+variable dependencies {
+  type = any
+  default = []
+  description = "Work-around for Terraform 0.12's lack of support for 'depends_on' in custom modules."
+}
 
 # module wide vars
 # google project
@@ -85,19 +91,19 @@ variable "instance_scopes" {
 }
 
 variable "instance_tags" {
-  type    = "list" 
+  type    = list(string)
   description = "The default tags for instance"
   default = [ ]
 }
 
 variable "instance_labels" {
-  type    = "map" 
+  type    = map
   description = "The default labels for instance"
   default = { }
 }
 
 variable "instance_stop_for_update" {
-  default = "true"
+  default = true
   description = "The default is to allow stopping instance for updating"
 }
 
