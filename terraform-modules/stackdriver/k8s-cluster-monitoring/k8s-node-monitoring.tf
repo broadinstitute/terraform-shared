@@ -1,5 +1,5 @@
 resource google_monitoring_alert_policy node_resource_alerts {
-  
+
   provider = google.target
 
   display_name = "k8s-node-resource-usage-alert"
@@ -31,9 +31,7 @@ resource google_monitoring_alert_policy node_resource_alerts {
         # group_by_fields = ["metric.label.\"instance_name\""]
         per_series_aligner = var.series_align_method 
         alignment_period = var.alignment_period
-
       }
-
     }
   }
 
