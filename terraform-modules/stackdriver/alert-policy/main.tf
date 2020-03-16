@@ -1,20 +1,14 @@
-resource google_monitoring_alert_policy cluster_alert {
-  provider = google.target
+resource google_monitoring_alert_policy node_resource_alerts {
 
-  display_name = var.policy_name
+  display_name = "k8s-node-resource-usage-alert"
 
   # Valid option are "AND" or "OR"
   combiner = var.condition_combine_method
   project = var.project
-  conditions {
-    # The following must be specified per condition
-    # Stackdriver enforces  maximum of six conditions per policy
-    # Recommendation is use to use more policies with closely related conditions
 
+  conditions {
     # name to be associated with the condition for display in gcloud
-    display_name = var.condition_name
-    
-    #Contains list of condition objects    
+    display_name = "node-cpu-utilization"    
 
     # condition_absent {
     #   # Specifiy condition behavior if metric data is missing
@@ -23,8 +17,42 @@ resource google_monitoring_alert_policy cluster_alert {
     condition_threshold {
       # Specify circumstances where alert is triggered
 
+      threshold_value = 0.95
+
+      comparison = "COMPARISON_GT"
+      duration = "300s"
+
+      # Specify api path of metrics and any resource filters to apply
+      filter = "metric.type=\"compute.googleapis.com/instance/cpu/utilization\" AND resource.type=\"gce_instance\""
+
+      aggregations {
+        # group_by_fields = ["metric.label.\"instance_name\""]
+        per_series_aligner = "ALIGN_MEAN" 
+        alignment_period = "60s"
+
+      }
+
     }
-    ## Possibly use for loop syntax to easily allow for multiple conditions. (Decide if this is a pattern we should support)
+  }
+
+  conditions {
+    display_name = "node-memory-utilization"
+
+    condition_threshold {
+      threshold_value = 0.95
+
+      comparison = "COMPARISON_GT"
+      duration = "300s"
+
+      filter = "metric.type=\"kubernetes.io/node/memory/allocatable_utilization\" resource.type=\"k8s_node\""
+
+      aggregations {
+        per_series_aligner = "ALIGN_MEAN"
+        alignment_period = "60s"
+        cross_series_reducer = "REDUCE_SUM"
+        group_by_fields = ["resource.labels.node_name"]
+      }
+    }
   }
 
   enabled = true
@@ -37,5 +65,7 @@ resource google_monitoring_alert_policy cluster_alert {
 
   documentation {
     # Information to be displayed in a dashboard that provides more context for the alert
+    content = "A kubernetes node has been utilizizing more resources than expected for an extneded period of time"
+    mime_type = "text/markdown"
   }
 }

@@ -15,6 +15,11 @@ variable "project" {
   description = "The GCP project the alert policy should be created under"
 }
 
+variable "cluster_name" {
+  type = string
+  description = " Name of the cluster the alert policy will monitor"
+}
+
 # Optional Variables 
 
 variable "notification_channels" {
