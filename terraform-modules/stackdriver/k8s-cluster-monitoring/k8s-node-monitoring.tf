@@ -1,4 +1,6 @@
 resource google_monitoring_alert_policy node_resource_alerts {
+  
+  provider = google.target
 
   display_name = "k8s-node-resource-usage-alert"
 
