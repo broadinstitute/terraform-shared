@@ -47,6 +47,18 @@ variable "node_health_check_threshold" {
   description = "Will trigger in alert if any of the node health check conditions are in failing or unknown state"
 }
 
+variable "cluster_pod_capacity_threshold" {
+  type        = number
+  default     = 0.95
+  description = "The ratio of number of currently running pods to the cluster capactiy for pods"
+}
+
+variable "cluster_threshold_duration" {
+  type        = string
+  default     = "300s"
+  description = "The amount of time a cluster health condition must violate the threshold to trigger alert"
+}
+
 variable "threshold_comparison" {
   type = object({
     less_than    = string
@@ -88,6 +100,7 @@ variable "group_by_labels" {
   default = {
     node_name             = "resource.labels.node_name"
     node_health_condition = "metric.label.condition"
+    cluster_name          = "resource.labels.cluster_name"
   }
   description = "Mapping of monitored resource labels to their gcloud monitoring api name. Used for aggregating timeseries data together"
 }
@@ -113,4 +126,16 @@ variable "node_health_metric" {
   type        = string
   default     = "metric.type=\"external.googleapis.com/prometheus/kube_node_status_condition\" resource.type=\"k8s_container\" metric.label.\"condition\"!=\"Ready\" metric.label.\"status\"!=\"false\""
   description = "Metric used for examing general kubernetes node health. This metric reports on a number of k8s specific and non-k8s indicators of node health"
+}
+
+variable "cluster_pod_capacity_metric" {
+  type        = string
+  default     = "metric.type=\"external.googleapis.com/prometheus/kube_node_status_capacity_pods\" resource.type=\"k8s_container\""
+  description = "Metric used to determine the total number of pods that could run on a cluster"
+}
+
+variable "cluster_pod_running_metric" {
+  type        = string
+  default     = "metric.type=\"external.googleapis.com/prometheus/kube_pod_status_phase\" resource.type=\"k8s_container\" metric.label.\"phase\"=\"Running\""
+  description = "Metric that describes the number of pods currently running on a pod. Does not include kube-system or prometheus pods"
 }
