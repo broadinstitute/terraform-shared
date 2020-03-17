@@ -1,3 +1,11 @@
+/* 
+This resources configures an alert policy which 
+Which monitors the nodes in k8s cluster for primary
+resource usage ie cpu and memory. An alert will be triggered if any node 
+shows unusual behavior
+*/
+
+
 resource google_monitoring_alert_policy node_resource_alerts {
 
   provider     = google.target
@@ -36,19 +44,20 @@ resource google_monitoring_alert_policy node_resource_alerts {
   conditions {
     display_name = "node-memory-utilization"
 
+    # Variables for creating alerting metrics are used for readability
+    # as many of them contain long monitoring API strings. See variables.tf for more details 
     condition_threshold {
 
       threshold_value = var.node_memory_threshold
       comparison      = var.threshold_comparison.greater_than
       duration        = var.node_threshold_duration
-
-      filter = var.node_memory_metric
+      filter          = var.node_memory_metric
 
       aggregations {
         per_series_aligner   = var.series_align_method
         alignment_period     = var.alignment_period
         cross_series_reducer = var.reducer_method.sum
-        group_by_fields      = ["${var.group_by_labels.node_name}"]
+        group_by_fields      = [var.group_by_labels.node_name]
       }
     }
   }

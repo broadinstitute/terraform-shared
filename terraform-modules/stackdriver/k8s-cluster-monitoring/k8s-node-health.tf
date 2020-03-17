@@ -1,3 +1,24 @@
+/*
+This resource configures an alert policy which monitors nodes 
+in a k8s cluster for many aspects of general node health. 
+This module requires that your cluster is configured to run prometheus and kube-state-metrics
+and exports them to stackdriver. 
+
+This resource monitors the following aspects of node health and will trigger an alert 
+if any of them are in failing state:
+
+Corrupt Docker Overlay
+Disk Pressure
+Memory Pressure
+Frequent Container Restarts
+Frequent Docker Restarts
+Frequent Kubelet Restarts
+Kernel Deadlock
+Network Unavailable
+PID Pressure
+
+*/
+
 resource google_monitoring_alert_policy node_health_check {
 
   provider              = google.target
@@ -27,6 +48,7 @@ resource google_monitoring_alert_policy node_health_check {
       filter          = var.node_health_metric
 
       aggregations {
+
         per_series_aligner   = var.series_align_method
         alignment_period     = var.alignment_period
         group_by_fields      = [var.group_by_labels.node_health_condition]
