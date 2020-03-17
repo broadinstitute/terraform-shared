@@ -41,6 +41,12 @@ variable "node_memory_threshold" {
   description = "The threshold memory utilization on a node to trigger an alert. Represents a fraction of allocatble memory and must be between 0 and 1"
 }
 
+variable "node_health_check_threshold" {
+  type        = number
+  default     = 0
+  description = "Will trigger in alert if any of the node health check conditions are in failing or unknown state"
+}
+
 variable "threshold_comparison" {
   type = object({
     less_than    = string
@@ -80,7 +86,8 @@ variable "reducer_method" {
 
 variable "group_by_labels" {
   default = {
-    node_name = "resource.labels.node_name"
+    node_name             = "resource.labels.node_name"
+    node_health_condition = "metric.label.condition"
   }
   description = "Mapping of monitored resource labels to their gcloud monitoring api name. Used for aggregating timeseries data together"
 }
@@ -100,4 +107,10 @@ variable "node_memory_metric" {
   type        = string
   default     = "metric.type=\"kubernetes.io/node/memory/allocatable_utilization\" resource.type=\"k8s_node\""
   description = "Metric used for tracking allocatable memory available per node"
+}
+
+variable "node_health_metric" {
+  type        = string
+  default     = "metric.type=\"external.googleapis.com/prometheus/kube_node_status_condition\" resource.type=\"k8s_container\" metric.label.\"condition\"!=\"Ready\" metric.label.\"status\"!=\"false\""
+  description = "Metric used for examing general kubernetes node health. This metric reports on a number of k8s specific and non-k8s indicators of node health"
 }

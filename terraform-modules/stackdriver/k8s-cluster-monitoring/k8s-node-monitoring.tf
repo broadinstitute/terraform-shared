@@ -63,7 +63,7 @@ resource google_monitoring_alert_policy node_resource_alerts {
 
   documentation {
     # Information to be displayed in a dashboard that provides more context for the alert
-    content   = "A node in the ${var.cluster_name} cluster has been running at above high resource utilization for greater than ${var.node_threshold_duration}econds"
+    content   = "A node in the ${var.cluster_name} cluster has been running with high resource utilization for greater than ${var.node_threshold_duration}econds"
     mime_type = "text/markdown"
   }
 }
