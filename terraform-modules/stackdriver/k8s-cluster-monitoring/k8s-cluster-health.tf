@@ -1,10 +1,15 @@
-### Metric currently doesn't work properly
+/*
+Creates an alert policy which monitors the ratio of
+pods currently running in a cluster to the max number of pods
+a cluster can support.
+It will trigger the alert if current pods running are above 95% max capacity for number of pods 
+*/
 
 
 resource google_monitoring_alert_policy cluster_health_check {
 
   provider              = google.target
-  display_name          = "k8s-cluster-health-status"
+  display_name          = "k8s-cluster-pod-capacity"
   project               = var.project
   combiner              = var.condition_combine_method
   enabled               = true
@@ -14,13 +19,13 @@ resource google_monitoring_alert_policy cluster_health_check {
   }
 
   documentation {
-    content   = "A general cluster health check on ${var.cluster_name} is failing"
+    content   = "A cluster under the ${var.project} project is running a number of pods above the maximum threshold of 630 pods"
     mime_type = "text/markdown"
   }
 
   conditions {
 
-    display_name = "pod-capacity-utilization"
+    display_name = "cluster-wide-pod-capacity-utilization"
 
     condition_threshold {
       threshold_value = var.cluster_pod_capacity_threshold

@@ -24,7 +24,7 @@ variable "cluster_name" {
 
 variable "notification_channels" {
   type        = list(string)
-  default     = []
+  default     = ["projects/dsp-tools-k8s/notificationChannels/4364517073973429755"]
   description = "List of channels that should be pinged when alert fires. Array entries must be of form: projects/[PROJECT_ID]/notificationChannels/[CHANNEL_ID]"
 
 }
