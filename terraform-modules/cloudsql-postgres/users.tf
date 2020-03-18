@@ -1,23 +1,24 @@
-
-resource "random_id" "random-password" {
-  byte_length   = 16
+resource "random_id" "root_user_password" {
+  byte_length = 16
 }
-
-resource "google_sql_user" "app-user" {
-  provider              = "google.target"
-  count                 = "${var.enable_flag}"
-  instance  = "${var.enable_flag ? google_sql_database_instance.cloudsql-instance.0.name : ""}"
-  name      = "${var.cloudsql_database_user_name}"
-  password  = "${var.cloudsql_database_user_password == ""?random_id.random-password.hex:var.cloudsql_database_user_password}"
-  depends_on = ["google_sql_database_instance.cloudsql-instance" ]
-}
-
-resource "google_sql_user" "root-user" {
-  provider              = "google.target"
-  count                 = "${var.enable_flag}"
-  instance  = "${var.enable_flag ? google_sql_database_instance.cloudsql-instance.0.name : ""}"
+resource "google_sql_user" "root_user" {
+  provider  = google.target
+  instance  = google_sql_database_instance.cloudsql_instance.name
   name      = "root"
-  password  = "${var.cloudsql_database_root_password == ""?random_id.random-password.hex:var.cloudsql_database_root_password}"
-  depends_on = ["google_sql_database_instance.cloudsql-instance" ]
+  password  = random_id.root_user_password.hex
+  depends_on = [ google_sql_database_instance.cloudsql_instance ]
 }
 
+resource "random_id" "app_user_password" {
+  for_each  = var.app_dbs
+  byte_length = 16
+}
+resource "google_sql_user" "app_user" {
+  for_each  = var.app_dbs
+
+  provider  = google.target
+  instance  = google_sql_database_instance.cloudsql_instance.name
+  name      = each.value.username
+  password  = random_id.app_user_password[each.key].hex
+  depends_on = [ google_sql_database_instance.cloudsql_instance ]
+}

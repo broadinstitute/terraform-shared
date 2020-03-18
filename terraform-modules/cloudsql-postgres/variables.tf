@@ -9,11 +9,6 @@ variable "postgres_availability_type" {
 # google project
 variable "project" {}
 
-# enable/disable var
-variable "enable_flag" {
-   default = "1"
-}
-
 variable "cloudsql_name" {
   default = "cloudsql"
   description = "DNS CNAME record target hostname for default instance in an env. Should be set as a vault env override for each env."
@@ -79,28 +74,22 @@ variable "cloudsql_maintenance_window_update_track" {
   description = "The default update track for determining the relative order for receiving GCE sql instance updates during a maintenance window for CloudSQL instances. Valid values: stable (receive later), or canary (receive earlier). Note: These values are relative to each other for GCE sql instances within a single GCE project."
 }
 
-variable "cloudsql_database_name" {
-  default = "database"
-  description = "The default database name if not specified"
-}
-
-variable "cloudsql_database_user_name" {
-  default = "appuser"
-  description = "The default database application user name if not specified"
-}
-
-variable "cloudsql_database_user_password" {
-  default = ""
-  description = "The default database application user password if not specified"
-}
-
-variable "cloudsql_database_root_password" {
-  default = ""
-  description = "The default database root user password if not specified"
+variable "app_dbs" {
+  description = "List of db name and username pairs"
+  type = map(object({
+    db = string
+    username = string
+  }))
+  default = {
+    default = {
+      db = "appdb"
+      username = "appuser"
+    }
+  }
 }
 
 variable "cloudsql_instance_labels" {
-  type = "map"
+  type = map
   default = {}
 }
 
