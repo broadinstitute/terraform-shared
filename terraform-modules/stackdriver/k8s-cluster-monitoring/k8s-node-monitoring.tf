@@ -5,6 +5,16 @@ resource usage ie cpu and memory. An alert will be triggered if any node
 shows unusual behavior
 */
 
+locals {
+  # API resource definitions which return desired timeseries for this alerting policy
+  node_cpu_metric    = "metric.type=\"compute.googleapis.com/instance/cpu/utilization\" AND resource.type=\"gce_instance\""
+  node_memory_metric = "metric.type=\"kubernetes.io/node/memory/allocatable_utilization\" resource.type=\"k8s_node\""
+  # Logic need to triggr the alert when there are multiple conditions for a policy
+  condition_combine_method = "OR"
+  # Thresholds the metrics must violate to trigger alert, both indicate percentages
+  node_cpu_threshold    = 0.95
+  node_memory_threshold = 0.95
+}
 
 resource google_monitoring_alert_policy node_resource_alerts {
 
@@ -12,7 +22,7 @@ resource google_monitoring_alert_policy node_resource_alerts {
   display_name = "k8s-node-resource-usage-alert"
 
   # Valid option are "AND" or "OR"
-  combiner = var.condition_combine_method
+  combiner = local.condition_combine_method
   project  = var.project
 
   conditions {
@@ -26,12 +36,12 @@ resource google_monitoring_alert_policy node_resource_alerts {
     condition_threshold {
 
       # Specify circumstances where alert is triggered
-      threshold_value = var.node_cpu_threshold
+      threshold_value = local.node_cpu_threshold
       comparison      = var.threshold_comparison.greater_than
-      duration        = var.node_threshold_duration
+      duration        = var.threshold_duration
 
       # Specify api path of metrics and any resource filters to apply
-      filter = var.node_cpu_metric
+      filter = local.node_cpu_metric
 
       aggregations {
 
@@ -48,10 +58,10 @@ resource google_monitoring_alert_policy node_resource_alerts {
     # as many of them contain long monitoring API strings. See variables.tf for more details 
     condition_threshold {
 
-      threshold_value = var.node_memory_threshold
+      threshold_value = local.node_memory_threshold
       comparison      = var.threshold_comparison.greater_than
-      duration        = var.node_threshold_duration
-      filter          = var.node_memory_metric
+      duration        = var.threshold_duration
+      filter          = local.node_memory_metric
 
       aggregations {
         per_series_aligner   = var.series_align_method
@@ -72,7 +82,7 @@ resource google_monitoring_alert_policy node_resource_alerts {
 
   documentation {
     # Information to be displayed in a dashboard that provides more context for the alert
-    content   = "A node in the ${var.cluster_name} cluster has been running with high resource utilization for greater than ${var.node_threshold_duration}econds"
+    content   = "A node in the ${var.cluster_name} cluster has been running with high resource utilization for greater than ${var.threshold_duration}econds"
     mime_type = "text/markdown"
   }
 }

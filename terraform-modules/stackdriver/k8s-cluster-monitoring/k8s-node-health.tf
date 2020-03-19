@@ -19,12 +19,18 @@ PID Pressure
 
 */
 
+locals {
+  node_health_metric = "metric.type=\"external.googleapis.com/prometheus/kube_node_status_condition\" resource.type=\"k8s_container\" metric.label.\"condition\"!=\"Ready\" metric.label.\"status\"!=\"false\""
+  # Triggers alert if any of the node health states are failing
+  node_health_check_threshold = 0
+}
+
 resource google_monitoring_alert_policy node_health_check {
 
   provider              = google.target
   display_name          = "k8s-node-health-status"
   project               = var.project
-  combiner              = var.condition_combine_method
+  combiner              = local.condition_combine_method
   enabled               = true
   notification_channels = var.notification_channels
   user_labels = {
@@ -42,10 +48,10 @@ resource google_monitoring_alert_policy node_health_check {
 
     condition_threshold {
 
-      threshold_value = var.node_health_check_threshold
+      threshold_value = local.node_health_check_threshold
       comparison      = var.threshold_comparison.greater_than
-      duration        = var.node_threshold_duration
-      filter          = var.node_health_metric
+      duration        = var.threshold_duration
+      filter          = local.node_health_metric
 
       aggregations {
 
