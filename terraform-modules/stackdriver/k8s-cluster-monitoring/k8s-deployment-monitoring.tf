@@ -22,7 +22,7 @@ resource google_monitoring_alert_policy deployment_health {
   }
 
   conditions {
-    display_name = "current-vs-desired-pods-deployment-namespace"
+    display_name = "current-vs-desired-pods-namespace-deployment"
 
     condition_threshold {
       threshold_value = local.current_desired_replicas_namespace_threshold
@@ -33,6 +33,13 @@ resource google_monitoring_alert_policy deployment_health {
       denominator_filter = local.desired_deployment_replicas_namespace_metric
 
       aggregations {
+        per_series_aligner   = var.series_align_method
+        alignment_period     = var.alignment_period
+        group_by_fields      = [var.group_by_labels.namespace_name, var.group_by_labels.deployment]
+        cross_series_reducer = var.reducer_method.sum
+      }
+
+      denominator_aggregations {
         per_series_aligner   = var.series_align_method
         alignment_period     = var.alignment_period
         group_by_fields      = [var.group_by_labels.namespace_name, var.group_by_labels.deployment]
