@@ -67,6 +67,7 @@ variable "group_by_labels" {
     cluster_name          = "resource.labels.cluster_name"
     namespace_name        = "resource.label.namespace_name"
     deployment            = "metric.label.deployment"
+    pod_name              = "resource.label.pod_name"
   }
   description = "Mapping of monitored resource labels to their gcloud monitoring api name. Used for aggregating timeseries data together"
 }
