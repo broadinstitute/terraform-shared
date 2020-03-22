@@ -55,7 +55,8 @@ variable "alignment_period" {
 
 variable "reducer_method" {
   default = {
-    sum = "REDUCE_SUM"
+    sum  = "REDUCE_SUM"
+    none = "REDUCE_NONE"
   }
   description = "Mapping of time series aggregator methods to their correct name in gcloud monitoring api. Further documentation can be found in gcloud monitoring docs"
 }
@@ -68,6 +69,8 @@ variable "group_by_labels" {
     namespace_name        = "resource.label.namespace_name"
     deployment            = "metric.label.deployment"
     pod_name              = "resource.label.pod_name"
+    volume_name           = "metric.label.volume_name"
+    container_name        = "resource.label.container_name"
   }
   description = "Mapping of monitored resource labels to their gcloud monitoring api name. Used for aggregating timeseries data together"
 }
