@@ -108,7 +108,7 @@ resource google_container_cluster cluster {
       disabled = false
     }
     istio_config {
-      disabled = var.istio_enable
+      disabled = !var.istio_enable
       auth     = var.istio_auth
     }
   }
