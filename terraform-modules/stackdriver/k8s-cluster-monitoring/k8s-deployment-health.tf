@@ -12,9 +12,6 @@ resource google_monitoring_alert_policy deployment_health {
   combiner              = local.condition_combine_method
   enabled               = true
   notification_channels = var.notification_channels
-  user_labels = {
-
-  }
 
   documentation {
     content   = "A deployment in the namespace above has been running fewer pods than specified in deployment spec for an extended period of time"
