@@ -107,5 +107,9 @@ resource google_container_cluster cluster {
     network_policy_config {
       disabled = false
     }
+    istio_config {
+      disabled = var.istio_enable
+      auth     = var.istio_auth
+    }
   }
 }
