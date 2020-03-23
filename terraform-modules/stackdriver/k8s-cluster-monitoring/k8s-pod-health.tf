@@ -10,9 +10,6 @@ resource google_monitoring_alert_policy pod_health_alert {
   combiner              = local.condition_combine_method
   enabled               = true
   notification_channels = var.notification_channels
-  user_labels = {
-
-  }
 
   documentation {
     content   = "1 or more pods have failed to be scheduled for more than 5 minutes"
