@@ -21,9 +21,6 @@ resource google_monitoring_alert_policy node_resource_alerts {
   enabled  = true
   # An array of previously created notification_channel objects that should be alerted if a condition fails
   notification_channels = var.notification_channels
-  user_labels = {
-    # Key value pairs used for organizing alerting policies ie. by application
-  }
 
   documentation {
     content   = "A cluster node has been running with high resource utilization for greater than ${var.threshold_duration}econds"
