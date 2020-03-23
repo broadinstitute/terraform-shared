@@ -5,7 +5,7 @@ variable "project" {
   description = "The GCP project the alert policy should be created under"
 }
 
-# Optional Variables 
+# Variables used to avoid lots of repetition
 
 variable "notification_channels" {
   type = list(string)
