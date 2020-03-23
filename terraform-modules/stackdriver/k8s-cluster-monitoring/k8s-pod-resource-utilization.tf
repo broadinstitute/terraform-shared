@@ -14,9 +14,6 @@ resource google_monitoring_alert_policy pod_memory_util {
   combiner              = local.condition_combine_method
   enabled               = true
   notification_channels = var.notification_channels
-  user_labels = {
-
-  }
 
   documentation {
     content   = "A pod has been requesting greater than 65% of the memory limit for longer than 5 minutes"
