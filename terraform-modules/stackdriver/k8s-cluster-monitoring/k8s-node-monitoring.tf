@@ -1,13 +1,7 @@
-/* 
-This resources configures an alert policy which 
-Which monitors the nodes in k8s cluster for primary
-resource usage ie cpu and memory. An alert will be triggered if any node 
-shows unusual behavior
-*/
 
 locals {
   # API resource definitions which return desired timeseries for this alerting policy
-  node_cpu_metric    = "metric.type=\"compute.googleapis.com/instance/cpu/utilization\" AND resource.type=\"gce_instance\""
+  node_cpu_metric    = "metric.type=\"kubernetes.io/node/cpu/allocatable_utilization\" resource.type=\"k8s_node\""
   node_memory_metric = "metric.type=\"kubernetes.io/node/memory/allocatable_utilization\" resource.type=\"k8s_node\""
   # Logic need to triggr the alert when there are multiple conditions for a policy
   condition_combine_method = "OR"
@@ -24,15 +18,20 @@ resource google_monitoring_alert_policy node_resource_alerts {
   # Valid option are "AND" or "OR"
   combiner = local.condition_combine_method
   project  = var.project
+  enabled  = true
+  # An array of previously created notification_channel objects that should be alerted if a condition fails
+  notification_channels = var.notification_channels
+  user_labels = {
+    # Key value pairs used for organizing alerting policies ie. by application
+  }
 
+  documentation {
+    content   = "A cluster node has been running with high resource utilization for greater than ${var.threshold_duration}econds"
+    mime_type = "text/markdown"
+  }
   conditions {
-    # name to be associated with the condition for display in gcloud
+
     display_name = "node-cpu-utilization"
-
-    # condition_absent {
-    #   # Specifiy condition behavior if metric data is missing
-    # } 
-
     condition_threshold {
 
       # Specify circumstances where alert is triggered
@@ -44,9 +43,10 @@ resource google_monitoring_alert_policy node_resource_alerts {
       filter = local.node_cpu_metric
 
       aggregations {
-
-        per_series_aligner = var.series_align_method
-        alignment_period   = var.alignment_period
+        per_series_aligner   = var.series_align_method
+        alignment_period     = var.alignment_period
+        cross_series_reducer = var.reducer_method.sum
+        group_by_fields      = [var.group_by_labels.cluster_name, var.group_by_labels.node_name]
       }
     }
   }
@@ -67,22 +67,8 @@ resource google_monitoring_alert_policy node_resource_alerts {
         per_series_aligner   = var.series_align_method
         alignment_period     = var.alignment_period
         cross_series_reducer = var.reducer_method.sum
-        group_by_fields      = [var.group_by_labels.node_name]
+        group_by_fields      = [var.group_by_labels.cluster_name, var.group_by_labels.node_name]
       }
     }
-  }
-
-  enabled = true
-
-  # An array of previously created notification_channel objects that should be alerted if a condition fails
-  notification_channels = var.notification_channels
-  user_labels = {
-    # Key value pairs used for organizing alerting policies ie. by application
-  }
-
-  documentation {
-    # Information to be displayed in a dashboard that provides more context for the alert
-    content   = "A cluster node has been running with high resource utilization for greater than ${var.threshold_duration}econds"
-    mime_type = "text/markdown"
   }
 }
