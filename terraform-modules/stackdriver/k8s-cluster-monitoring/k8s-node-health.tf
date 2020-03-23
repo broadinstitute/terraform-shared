@@ -38,7 +38,7 @@ resource google_monitoring_alert_policy node_health_check {
   }
 
   documentation {
-    content   = "A node in the ${var.cluster_name} cluster is failing a kube state health check, view metric: external.googleapis.com/prometheus/kube_node_status_condition for more details"
+    content   = "A cluster node is failing a kube state health check, view metric: external.googleapis.com/prometheus/kube_node_status_condition for more details"
     mime_type = "text/markdown"
   }
 

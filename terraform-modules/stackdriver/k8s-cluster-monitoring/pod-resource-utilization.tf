@@ -9,7 +9,7 @@ locals {
 
 resource google_monitoring_alert_policy pod_memory_util {
   provider              = google.target
-  display_name          = "pod-resource-utilization-alert"
+  display_name          = "k8s-pod-resource-utilization"
   project               = var.project
   combiner              = local.condition_combine_method
   enabled               = true

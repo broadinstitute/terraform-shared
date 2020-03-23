@@ -19,7 +19,7 @@ locals {
 resource google_monitoring_alert_policy node_resource_alerts {
 
   provider     = google.target
-  display_name = "k8s-node-resource-usage-alert"
+  display_name = "k8s-node-resource-usage"
 
   # Valid option are "AND" or "OR"
   combiner = local.condition_combine_method
@@ -82,7 +82,7 @@ resource google_monitoring_alert_policy node_resource_alerts {
 
   documentation {
     # Information to be displayed in a dashboard that provides more context for the alert
-    content   = "A node in the ${var.cluster_name} cluster has been running with high resource utilization for greater than ${var.threshold_duration}econds"
+    content   = "A cluster node has been running with high resource utilization for greater than ${var.threshold_duration}econds"
     mime_type = "text/markdown"
   }
 }

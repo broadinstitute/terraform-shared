@@ -35,14 +35,14 @@ resource google_monitoring_alert_policy deployment_health {
       aggregations {
         per_series_aligner   = var.series_align_method
         alignment_period     = var.alignment_period
-        group_by_fields      = [var.group_by_labels.namespace_name, var.group_by_labels.deployment]
+        group_by_fields      = [var.group_by_labels.cluster_name, var.group_by_labels.namespace_name, var.group_by_labels.deployment]
         cross_series_reducer = var.reducer_method.sum
       }
 
       denominator_aggregations {
         per_series_aligner   = var.series_align_method
         alignment_period     = var.alignment_period
-        group_by_fields      = [var.group_by_labels.namespace_name, var.group_by_labels.deployment]
+        group_by_fields      = [var.group_by_labels.cluster_name, var.group_by_labels.namespace_name, var.group_by_labels.deployment]
         cross_series_reducer = var.reducer_method.sum
       }
     }

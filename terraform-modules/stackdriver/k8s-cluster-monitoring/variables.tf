@@ -1,18 +1,8 @@
 # Required Variables
 
-variable "policy_name" {
-  type        = string
-  description = "Display name to be associated with a particular alerting policy"
-}
-
 variable "project" {
   type        = string
   description = "The GCP project the alert policy should be created under"
-}
-
-variable "cluster_name" {
-  type        = string
-  description = " Name of the cluster the alert policy will monitor"
 }
 
 # Optional Variables 
