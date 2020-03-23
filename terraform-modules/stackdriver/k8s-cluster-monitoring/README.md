@@ -49,7 +49,7 @@ If any of these are in a failing state for more than 5 minutes an alert will fir
 This policy monitors the cpu and memory utilization ratios of each node in a cluster. This alert policy will trigger if either resource utilization is above a set threshold percentage for greater than 5 minutes. Not reliant on prometheus
 
 ### K8s-pod-health
-This policy monitors for any pods that are on able to be run by the scheduler for an extended period of time. This alert fires if a pod is in failed to schedule state for greater than 5 minutes. The alert will provide which cluster and namespace are associated with the pod that triggered the alert.
+This policy monitors for any pods that are not able to be run by the scheduler for an extended period of time. This alert fires if a pod is in failed to schedule state for greater than 5 minutes. The alert will specify which cluster and namespace are associated with the pod that triggered the alert.
 
 ### K8s-pod-resource utilization 
 This policy monitors the ratio of the current cpu and memory being used by a pod to the limit for that resource set in the pod spec. It also monitors volume utilization at the pod level. This is important to monitor because it can cause the scheduler to OOMkill pods automatically potentially killing crucial application pods. Not reliant on prometheus. THe alert will provide the cluster and namespace of the pod that triggered the alert.
