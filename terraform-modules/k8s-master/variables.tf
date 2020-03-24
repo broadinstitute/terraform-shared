@@ -80,3 +80,20 @@ variable enable_workload_identity {
   default     = false
   description = "If true, enables k8s<->GCP SA linking in the cluster. See: https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity."
 }
+
+
+#
+# Istio
+#
+
+variable istio_enable {
+  type        = bool
+  default     = false
+  description = "Istio enable flag"
+}
+
+variable istio_auth {
+  type        = string
+  default     = "AUTH_MUTUAL_TLS"
+  description = "Istio auth mode"
+}
