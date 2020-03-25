@@ -7,9 +7,9 @@ output "project_name" {
 }
 
 output "service_accounts_with_keys" {
-  value = google_service_account.service-accounts-with-keys.email
+  value = [google_service_account.service-accounts-with-keys.*.email]
 }
 
 output "service_accounts_without_keys" {
-  value = google_service_account.service-accounts-without-keys.email
+  value = [google_service_account.service-accounts-without-keys.*.email]
 }
