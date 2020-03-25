@@ -94,6 +94,6 @@ variable istio_enable {
 
 variable istio_auth {
   type        = string
-  default     = "AUTH_MUTUAL_TLS"
+  default     = "AUTH_NONE"
   description = "Istio auth mode"
 }
