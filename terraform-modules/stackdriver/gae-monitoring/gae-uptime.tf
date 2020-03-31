@@ -49,9 +49,8 @@ resource google_monitoring_alert_policy gae-uptime-alert {
       filter = local.uptime_metric
 
       aggregations {
-        per_series_aligner   = var.series_align_method.count_true
-        alignment_period     = var.alignment_period
-        cross_series_reducer = var.reducer_method.none
+        per_series_aligner = var.series_align_method.count_true
+        alignment_period   = var.alignment_period
       }
     }
   }
