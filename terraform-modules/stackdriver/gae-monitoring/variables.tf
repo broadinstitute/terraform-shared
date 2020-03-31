@@ -36,6 +36,8 @@ variable "series_align_method" {
   default = {
     mean       = "ALIGN_MEAN"
     count_true = "ALIGN_COUNT_TRUE"
+    rate       = "ALIGN_RATE"
+    sum        = "ALIGN_SUM"
   }
   description = "Method for filling in time series data between collected data points. See stackdriver docs for more options"
 }
@@ -48,9 +50,19 @@ variable "alignment_period" {
 
 variable "reducer_method" {
   default = {
-    sum  = "REDUCE_SUM"
-    none = "REDUCE_NONE"
+    sum           = "REDUCE_SUM"
+    none          = "REDUCE_NONE"
+    count         = "REDUCE_COUNT"
+    percentile_99 = "REDUCE_PERCENTILE_99"
   }
   description = "Mapping of time series aggregator methods to their correct name in gcloud monitoring api. Further documentation can be found in gcloud monitoring docs"
+}
+
+variable "group_by_labels" {
+  default = {
+    response_code = "metric.label.response_code"
+    module_id     = "resource.label.module_id"
+  }
+  description = "Mapping of monitored resource labels to their gcloud monitoring api name. Used for aggregating timeseries data together"
 }
 
