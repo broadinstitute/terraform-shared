@@ -6,6 +6,7 @@ resource "random_id" "random-password" {
 resource "google_sql_user" "app-user" {
   provider              = "google.target"
   count                 = "${var.enable_flag}"
+  project   = var.project
   instance  = "${var.enable_flag ? google_sql_database_instance.cloudsql-instance.0.name : ""}"
   name      = "${var.cloudsql_database_user_name}"
   host      = "%"
@@ -16,6 +17,7 @@ resource "google_sql_user" "app-user" {
 resource "google_sql_user" "root-user" {
   provider              = "google.target"
   count                 = "${var.enable_flag}"
+  project   = var.project
   instance  = "${var.enable_flag ? google_sql_database_instance.cloudsql-instance.0.name : ""}"
   name      = "root"
   host      = "%"
