@@ -13,10 +13,10 @@ module "gae_alerts" {
     google.target = google.stackdriver_host
   }
 
-  service_name     = "import-service"
-  gae_domain       = "import-service-dot-broad-dsde-dev.appspot.com"
-  gae_api_path     = "/health"
-  gae_host_project = "broad-dsde-dev"
+  service_name     = "GAE_module_name"
+  gae_domain       = "GAE_service_domain_name"
+  gae_api_path     = "/example"
+  gae_host_project = "GAE_HOST_PROJECT_ID"
 }
 ```
 
