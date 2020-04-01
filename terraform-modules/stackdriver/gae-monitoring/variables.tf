@@ -15,15 +15,17 @@ variable "gae_domain" {
   description = "the domain of the url the uptime check will be performed aganist. This should not include the api path"
 }
 
+variable "gae_host_project" {
+  type        = string
+  description = "GCP project that hosts the GAE app if it is different from project hosting the stackdriver workspace"
+}
+
+# Optional Variables
+
 variable "https_enabled" {
   type        = bool
   default     = true
   description = "Whether the check will use https or http protocol, default is https"
-}
-
-variable "gae_host_project" {
-  type        = string
-  description = "GCP project that hosts the GAE app if it is different from project hosting the stackdriver workspace"
 }
 
 variable "notification_channels" {
@@ -66,3 +68,13 @@ variable "group_by_labels" {
   description = "Mapping of monitored resource labels to their gcloud monitoring api name. Used for aggregating timeseries data together"
 }
 
+variable "threshold_comparison" {
+  type = object({
+    less_than    = string
+    greater_than = string
+  })
+  default = {
+    less_than    = "COMPARISON_LT"
+    greater_than = "COMPARISON_GT"
+  }
+}

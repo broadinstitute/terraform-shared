@@ -1,5 +1,7 @@
 locals {
-  quota_denial_metric = "metric.type=\"appengine.googleapis.com/http/server/quota_denial_count\" resource.type=\"gae_app\" resource.label.\"module_id\"=\"${var.service_name}\""
+  quota_denial_metric             = "metric.type=\"appengine.googleapis.com/http/server/quota_denial_count\" resource.type=\"gae_app\" resource.label.\"module_id\"=\"${var.service_name}\""
+  quota_denial_threshold          = 0
+  quota_denial_threshold_duration = "300s"
 }
 
 resource google_monitoring_alert_policy gae-quota-denial-alert {
@@ -9,6 +11,9 @@ resource google_monitoring_alert_policy gae-quota-denial-alert {
   combiner              = "OR"
   enabled               = true
   notification_channels = var.notification_channels
+  user_labels = {
+    service = var.service_name
+  }
 
   documentation {
     content   = "the ${var.service_name} app has been experiencing quota denials on data sent or received that may be casuing failed responses"
@@ -19,9 +24,9 @@ resource google_monitoring_alert_policy gae-quota-denial-alert {
     display_name = "gae-quota-denials"
 
     condition_threshold {
-      threshold_value = 0
-      comparison      = "COMPARISON_GT"
-      duration        = "300s"
+      threshold_value = local.quota_denial_threshold
+      comparison      = var.threshold_comparison.greater_than
+      duration        = local.quota_denial_threshold_duration
 
       filter = local.quota_denial_metric
 

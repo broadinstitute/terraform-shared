@@ -1,5 +1,7 @@
 locals {
-  dos_intercept_metric = "metric.type=\"appengine.googleapis.com/http/server/dos_intercept_count\" resource.type=\"gae_app\" resource.label.\"module_id\"=\"import-service\""
+  dos_intercept_metric             = "metric.type=\"appengine.googleapis.com/http/server/dos_intercept_count\" resource.type=\"gae_app\" resource.label.\"module_id\"=\"${var.service_name}\""
+  dos_intercept_threshold          = 0
+  dos_intercept_threshold_duration = "60s"
 }
 
 resource google_monitoring_alert_policy gae-dos-intercept-alert {
@@ -9,6 +11,9 @@ resource google_monitoring_alert_policy gae-dos-intercept-alert {
   combiner              = "OR"
   enabled               = true
   notification_channels = var.notification_channels
+  user_labels = {
+    service = var.service_name
+  }
 
   documentation {
     content   = "the ${var.service_name} app has been experiencing DOS intercepts for more than one minute. This may affect application availability"
@@ -19,9 +24,9 @@ resource google_monitoring_alert_policy gae-dos-intercept-alert {
     display_name = "gae-dos-intercepts"
 
     condition_threshold {
-      threshold_value = 0
-      comparison      = "COMPARISON_GT"
-      duration        = "60s"
+      threshold_value = local.dos_intercept_threshold
+      comparison      = var.threshold_comparison.greater_than
+      duration        = local.dos_intercept_threshold_duration
 
       filter = local.dos_intercept_metric
 

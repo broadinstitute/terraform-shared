@@ -7,7 +7,8 @@ resource google_monitoring_uptime_check_config gae_uptime_check {
   http_check {
     path = var.gae_api_path
     port = var.https_enabled ? "443" : "80"
-    # Used to toggle http vs https, default to http
+
+    # Used to toggle http vs https, default to https
     use_ssl      = var.https_enabled
     validate_ssl = var.https_enabled
   }
@@ -23,6 +24,9 @@ resource google_monitoring_uptime_check_config gae_uptime_check {
 
 locals {
   uptime_metric = "metric.type=\"monitoring.googleapis.com/uptime_check/check_passed\" resource.type=\"uptime_url\" resource.label.\"host\"=\"${var.gae_domain}\""
+  # Trigger alert if an uptime time series are 0 value (failing state)
+  uptime_threshold          = 1
+  uptime_threshold_duration = "300s"
 }
 
 resource google_monitoring_alert_policy gae-uptime-alert {
@@ -32,6 +36,9 @@ resource google_monitoring_alert_policy gae-uptime-alert {
   combiner              = "OR"
   enabled               = true
   notification_channels = var.notification_channels
+  user_labels = {
+    service = var.service_name
+  }
 
   documentation {
     content   = "An uptime check on the import-service GAE app has been failing for more than 5 minutes"
@@ -42,9 +49,9 @@ resource google_monitoring_alert_policy gae-uptime-alert {
     display_name = "gae-app-uptime-check-passed"
 
     condition_threshold {
-      threshold_value = 1
-      comparison      = "COMPARISON_LT"
-      duration        = "300s"
+      threshold_value = local.uptime_threshold
+      comparison      = var.threshold_comparison.less_than
+      duration        = local.uptime_threshold_duration
 
       filter = local.uptime_metric
 
