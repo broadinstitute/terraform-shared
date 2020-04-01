@@ -2,6 +2,24 @@
 
 This module is intended to configure base set of monitoring policies for GAE apps that checks for overall application availability and health.
 
+## Usage 
+This module will create alerting policies in the stackdriver workspace that monitors the gcp project the GAE app is hosted in. Currently as of 4/1/20 If the app is becing deployed to prod, the stackdriver gcp project and GAE app project will both be broad-dsde-prod. For any other environment this module will need to use a google provider configured to target the broad-dsp-stackdriver project (this is likely to change in the future)
+
+### Example basic usage: 
+```
+module "gae_alerts" {
+  source = "github.com/broadinstitute/terraform-shared.git//terraform-modules/stackdriver/path/to/this/module"
+  providers = {
+    google.target = google.stackdriver_host
+  }
+
+  service_name     = "import-service"
+  gae_domain       = "import-service-dot-broad-dsde-dev.appspot.com"
+  gae_api_path     = "/health"
+  gae_host_project = "broad-dsde-dev"
+}
+```
+
 ## Alerting Policies
 
 The following are the metrics that this module will set up monitoring on and the thresholds needed to trigger the alerts.
