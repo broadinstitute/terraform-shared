@@ -1,6 +1,11 @@
 locals {
   cpu_usage_metric    = "metric.type=\"appengine.googleapis.com/system/cpu/usage\" resource.type=\"gae_app\" resource.label.\"module_id\"=\"${var.service_name}\""
   memory_usage_metric = "metric.type=\"appengine.googleapis.com/system/memory/usage\" resource.type=\"gae_app\" resource.label.\"module_id\"=\"${var.service_name}\""
+  # Unit is megacycles
+  cpu_usage_threshold = 10000
+  # Unit is bytes 
+  memory_usage_threshold            = 512000000
+  resource_usage_threshold_duration = "300s"
 }
 
 resource google_monitoring_alert_policy gae-resource-usage-alert {
@@ -10,6 +15,9 @@ resource google_monitoring_alert_policy gae-resource-usage-alert {
   combiner              = "OR"
   enabled               = true
   notification_channels = var.notification_channels
+  user_labels = {
+    service = var.service_name
+  }
 
   documentation {
     content   = "the ${var.service_name} app has been experiencing unusually high resource utilization for greater than 5 minutes"
@@ -20,9 +28,9 @@ resource google_monitoring_alert_policy gae-resource-usage-alert {
     display_name = "gae-cpu-usage"
 
     condition_threshold {
-      threshold_value = 10000
-      comparison      = "COMPARISON_GT"
-      duration        = "300s"
+      threshold_value = local.cpu_usage_threshold
+      comparison      = var.threshold_comparison.greater_than
+      duration        = local.resource_usage_threshold_duration
 
       filter = local.cpu_usage_metric
 
@@ -39,9 +47,9 @@ resource google_monitoring_alert_policy gae-resource-usage-alert {
     display_name = "gae_memory_usage"
 
     condition_threshold {
-      threshold_value = 512000000
-      comparison      = "COMPARISON_GT"
-      duration        = "300s"
+      threshold_value = local.memory_usage_threshold
+      comparison      = var.threshold_comparison.greater_than
+      duration        = local.resource_usage_threshold_duration
 
       filter = local.memory_usage_metric
 
