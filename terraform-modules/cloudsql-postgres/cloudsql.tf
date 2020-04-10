@@ -2,28 +2,27 @@
 # CloudSQL Instance
 #
 
-resource "random_id" "cloudsql-id" {
+resource "random_id" "cloudsql_id" {
   byte_length   = 8
 }
 
-resource "google_sql_database_instance" "cloudsql-instance" {
-  provider              = "google.target"
-  count                 = "${var.enable_flag}"
-  region                = "${var.cloudsql_region}"
-  database_version      = "${var.cloudsql_version}"
-  name                  = "${var.cloudsql_name}-${random_id.cloudsql-id.hex}"
-  depends_on            = [ "random_id.cloudsql-id" ]
+resource "google_sql_database_instance" "cloudsql_instance" {
+  provider              = google.target
+  region                = var.cloudsql_region
+  database_version      = var.cloudsql_version
+  name                  = "${var.cloudsql_name}-${random_id.cloudsql_id.hex}"
+  depends_on            = [ random_id.cloudsql_id ]
 
   settings {
 
     # POSTGRES CONFIG
-    availability_type   = "${var.postgres_availability_type}"
+    availability_type   = var.postgres_availability_type
 
-    activation_policy   = "${var.cloudsql_activation_policy}"
-    disk_autoresize     = "${var.cloudsql_disk_autoresize}"
-    disk_type           = "${var.cloudsql_disk_type}"
-    replication_type    = "${var.cloudsql_replication_type}"
-    tier                = "${var.cloudsql_tier}"
+    activation_policy   = var.cloudsql_activation_policy
+    disk_autoresize     = var.cloudsql_disk_autoresize
+    disk_type           = var.cloudsql_disk_type
+    replication_type    = var.cloudsql_replication_type
+    tier                = var.cloudsql_tier
 
     backup_configuration {
       binary_log_enabled    = false
@@ -48,7 +47,6 @@ resource "google_sql_database_instance" "cloudsql-instance" {
       }
     }
 
-    user_labels = "${var.cloudsql_instance_labels}"
-
+    user_labels = var.cloudsql_instance_labels
   }
 }

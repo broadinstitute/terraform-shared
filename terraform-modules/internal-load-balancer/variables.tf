@@ -22,7 +22,7 @@ variable "load_balancer_instance_groups" {
 
 variable "load_balancer_ip_address" {
   description = "private ip address to use for load balancer"
-  default = ""
+  default = null
 }
 
 variable "load_balancer_timeout" {

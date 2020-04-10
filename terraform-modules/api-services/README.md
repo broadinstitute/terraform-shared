@@ -1,7 +1,7 @@
-## Module for enabling api servics on GCP
+## Module for enabling api services on GCP
 
 ## Default Behavior
-This will enable 41 apis by default if you would like specify apis you can do so by defining a variable like below.  Also the default is NOT to disable API on resource destory.  This can be overriden by setting the destroy variable to true.
+This will enable 41 apis by default if you would like specify apis you can do so by defining a variable like below.  Also the default is NOT to disable API on resource destroy.  This can be overriden by setting the destroy variable to true.
 
 If you would like to disable all the resources this module creates without needing to comment it out in your terraform config, you can set the enable_flag to 0
 

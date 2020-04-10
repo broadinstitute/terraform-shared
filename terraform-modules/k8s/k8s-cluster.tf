@@ -2,6 +2,16 @@
 * Kubernetes Cluster
 */
 
+# Needed for getting the ID of the project backing the k8s resource.
+data "google_project" "project" {}
+
+# Needed for getting the latest valid master version in the target location.
+# This lets us do fuzzy version specs (i.e. '1.14.' instead of '1.14.5-gke.10')
+data "google_container_engine_versions" "cluster_versions" {
+  location = var.location
+  version_prefix = var.k8s_version
+}
+
 resource "google_container_cluster" "cluster" {
   name       = var.cluster_name
   location   = var.location
@@ -16,7 +26,7 @@ resource "google_container_cluster" "cluster" {
   # CIS compliance: stackdriver monitoring
   monitoring_service = var.use_new_stackdriver_apis ? "monitoring.googleapis.com/kubernetes" : "monitoring.googleapis.com"
 
-  min_master_version = var.k8s_version
+  min_master_version = data.google_container_engine_versions.cluster_versions.latest_master_version
 
   lifecycle {
     ignore_changes = [
@@ -52,8 +62,16 @@ resource "google_container_cluster" "cluster" {
   }
 
   ip_allocation_policy = [{
+    # FIXME: This is now enabled by default if ip_allocation_policy is
+    # specified at all. It'll be removed in TF-Google 3.
     # CIS compliance: Enable Alias IP Ranges.
     use_ip_aliases = true
+
+    # FIXME: Many of these are removed in TF-Google 3, because they want
+    # users to always create subnetworks themselves. See this PR for info
+    # about what got ripped out and what got left behind:
+    # https://github.com/terraform-providers/terraform-provider-google/issues/4638
+    #
     # According to trial and error, setting these values to null
     # lets Google derive values that actually work.
     # Otherwise you'll end up flipping a table trying to set things manually.
@@ -69,6 +87,13 @@ resource "google_container_cluster" "cluster" {
   # CIS compliance: Enable PodSecurityPolicyController
   pod_security_policy_config {
     enabled = true
+  }
+
+  dynamic "workload_identity_config" {
+    for_each = var.enable_workload_identity ? ["If only TF supported if/else"] : []
+    content {
+      identity_namespace = "${data.google_project.project.project_id}.svc.id.goog"
+    }
   }
 
   # OMISSION: CIS compliance: Enable Private Cluster
@@ -88,6 +113,8 @@ resource "google_container_cluster" "cluster" {
   }
 
   addons_config {
+    # FIXME: This is now disabled by default, and will be removed entirely in
+    # GKE 1.15 / Terraform-Google 3.
     kubernetes_dashboard {
       # CIS compliance: Disable dashboard
       disabled = true
