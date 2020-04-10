@@ -8,7 +8,7 @@ variable "ssl_policy_name" {
 
 variable "min_tls_version" {
   description = "minimum tls version for SSL policy. Must be at least tls12-ssl-policy"
-  default = "TLS_1_2"
+  default     = "TLS_1_2"
 }
 
 variable "load_balancer_ssl_policy_create" {
@@ -17,7 +17,7 @@ variable "load_balancer_ssl_policy_create" {
 
 # enable/disable var
 variable "enable_flag" {
-   default = 1
+  default = 1
 }
 
 variable "load_balancer_name" {
@@ -27,9 +27,9 @@ variable "load_balancer_name" {
 # Load balancer vars
 
 variable "load_balancer_ssl_certificates" {
-  type = "list"
+  type        = list
   description = "SSL certs "
-  default = [ ]
+  default     = []
 }
 
 variable "load_balancer_ssl_policy_enable" {
@@ -38,33 +38,33 @@ variable "load_balancer_ssl_policy_enable" {
 
 variable "load_balancer_instance_groups" {
   description = "Comma separated list of google self_links"
-  default = ""
+  default     = ""
 }
 
 # Health check vars
 
 variable "load_balancer_health_check_path" {
-  default = "/status"
+  default     = "/status"
   description = "path for health checks"
 }
 
 variable "load_balancer_health_check_interval" {
-  default = "5"
+  default     = "5"
   description = "Interval (secs) beteween checks"
 }
 
 variable "load_balancer_health_check_timeout" {
-  default = "5"
+  default     = "5"
   description = "Timeout (secs) for health check"
 }
 
 variable "load_balancer_health_check_healthy_threshold" {
-  default = "2"
+  default     = "2"
   description = "Threshold of successful checks to be healthy"
 }
 
 variable "load_balancer_health_check_unhealthy_threshold" {
-  default = "2"
+  default     = "2"
   description = "Threshold of unsuccessful checks to be unhealthy"
 }
 
