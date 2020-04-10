@@ -1,36 +1,36 @@
 locals {
-  pod_failed_shedule_threshold = 0
-  pod_failed_schedule_metric   = "metric.type=\"external.googleapis.com/prometheus/kube_pod_status_phase\" resource.type=\"k8s_container\" metric.label.\"phase\"=\"Failed\""
+  container_restart_threshold = 0
+  container_restart_metric    = "metric.type=\"kubernetes.io/container/restart_count\" resource.type=\"k8s_container\""
 }
 
 resource google_monitoring_alert_policy pod_health_alert {
   provider              = google.target
-  display_name          = "k8s-pod-health-status"
+  display_name          = "k8s-container-health-status"
   project               = var.project
   combiner              = local.condition_combine_method
   enabled               = true
   notification_channels = var.notification_channels
 
   documentation {
-    content   = "1 or more pods have failed to be scheduled for more than 5 minutes"
+    content   = "A container has been experiencing frequent restarts for greater than 5 minutes"
     mime_type = "text/markdown"
   }
 
   conditions {
-    display_name = "pod-status-failed-scheduling"
+    display_name = "container-frequent-restarts"
 
     condition_threshold {
-      threshold_value = local.pod_failed_shedule_threshold
+      threshold_value = local.container_restart_threshold
       comparison      = var.threshold_comparison.greater_than
       duration        = var.threshold_duration
 
-      filter = local.pod_failed_schedule_metric
+      filter = local.container_restart_metric
 
       aggregations {
         per_series_aligner   = var.series_align_method
         alignment_period     = var.alignment_period
         cross_series_reducer = var.reducer_method.sum
-        group_by_fields      = [var.group_by_labels.cluster_name, var.group_by_labels.namespace_name, var.group_by_labels.pod_name]
+        group_by_fields      = [var.group_by_labels.cluster_name, var.group_by_labels.namespace_name, var.group_by_labels.container_name, var.group_by_labels.pod_name]
       }
     }
   }
