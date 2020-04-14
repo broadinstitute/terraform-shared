@@ -42,11 +42,11 @@ data "google_service_account" "config_reader" {
 }
 
 #
-# Common Vars
+# Load balancer
 #
-variable "instance_tags" {
-  type = "list"
-  description = "The default instance tags"
+variable "lb_health_check" {
+  description = "The default load balancer health check"
+  default = "/status"
 }
 
 #
@@ -58,6 +58,11 @@ variable "instance_num_hosts" {
 
 variable "instance_size" {
   description = "The default size of Service service hosts"
+}
+
+variable "instance_tags" {
+  type = "list"
+  description = "The default instance tags"
 }
 
 variable "instance_image" {
