@@ -118,7 +118,7 @@ output "dataset_id" {
 }
 
 output "dataset_path" {
-  value = "bigquery.googleapis.com/projects/${var.project}/datasets/${replace(var.project, "-", "_")}_${var.application_name}_${var.owner}_audit"
+  value = "bigquery.googleapis.com/projects/${var.project}/datasets/${replace(var.project, "-", "_")}_${var.application_name}_${var.owner}_audit${var.nonce != "" ? "_${var.nonce}" : ""}"
 }
 
 output "log_filter" {
