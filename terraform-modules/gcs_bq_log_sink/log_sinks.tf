@@ -32,6 +32,7 @@ resource "google_logging_project_sink" "bigquery-log-sink" {
   destination            = "bigquery.googleapis.com/projects/${var.project}/datasets/${replace(var.project, "-", "_")}_${var.application_name}_${var.owner}_audit${var.nonce != "" ? "_${var.nonce}" : ""}"
   filter                 = var.log_filter
   unique_writer_identity = true
+  depends_on             = [google_bigquery_dataset.logs]
 }
 
 # grant writer access to bigquery.
