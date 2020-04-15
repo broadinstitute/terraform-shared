@@ -124,7 +124,7 @@ output "dataset_id" {
 }
 
 output "dataset_path" {
-  value = "bigquery.googleapis.com/projects/${var.project}/datasets/${google_bigquery_dataset.logs[0].dataset_id}"
+  value = google_logging_project_sink.bigquery-log-sink.*.destination
 }
 
 output "log_filter" {
