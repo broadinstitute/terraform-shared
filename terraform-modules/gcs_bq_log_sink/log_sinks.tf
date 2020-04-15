@@ -35,9 +35,15 @@ resource "google_logging_project_sink" "bigquery-log-sink" {
 }
 
 # grant writer access to bigquery.
-resource "google_project_iam_binding" "bigquery-log-writer" {
+resource "google_project_iam_binding" "bigquery-data" {
     count =  var.enable_bigquery
-    role   = "roles/bigquery.dataEditor"
+    role   = "roles/bigquery.dataOwner"
+    members = [google_logging_project_sink.bigquery-log-sink[0].writer_identity]
+}
+
+resource "google_project_iam_binding" "bigquery-admin" {
+    count =  var.enable_bigquery
+    role   = "roles/bigquery.admin"
     members = [google_logging_project_sink.bigquery-log-sink[0].writer_identity]
 }
 
