@@ -29,7 +29,7 @@ resource "google_bigquery_dataset" "logs" {
 resource "google_logging_project_sink" "bigquery-log-sink" {
   count                  = var.enable_bigquery
   name                   = "${var.application_name}-${var.owner}-bigquery-log-sink${var.nonce != "" ? "_${var.nonce}" : ""}"
-  destination            = "bigquery.googleapis.com/projects/${var.project}/datasets/${replace(var.project, "-", "_")}_${var.application_name}_${var.owner}_audit"
+  destination            = "bigquery.googleapis.com/projects/${var.project}/datasets/${replace(var.project, "-", "_")}_${var.application_name}_${var.owner}_audit${var.nonce != "" ? "_${var.nonce}" : ""}"
   filter                 = var.log_filter
   unique_writer_identity = true
 }
