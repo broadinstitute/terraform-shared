@@ -124,7 +124,7 @@ output "dataset_id" {
 }
 
 output "dataset_path" {
-  value = "${google_logging_project_sink.bigquery-log-sink[0].destination}"
+  value = google_logging_project_sink.bigquery-log-sink.*.destination
 }
 
 output "log_filter" {
