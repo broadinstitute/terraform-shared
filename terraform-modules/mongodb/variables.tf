@@ -57,6 +57,12 @@ variable "instance_image" {
   description = "Image used to build instance"
 }
 
+variable "instance_count_offset" {
+  default = 0
+  type    = number
+  description = "Offset at which to start naming suffix. If set to 1, first foo instance created will be foo-02"
+}
+
 variable "instance_docker_disk_size" {
   default = "50"
   description = "default size of docker volume"
