@@ -39,6 +39,12 @@ variable "instance_num_hosts" {
   description = "default number of instances this module will create"
 }
 
+variable "instance_count_offset" {
+  default = 0
+  type    = number
+  description = "Offset at which to start naming suffix. If set to 1, first foo instance created will be foo-02"
+}
+
 variable "instance_root_disk_size" {
   default = "50"
   description = "default size of instance"
