@@ -75,6 +75,11 @@ variable "instance_docker_disk_name" {
   description = "default disk type for docker volume"
 }
 
+variable "instance_group_name" {
+  default = null
+  description = "Name of instance group. Defaults to [instance name]-instance-group-unmanaged"
+}
+
 variable "instance_network_name" {
   default = ""
   description = "The default network name to create instance"

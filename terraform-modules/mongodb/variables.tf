@@ -42,6 +42,11 @@ variable "instance_zone" {
   description = "The zone where instances will be created"
 }
 
+variable "instance_group_name" {
+  default = null
+  description = "Name of instance group. Defaults to [instance name]-instance-group-unmanaged"
+}
+
 variable "instance_root_disk_size" {
   default = "50"
   description = "default size of instance"

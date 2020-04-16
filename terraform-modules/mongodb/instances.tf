@@ -12,6 +12,7 @@ module "instances" {
   instance_size = var.instance_size
   instance_image = var.instance_image
   instance_count_offset = var.instance_count_offset
+  instance_group_name = var.instance_group_name
   instance_data_disk_size = var.instance_data_disk_size
   instance_data_disk_type = var.instance_data_disk_type
   instance_data_disk_name = var.instance_data_disk_name
