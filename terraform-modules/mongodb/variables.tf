@@ -181,6 +181,12 @@ variable "mongodb_replica_set_key" {
   default = "default"
 }
 
+variable "mongodb_extra_flags" {
+  type = string
+  description = "Extra flags passed to the mongo container. https://github.com/bitnami/bitnami-docker-mongodb#passing-extra-command-line-flags-to-mongod-startup"
+  default = null
+}
+
 variable "mongodb_database" {}
 
 variable "roles" {
