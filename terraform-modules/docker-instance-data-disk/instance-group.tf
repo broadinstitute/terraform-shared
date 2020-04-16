@@ -6,7 +6,7 @@ resource "google_compute_instance_group" "instance-group-unmanaged" {
   provider = google.target
   project =  var.project
   count = var.enable_flag
-  name        = "${var.instance_name}-instance-group-unmanaged"
+  name        = var.instance_group_name == null ? "${var.instance_name}-instance-group-unmanaged" : var.instance_group_name
   description = "${var.instance_name} Instance Group - Unmanaged"
 
   instances = google_compute_instance.instance.*.self_link
