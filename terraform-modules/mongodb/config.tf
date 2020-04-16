@@ -19,7 +19,7 @@ services:
       - MONGODB_REPLICA_SET_KEY=${var.mongodb_replica_set_key}
       - MONGODB_ADVERTISED_HOSTNAME=${length(data.null_data_source.hostnames_with_no_trailing_dot) > 0 ? data.null_data_source.hostnames_with_no_trailing_dot[count.index].outputs.hostname_priv : ""}
       ${var.mongodb_roles[count.index] == "primary" ? "" : "- MONGODB_PRIMARY_HOST=${length(data.null_data_source.hostnames_with_no_trailing_dot) > 0 ? data.null_data_source.hostnames_with_no_trailing_dot[0].outputs.hostname_priv : ""}"}
-      ${var.mongodb_extra_flags == null ? "" : "- MONGODB_EXTRA_FLAGS='${var.mongodb_extra_flags}'"}
+      ${var.mongodb_extra_flags == null ? "" : "- MONGODB_EXTRA_FLAGS=${var.mongodb_extra_flags}"}
     volumes:
       - ${var.mongodb_data_path}:/bitnami
     restart: always
@@ -50,7 +50,7 @@ services:
       - MONGODB_PASSWORD=${var.mongodb_app_password}
       - MONGODB_DATABASE=${var.mongodb_database}
       - MONGODB_PORT_NUMBER=${var.mongodb_container_port}
-      ${var.mongodb_extra_flags == null ? "" : "- MONGODB_EXTRA_FLAGS='${var.mongodb_extra_flags}'"}
+      ${var.mongodb_extra_flags == null ? "" : "- MONGODB_EXTRA_FLAGS=${var.mongodb_extra_flags}"}
     volumes:
       - ${var.mongodb_data_path}:/bitnami
     restart: always
