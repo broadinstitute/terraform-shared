@@ -1,15 +1,7 @@
-provider "google" {
-  alias = "target"
-}
-
 variable "google_project" {}
 
-provider "google-beta" {
-  alias = "target"
-}
-
 variable "network_name" {
-  type = "string"
+  type = string
   default = "app-services"
 }
 

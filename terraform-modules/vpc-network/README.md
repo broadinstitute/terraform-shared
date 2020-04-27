@@ -10,23 +10,33 @@ module "network" {
   source = "github.com/broadinstitute/terraform-shared.git//terraform-modules/vpci-network?ref=vpc-network.1.0"
   google_project     = "google-project-name"
   network_name       = "network-name"         
-  providers = {                                                          
-    "google-beta.target" = "google-beta"                                 
-    "google.target"      = "google"                                           
-  }                                                                      
 }                                                                        
 ```
 
 ## Required Providers
 
+This version of the module requires version 3.2 or higher of the Google provider
+
+Module uses both of these two providers: google and google-beta.  If you do not pass them as arguments to module, the module relys on inheritence.  So your infrastructure does not set both(either at the root level or through passing them upon calling this module) this module will fail. 
+
+You can pass in the providers by supplying the following code block when you call module
+
+  providers = {                                                          
+    "google-beta" = "google-beta.my-provider"
+    "google"      = "google.my-provider"
+  }                                                                      
+
+The providers are used according to the following:
+
 `google`: used to enable APIs in the network
 
 `google-beta`: used to create the network (settings such as enabling flow logging requires beta provider)
 
+
 ## Inputs
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
-| google_project | Name of google project in which to create the network | string | - | yes |
+| google_project | This is used only to pass to the api-services module that this module calls.  It MUST be set to the same as the google project of your provider.  This module relys on project inheritence from the google provider to determine the google project to create the vpc network in. Once api-services module follows same convention this required variable will be removed. | string | - | yes |
 | network_name | Name for the network. | string | app-services | no |
 | aggregation_interval | Only used if vpc flow logging is enabled on subnet. Set globably for all subnets that have vpc flow logging enabled on. | string | INTERVAL_10_MIN | no |
 | flow_sampling | Only used if vpc flow logging is enabled on subnet. Set globably for all subnets that have vpc flow logging enabled on. | string | 0.5 | no |
