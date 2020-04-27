@@ -36,7 +36,7 @@ resource "google_compute_security_policy" "policy" {
       versioned_expr = "SRC_IPS_V1"
 
       config {
-        src_ip_ranges = var.broad_range_cidrs2
+        src_ip_ranges = var.broad_range_cidrs3
       }
     }
   }
