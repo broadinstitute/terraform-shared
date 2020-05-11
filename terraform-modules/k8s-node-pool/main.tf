@@ -1,5 +1,5 @@
 resource google_container_node_pool pool {
-  provider   = google-beta
+  provider = google-beta
 
   depends_on = [var.dependencies]
   name       = var.name
@@ -13,6 +13,11 @@ resource google_container_node_pool pool {
 
     # CIS compliance: enable automatic upgrade
     auto_upgrade = true
+  }
+
+  upgrade_settings {
+    max_unavailable = var.upgrade_settings.max_unavailable
+    max_surge       = var.upgrade_settings.max_surge
   }
 
   node_config {
@@ -29,8 +34,8 @@ resource google_container_node_pool pool {
     }
 
     metadata = var.metadata
-    labels = var.labels
-    tags   = var.tags
+    labels   = var.labels
+    tags     = var.tags
 
     oauth_scopes = [
       "https://www.googleapis.com/auth/compute",
