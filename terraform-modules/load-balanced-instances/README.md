@@ -51,3 +51,5 @@ does not exist this module will fail.
 ```
 
 `dns_ttl`: defaults to 300
+
+`lb_health_check`: defaults to `/status`

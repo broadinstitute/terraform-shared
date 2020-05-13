@@ -1,0 +1,3 @@
+provider google {
+  alias = "target"
+}
