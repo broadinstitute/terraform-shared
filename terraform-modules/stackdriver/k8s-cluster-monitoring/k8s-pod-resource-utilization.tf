@@ -16,7 +16,7 @@ resource google_monitoring_alert_policy pod_memory_util {
   notification_channels = var.notification_channels
 
   documentation {
-    content   = "A pod has been requesting greater than 65% of the memory limit for longer than 5 minutes"
+    content   = "A pod has been requesting greater than 95% of a resource limit for longer than 5 minutes"
     mime_type = "text/markdown"
   }
 
