@@ -4,17 +4,6 @@ variable "service_name" {
   description = "Name of the gae service to be monitored"
 }
 
-
-variable "gae_api_path" {
-  type        = string
-  description = "The api endpoint path you'd like to ping with the uptime check. This should not include the domain name of the url"
-}
-
-variable "gae_domain" {
-  type        = string
-  description = "the domain of the url the uptime check will be performed aganist. This should not include the api path"
-}
-
 variable "gae_host_project" {
   type        = string
   description = "GCP project that hosts the GAE app if it is different from project hosting the stackdriver workspace"

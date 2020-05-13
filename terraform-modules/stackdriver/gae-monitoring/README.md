@@ -14,8 +14,6 @@ module "gae_alerts" {
   }
 
   service_name     = "GAE_module_name"
-  gae_domain       = "GAE_service_domain_name"
-  gae_api_path     = "/example"
   gae_host_project = "GAE_HOST_PROJECT_ID"
 }
 ```
@@ -23,9 +21,6 @@ module "gae_alerts" {
 ## Alerting Policies
 
 The following are the metrics that this module will set up monitoring on and the thresholds needed to trigger the alerts.
-
-### Uptime Check
-All gae apps should be monitored by an uptime check to verify service availability. The uptime check pings the app once every minute and if it is unable to reach the app for >5 minutes an alert will fire
 
 ### Reponse Status Codes
 If the application is responding with 500 status or a higher than usual number of 400 status, this may be indicative of an issue and should trigger an alert
