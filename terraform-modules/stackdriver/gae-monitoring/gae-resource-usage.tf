@@ -1,6 +1,6 @@
 locals {
-  cpu_usage_metric    = "metric.type=\"appengine.googleapis.com/system/cpu/usage\" resource.type=\"gae_app\" resource.label.\"module_id\"=\"${var.service_name}\""
-  memory_usage_metric = "metric.type=\"appengine.googleapis.com/system/memory/usage\" resource.type=\"gae_app\" resource.label.\"module_id\"=\"${var.service_name}\""
+  cpu_usage_metric    = "metric.type=\"appengine.googleapis.com/system/cpu/usage\" resource.type=\"gae_app\""
+  memory_usage_metric = "metric.type=\"appengine.googleapis.com/system/memory/usage\" resource.type=\"gae_app\""
   # Unit is megacycles
   cpu_usage_threshold = 10000
   # Unit is bytes 

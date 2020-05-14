@@ -1,5 +1,5 @@
 locals {
-  response_code_metric = "metric.type=\"appengine.googleapis.com/http/server/response_count\" resource.type=\"gae_app\" resource.label.\"module_id\"=\"${var.service_name}\" metric.label.\"response_code\">=\"500\""
+  response_code_metric = "metric.type=\"appengine.googleapis.com/http/server/response_count\" resource.type=\"gae_app\" metric.label.\"response_code\">=\"500\""
   # Trigger alert if there are any responses with code 5xx
   response_code_threshold          = 0
   response_code_threshold_duration = "60s"

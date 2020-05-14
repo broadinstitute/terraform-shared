@@ -1,6 +1,6 @@
 locals {
   #  Specific information to configure conditions needed to trigger alert
-  response_latency_metric             = "metric.type=\"appengine.googleapis.com/http/server/response_latencies\" resource.type=\"gae_app\" resource.label.\"module_id\"=\"${var.service_name}\""
+  response_latency_metric             = "metric.type=\"appengine.googleapis.com/http/server/response_latencies\" resource.type=\"gae_app\""
   response_latency_threshold          = 1500 # measured in ms
   response_latency_threshold_duration = "300s"
 }

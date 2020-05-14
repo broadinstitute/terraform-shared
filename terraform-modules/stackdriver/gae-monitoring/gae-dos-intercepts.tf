@@ -1,5 +1,5 @@
 locals {
-  dos_intercept_metric             = "metric.type=\"appengine.googleapis.com/http/server/dos_intercept_count\" resource.type=\"gae_app\" resource.label.\"module_id\"=\"${var.service_name}\""
+  dos_intercept_metric             = "metric.type=\"appengine.googleapis.com/http/server/dos_intercept_count\" resource.type=\"gae_app\""
   dos_intercept_threshold          = 0
   dos_intercept_threshold_duration = "60s"
 }

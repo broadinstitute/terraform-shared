@@ -1,5 +1,5 @@
 locals {
-  quota_denial_metric             = "metric.type=\"appengine.googleapis.com/http/server/quota_denial_count\" resource.type=\"gae_app\" resource.label.\"module_id\"=\"${var.service_name}\""
+  quota_denial_metric             = "metric.type=\"appengine.googleapis.com/http/server/quota_denial_count\" resource.type=\"gae_app\""
   quota_denial_threshold          = 0
   quota_denial_threshold_duration = "300s"
 }
