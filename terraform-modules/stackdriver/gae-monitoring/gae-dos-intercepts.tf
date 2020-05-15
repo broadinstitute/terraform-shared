@@ -1,12 +1,12 @@
 locals {
-  dos_intercept_metric             = "metric.type=\"appengine.googleapis.com/http/server/dos_intercept_count\" resource.type=\"gae_app\" resource.label.\"module_id\"=\"${var.service_name}\""
+  dos_intercept_metric             = "metric.type=\"appengine.googleapis.com/http/server/dos_intercept_count\" resource.type=\"gae_app\""
   dos_intercept_threshold          = 0
   dos_intercept_threshold_duration = "60s"
 }
 
 resource google_monitoring_alert_policy gae-dos-intercept-alert {
-  provider = google.target
-
+  provider              = google.target
+  project               = var.gae_host_project
   display_name          = "${var.service_name}-dos-intercept-alert"
   combiner              = "OR"
   enabled               = true

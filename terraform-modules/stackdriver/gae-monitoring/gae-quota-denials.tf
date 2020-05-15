@@ -1,12 +1,12 @@
 locals {
-  quota_denial_metric             = "metric.type=\"appengine.googleapis.com/http/server/quota_denial_count\" resource.type=\"gae_app\" resource.label.\"module_id\"=\"${var.service_name}\""
+  quota_denial_metric             = "metric.type=\"appengine.googleapis.com/http/server/quota_denial_count\" resource.type=\"gae_app\""
   quota_denial_threshold          = 0
   quota_denial_threshold_duration = "300s"
 }
 
 resource google_monitoring_alert_policy gae-quota-denial-alert {
-  provider = google.target
-
+  provider              = google.target
+  project               = var.gae_host_project
   display_name          = "${var.service_name}-quota-denial-alert"
   combiner              = "OR"
   enabled               = true
