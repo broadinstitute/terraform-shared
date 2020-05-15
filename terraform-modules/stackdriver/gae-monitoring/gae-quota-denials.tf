@@ -5,8 +5,8 @@ locals {
 }
 
 resource google_monitoring_alert_policy gae-quota-denial-alert {
-  provider = google.target
-
+  provider              = google.target
+  project               = var.gae_host_project
   display_name          = "${var.service_name}-quota-denial-alert"
   combiner              = "OR"
   enabled               = true

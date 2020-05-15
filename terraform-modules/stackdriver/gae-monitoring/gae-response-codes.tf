@@ -6,8 +6,8 @@ locals {
 }
 
 resource google_monitoring_alert_policy gae-response-code-alert {
-  provider = google.target
-
+  provider              = google.target
+  project               = var.gae_host_project
   display_name          = "${var.service_name}-response-code-alert"
   combiner              = "OR"
   enabled               = true
