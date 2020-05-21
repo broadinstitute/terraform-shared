@@ -11,7 +11,6 @@ module "ip-dns" {
   }
   auth_proxy_dns_name    = "dns-name"
   auth_proxy_dns_zone    = "dnz-zone"
-  auth_proxy_dns_project = "broad-gotc-dev"
 }
 
 ```
@@ -26,7 +25,6 @@ module "ip-dns" {
 |------|-------------|:----:|:-----:|:-----:|
 | auth_proxy_dns_name | DNS name used for A record | string | auth-proxy | no |
 | auth_proxy_dns_zone | DNS zone resource name | string | null | no |
-| ssl_certificate_cert | certificate for ssl cert | string | null | yes |
 
 ## Outputs
 
