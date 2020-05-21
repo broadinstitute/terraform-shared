@@ -7,43 +7,43 @@
 
 ### Example Use
 ```
-  project_id  = aou
-  buckets_name = ["aou-input", "aou-ouput"]
-  prefix = aou
-  location = "US"
+  provider = google.broad-gotc-dev
+  bucket_name = "aou-input"
+  versioning = true
   
-  # default versioning is false - need to define for each bucket
-  versioning = {
-    aou-input = true
-    aou-ouput = true
+  # Defining ACLs for each role
+  bindings = {
+    storage_admins = {
+      role = "roles/storage.admin"
+      members = [
+        "user:ftraquet@broadinstitute.org",
+      ]
+    },
+    admins = {
+      role = "roles/storage.objectAdmin"
+      members = [
+        "group:hornet@broadinstitute.org",
+      ]
+    },
+    viewers = {
+      role = "roles/storage.objectViewer"
+      members = [
+        "group:lantern@broadinstitute.org",
+      ]
+    }
   }
-
-  set_admin_roles = true
-  bucket_admins = [
-    "serviceAccount:service_account.admin.email"
-  ]
-
-  set_viewers_roles = true
-  bucket_viewers = [
-    "serviceAccount:service_account.viewer.email",
-    "group:developers@broadinstitute.org"
-  ]
-  
-  set_legacy_roles = true
-  bucket_legacy = [
-    "serviceAccount:service_account.legacy.email"
-  ]
 
 ```
 ### Variables to set
 ```
-#name of buckets
-buckets_name =
-#name of prefix
-prefix =
-#name of project
-project_id  =
+# name of bucket
+bucket_name =
+# name of provider
+provider =
+# ACL list
+bindings =
 
-#Default Class Storage = "MULTI_REGIONAL"
-#Default location = "US"
+# Default Class Storage = "MULTI_REGIONAL"
+# Default location = "US"
+# Default versioning = "false"
 ```

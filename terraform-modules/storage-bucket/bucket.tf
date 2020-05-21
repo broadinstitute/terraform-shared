@@ -2,49 +2,33 @@ terraform {
   required_version = ">= 0.12.6"
 }
 
+# This module creates a single bucket
 
-locals {
-  prefix = var.prefix == "" ? "" : join("-", list(var.prefix, lower(var.location), ""))
-}
-
-resource "google_storage_bucket" "buckets" {
-  count         = length(var.buckets_name)
-  name          = "${local.prefix}${lower(element(var.buckets_name, count.index))}"
+resource "google_storage_bucket" "bucket" {
+  count         = length(var.bucket_name)
+  name          = var.bucket_name
   provider = google
-  project  = var.project_id
+
   location      = var.location
   storage_class = var.storage_class
 
   versioning {
-    enabled = lookup(
-      var.versioning,
-      lower(element(var.buckets_name, count.index)),
-      false,
-    )
+    enabled = var.versioning
   }
 }
 
-# create multiple iam bindings (identical) for each projects if required (boolean)
-resource "google_storage_bucket_iam_binding" "admins" {
-  count  = var.set_admin_roles ? length(var.buckets_name) : 0
-  bucket = element(google_storage_bucket.buckets.*.name, count.index)
-  role   = "roles/storage.objectAdmin"
-  members = var.bucket_admins
+# create ACLs
+
+resource "google_storage_bucket_iam_binding" "binding" {
+  for_each = var.bindings
+
+  bucket = google_storage_bucket.bucket.name
+  role = each.value["role"]
+  members = each.value["members"]
+  depends_on = [google_storage_bucket.bucket]
+
 }
 
-resource "google_storage_bucket_iam_binding" "viewers" {
-  count  = var.set_viewer_roles ? length(var.buckets_name) : 0
-  bucket = element(google_storage_bucket.buckets.*.name, count.index)
-  role   = "roles/storage.objectViewer"
-  members = var.bucket_viewers
-}
-
-resource "google_storage_bucket_iam_binding" "legacy-viewers" {
-  count  = var.set_legacy_roles ? length(var.buckets_name) : 0
-  bucket = element(google_storage_bucket.buckets.*.name, count.index)
-  role   = "roles/storage.legacyBucketReader"
-  members = var.bucket_legacyviewers
-}
 
 
 
