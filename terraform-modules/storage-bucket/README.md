@@ -10,22 +10,25 @@
 ```
   provider = google.broad-gotc-dev
   bucket_name = "aou-input"
-  versioning = true
-  retention_policy {
-    # lock the bucket after a certain period in sec - 2,678,400 = a month
+  versioning = false
+  # versioning and retention policy are mutually exclusive features
+  retention_policy = {
+    # lock the objects in the bucket until a certain period in sec - 2,678,400 = a month
     is_locked        = true
     retention_period = 2678400
   }
-  lifecycle_rule {
-    # example of lifecycle used in pharma5
-    action {
-      type = "Delete"
-    }
-    condition {
-      age = 60
-      with_state = "ANY"
-    }
-  }
+
+  lifecycle_rules = [
+    {
+      # Delete objects on the bucket after 60 days from creation
+      action = {
+        type = "Delete"
+      },
+      condition = {
+        age = 60
+        with_state = "ANY"
+      }
+    }]
   
   # Defining ACLs for each role
   bindings = {
