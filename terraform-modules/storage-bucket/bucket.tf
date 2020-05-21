@@ -5,7 +5,6 @@ terraform {
 # This module creates a single bucket
 
 resource "google_storage_bucket" "bucket" {
-  count         = length(var.bucket_name)
   name          = var.bucket_name
   provider = google
 
