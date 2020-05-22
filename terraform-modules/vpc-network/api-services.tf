@@ -1,5 +1,5 @@
 module "enable-services" {
-  source      = "github.com/broadinstitute/terraform-shared.git//terraform-modules/api-services?ref=hf_api_service_update"
+  source      = "github.com/broadinstitute/terraform-shared.git//terraform-modules/api-services?ref=services-1.0.0"
   
   providers = {
     google = google
