@@ -8,7 +8,6 @@ By default flow logging and priviate IP google API access are disabled.
 module "network" {                                                       
   # "github.com/" + org + "/" + repo name + ".git" + "//" + path within repo to base dir + "?ref=" + git object ref
   source = "github.com/broadinstitute/terraform-shared.git//terraform-modules/vpci-network?ref=vpc-network.1.0"
-  google_project     = "google-project-name"
   network_name       = "network-name"         
 }                                                                        
 ```
@@ -21,10 +20,12 @@ Module uses both of these two providers: google and google-beta.  If you do not 
 
 You can pass in the providers by supplying the following code block when you call module
 
+```
   providers = {                                                          
     "google-beta" = "google-beta.my-provider"
     "google"      = "google.my-provider"
   }                                                                      
+```
 
 The providers are used according to the following:
 
@@ -36,7 +37,6 @@ The providers are used according to the following:
 ## Inputs
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
-| google_project | This is used only to pass to the api-services module that this module calls.  It MUST be set to the same as the google project of your provider.  This module relys on project inheritence from the google provider to determine the google project to create the vpc network in. Once api-services module follows same convention this required variable will be removed. | string | - | yes |
 | network_name | Name for the network. | string | app-services | no |
 | aggregation_interval | Only used if vpc flow logging is enabled on subnet. Set globably for all subnets that have vpc flow logging enabled on. | string | INTERVAL_10_MIN | no |
 | flow_sampling | Only used if vpc flow logging is enabled on subnet. Set globably for all subnets that have vpc flow logging enabled on. | string | 0.5 | no |
