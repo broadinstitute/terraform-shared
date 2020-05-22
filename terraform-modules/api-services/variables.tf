@@ -1,7 +1,4 @@
 
-# google project
-variable project {}
-
 # destroy on disable
 variable destroy {
   type = bool
@@ -14,7 +11,7 @@ variable enable_flag {
   default = true
 }
 
-#services to enalbe
+#services to enable
 variable services {
  type = list(string)
  default = [
