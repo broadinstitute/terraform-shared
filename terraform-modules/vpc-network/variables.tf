@@ -1,5 +1,3 @@
-variable "google_project" {}
-
 variable "network_name" {
   type = string
   default = "app-services"
