@@ -3,15 +3,20 @@
 #
 
 resource "random_id" "cloudsql_id" {
+  count = var.enable ? 1 : 0
+
   byte_length   = 8
 }
 
 resource "google_sql_database_instance" "cloudsql_instance" {
+  count = var.enable ? 1 : 0
+
   provider              = google.target
+  project               = var.project
   region                = var.cloudsql_region
   database_version      = var.cloudsql_version
-  name                  = "${var.cloudsql_name}-${random_id.cloudsql_id.hex}"
-  depends_on            = [ random_id.cloudsql_id ]
+  name                  = "${var.cloudsql_name}-${random_id.cloudsql_id[0].hex}"
+  depends_on            = [ random_id.cloudsql_id, var.dependencies ]
 
   settings {
 
