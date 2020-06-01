@@ -1,6 +1,6 @@
 variable "bucket_name" {
   description = "The name of the bucket."
-  type = string
+  type        = string
 }
 
 variable "versioning" {
@@ -23,7 +23,7 @@ variable "storage_class" {
 
 # ACL names and members
 variable "bindings" {
-  type = map(object({role = string, members = list(string)}))
+  type = map(object({ role = string, members = list(string) }))
 }
 
 variable "retention_policy" {
@@ -53,3 +53,10 @@ variable "lifecycle_rules" {
   }))
   default = []
 }
+
+variable dependencies {
+  type        = any
+  default     = []
+  description = "Work-around for Terraform 0.12's lack of support for 'depends_on' in custom modules."
+}
+
