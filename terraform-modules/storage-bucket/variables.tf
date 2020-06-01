@@ -55,7 +55,7 @@ variable "lifecycle_rules" {
 }
 
 variable dependencies {
-  type        = any
+  type        = list
   default     = []
   description = "Work-around for Terraform 0.12's lack of support for 'depends_on' in custom modules."
 }
