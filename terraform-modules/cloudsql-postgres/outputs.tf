@@ -8,17 +8,21 @@ output "instance_name" {
   depends_on = [google_sql_database_instance.cloudsql_instance]
 }
 
+output "connection_name" {
+  value = var.enable ? google_sql_database_instance.cloudsql_instance[0].connection_name : null
+}
+
 output "root_user_password" {
-  value = var.enable ? random_id.root_user_password.*.hex : null
-  sensitive = true
+  value      = var.enable ? random_id.root_user_password.*.hex : null
+  sensitive  = true
   depends_on = [random_id.root_user_password]
 }
 
 output "app_db_creds" {
   value = var.enable ? {
-    for db in keys(google_sql_database.app_database):
+    for db in keys(google_sql_database.app_database) :
     db => {
-      db = google_sql_database.app_database[db].name
+      db       = google_sql_database.app_database[db].name
       username = google_sql_user.app_user[db].name
       password = google_sql_user.app_user[db].password
     }

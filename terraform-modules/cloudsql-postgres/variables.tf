@@ -3,14 +3,15 @@
 #
 
 variable "project" {
-  type = string
+  type        = string
   description = "Google project"
+  default     = null
 }
 
 variable "enable" {
-  type = bool
+  type        = bool
   description = "Enable flag for this module. If set to false, no resources will be created."
-  default = true
+  default     = true
 }
 
 # See: https://github.com/hashicorp/terraform/issues/21418#issuecomment-495818852
@@ -25,20 +26,20 @@ variable dependencies {
 #
 
 variable "cloudsql_name" {
-  type = string
-  default = "cloudsql"
+  type        = string
+  default     = "cloudsql"
   description = "DNS CNAME record target hostname for default instance in an env. Should be set as a vault env override for each env."
 }
 
 variable "cloudsql_region" {
-  type = string
-  default = "us-central1"
+  type        = string
+  default     = "us-central1"
   description = "The region for CloudSQL instances. NOTE: For Gen 2 instance, use standard gcloud regions."
 }
 
 variable "cloudsql_version" {
-  type = string
-  default = "POSTGRES_9_6"
+  type        = string
+  default     = "POSTGRES_9_6"
   description = "The version to use for CloudSQL instances."
 }
 
@@ -49,38 +50,38 @@ variable "cloudsql_keepers" {
 }
 
 variable "cloudsql_require_ssl" {
-  type = bool
-  default = true
+  type        = bool
+  default     = true
   description = "Determines if SSL is required for connections to CloudSQL instances."
 }
 
 variable "cloudsql_tier" {
-  type = string
-  default = "db-custom-16-32768" # match sam postgres in prod
+  type        = string
+  default     = "db-custom-16-32768" # match sam postgres in prod
   description = "The default tier (DB instance size) for CloudSQL instances"
 }
 
 variable "cloudsql_disk_autoresize" {
-  type = bool
-  default = true
+  type        = bool
+  default     = true
   description = "Determines if the CloudSQL instances will increase their disk size automatically"
 }
 
 variable "cloudsql_disk_type" {
-  type = string
-  default = "PD_SSD"
+  type        = string
+  default     = "PD_SSD"
   description = "The default disk type for CloudSQL instances"
 }
 
 variable "cloudsql_activation_policy" {
-  type = string
-  default = "ALWAYS"
+  type        = string
+  default     = "ALWAYS"
   description = "The default activation policy for CloudSQL instances"
 }
 
 variable "cloudsql_replication_type" {
-  type = string
-  default = "SYNCHRONOUS"
+  type        = string
+  default     = "SYNCHRONOUS"
   description = "The default replication type for CloudSQL instances"
 }
 
@@ -113,12 +114,12 @@ variable "postgres_availability_type" {
 variable "app_dbs" {
   description = "List of db name and username pairs"
   type = map(object({
-    db = string
+    db       = string
     username = string
   }))
   default = {
     default = {
-      db = "appdb"
+      db       = "appdb"
       username = "appuser"
     }
   }
@@ -128,15 +129,15 @@ locals {
 }
 
 variable "cloudsql_instance_labels" {
-  type = map
+  type        = map
   description = "CloudSQL instance labels"
-  default = {}
+  default     = {}
 }
 
 variable "cloudsql_authorized_networks" {
-  type = list(string)
+  type        = list(string)
   description = "CloudSQL authorized  networks"
-  default = []
+  default     = []
 }
 
 # private sql vars
