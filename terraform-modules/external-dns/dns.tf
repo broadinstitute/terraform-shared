@@ -8,7 +8,7 @@ data "google_dns_managed_zone" "dns_zone" {
 }
 
 resource "google_dns_record_set" "set_dns_record" {
-  for_each = var.records
+  for_each = var.records == null ? [] : [var.records]
 
   name = "${each.key}.${data.google_dns_managed_zone.dns_zone.dns_name}"
   type = each.value["type"]
