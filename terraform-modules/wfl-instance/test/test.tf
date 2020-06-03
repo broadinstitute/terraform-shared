@@ -6,8 +6,8 @@ module "test_wfl_instance" {
   source = "../"
 
   providers = {
-    google              = google.broad-gotc-dev
-    google.dns_provider = google.broad-gotc-dev
+    google              = google
+    google.dns_provider = google
   }
 
   instance_id = "test-just-a-test"
