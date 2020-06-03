@@ -11,6 +11,5 @@ module "test_wfl_instance" {
   }
 
   instance_id = "test-just-a-test"
-  project     = "broad-gotc-dev"
 
 }
