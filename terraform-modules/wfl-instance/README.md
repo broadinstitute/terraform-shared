@@ -3,7 +3,7 @@ This is sort of a meta module that creates all the specific elements needed to r
 The elements that this module creates are:
  * Global IP address (to be used by the WFL helm chart)
  * DNS name for the wfl instance
- * PostgrSQL database
+ * PostgreSQL database
  * A pair of GCS buckets to be used by WFL for the inputs and outputs for workflows being managed by WFL
 
 NOTE: The module requires specifying instance_id which is an unique identifier that will be added to the name of all created resources.  The module sets it to null and uses variable validation to ensure that a non-null value is passed in.  Module will fail/error if instance_id is not passed in.
@@ -43,9 +43,10 @@ Module uses two providers. One provider is used for all the infrastructure that 
 
 | Name | Description | Type | 
 |------|-------------|:----:|
-| network | Network name created | string | 
-| network_self_link | Google resource HTTP self link | string | 
-| subnets_ips | map of CIDR ip range for each subnet created.  key is region of subnet (ie us-central1) | map | 
-| subnets_self_links | map of Google resource HTTP self link for each subnet created.  key is region of subnet (ie us-central1) | map | 
+| wfl-public-ip | External IP address for WFL | string | 
+| wfl-input-bucket | name of input bucket for WFL | string | 
+| wfl-output-bucket | Name of output bucket for WFL | string | 
+| wfl-db-connection | PostgreSQL database connection string | string | 
+| wfl-dns-name | FQDN of wfl external IP | string | 
 
 

@@ -25,13 +25,13 @@ module "output-bucket" {
     viewers = {
       role = "roles/storage.objectViewer"
       members = [
-        "serviceAccount:resource-viewer-non-pord@broad-gotc-dev.iam.gserviceaccount.com",
+        "serviceAccount:wfl-non-prod@broad-gotc-dev.iam.gserviceaccount.com",
       ]
     },
     viewers_legacy = {
       role = "roles/storage.legacyBucketReader"
       members = [
-        "serviceAccount:resource-viewer-non-pord@broad-gotc-dev.iam.gserviceaccount.com",
+        "serviceAccount:wfl-non-prod@broad-gotc-dev.iam.gserviceaccount.com",
       ]
     }
   }
