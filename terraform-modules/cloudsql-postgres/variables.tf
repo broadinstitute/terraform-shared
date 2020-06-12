@@ -143,5 +143,6 @@ variable "private_enable" {
 
 variable "private_network" {
   type = string
+  default = null
   description = "Name of the projects network that the NAT/VPC pairing sql ip will be put on."
 }

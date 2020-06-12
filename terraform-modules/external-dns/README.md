@@ -1,41 +1,39 @@
 # Module for creating DNS
 
-- This module creates dynamic A record, CNAME and more from a map variable
+- This module creates dynamic A record, CNAME and ip
 
 ### Prerequisite
 - Terraform 0.12.6+
 
 ### Example Use
 ```
-variable "records" {
-  default = {
-    record1 = {
-      type = "A"
-      rrdatas = "192.163.155.12"
-    },
-    recordcname2 = {
-      type = "CNAME"
-      rrdatas = "record1.datarepo-dev.broadinstitute.org."
-    },
-    record3 = {
-      type = "A"
-      rrdatas = "192.55.77.11"
-    }
+provider google-beta {
+  alias = "target"
+  credentials = file("account.json")
+  project = "broad-jade-dev"
+  region = "us-central1"
+}
+
+provider google-beta {
+  alias = "dev-core"
+
+  project = "broad-jade-dev"
+  region = "us-central1"
+}
+
+data google_dns_managed_zone dev_zone {
+  provider = google-beta.dev-core
+  name = "datarepo-dev"
+}
+
+module dns_names {
+  source = "../"
+  providers = {
+    google.ip = google-beta.target,
+    google.dns = google-beta.dev-core
   }
+  zone_gcp_name = data.google_dns_managed_zone.dev_zone.name
+  zone_dns_name = data.google_dns_managed_zone.dev_zone.dns_name
+  dns_names = ["cheese", "pizza"]
 }
-
-module "dns-test" {
-  # terraform-shared repo
-  source     = "github.com/broadinstitute/terraform-shared.git//terraform-modules/external-dns?ref=ms-dns-creator-v2"
-
-  target_dns_zone_name = "datarepo-dev"
-  records = var.records
-}
-```
-### Variables to set
-```
-#name of external dns_zone name
-variable "target_dns_zone_name" {}
-#name and destination values ie: record = 192.168.44.22
-variable "records" {}
 ```
