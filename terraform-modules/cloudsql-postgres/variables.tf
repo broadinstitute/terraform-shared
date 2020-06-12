@@ -132,3 +132,16 @@ variable "cloudsql_authorized_networks" {
   description = "CloudSQL authorized  networks"
   default = []
 }
+
+# private sql vars
+
+variable "private_enable" {
+  type = bool
+  description = "Enable flag for a private sql instance if set to true, a private sql isntance will be created."
+  default = false
+}
+
+variable "private_network" {
+  type = string
+  description = "Name of the projects network that the NAT/VPC pairing sql ip will be put on."
+}
