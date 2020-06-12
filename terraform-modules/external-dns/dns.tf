@@ -1,19 +1,33 @@
-terraform {
-  required_version = ">= 0.12.6"
+resource google_compute_global_address global_ip_address {
+  for_each = toset(var.dns_names)
+
+  provider = google.ip
+  name = "${each.value}-ip"
+  depends_on = [var.dependencies]
 }
 
-data "google_dns_managed_zone" "dns_zone" {
-    provider     = google
-    name         = var.target_dns_zone_name
+resource google_dns_record_set a_dns {
+  for_each = toset(var.dns_names)
+
+  provider = google.dns
+  type = "A"
+  ttl = "300"
+
+  managed_zone = var.zone_gcp_name
+  name = "${each.value}-global.${var.zone_dns_name}"
+  rrdatas = [google_compute_global_address.global_ip_address[each.value].address]
+  depends_on = [var.dependencies]
 }
 
-resource "google_dns_record_set" "set_dns_record" {
-  for_each = var.records
+resource google_dns_record_set cname_dns {
+  for_each = toset(var.dns_names)
 
-  name = "${each.key}.${data.google_dns_managed_zone.dns_zone.dns_name}"
-  type = each.value["type"]
-  rrdatas = ["${each.value["rrdatas"]}"]
-  provider     = google
-  ttl          = "300"
-  managed_zone = data.google_dns_managed_zone.dns_zone.name
+  provider = google.dns
+  type = "CNAME"
+  ttl = "300"
+
+  managed_zone = var.zone_gcp_name
+  name = "${each.value}.${var.zone_dns_name}"
+  rrdatas = [google_dns_record_set.a_dns[each.value].name]
+  depends_on = [var.dependencies]
 }
