@@ -1,4 +1,4 @@
-name: Terraform Test - wfl-instance module
+name: Terraform Test - storage-bucket-notification module
 
 env:
   terraform_directory: "terraform-modules/storage-bucket-notification"
