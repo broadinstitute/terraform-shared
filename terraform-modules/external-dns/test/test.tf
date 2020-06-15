@@ -1,12 +1,3 @@
-# Module for creating DNS
-
-- This module creates dynamic A record, CNAME and ip
-
-### Prerequisite
-- Terraform 0.12.6+
-
-### Example Use
-```
 provider google-beta {
   alias = "target"
   credentials = file("account.json")
@@ -36,4 +27,3 @@ module dns_names {
   zone_dns_name = data.google_dns_managed_zone.dev_zone.dns_name
   dns_names = ["cheese", "pizza"]
 }
-```

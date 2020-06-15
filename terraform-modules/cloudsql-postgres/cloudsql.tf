@@ -42,7 +42,8 @@ resource "google_sql_database_instance" "cloudsql_instance" {
 #    }
 
     ip_configuration {
-      ipv4_enabled  = true
+      ipv4_enabled  = var.private_enable == true ? false : true
+      private_network = var.private_enable == true ? data.google_compute_network.network[0].id : null
       require_ssl   = true
       dynamic "authorized_networks" {
         for_each = var.cloudsql_authorized_networks
@@ -54,4 +55,31 @@ resource "google_sql_database_instance" "cloudsql_instance" {
 
     user_labels = var.cloudsql_instance_labels
   }
+}
+## private sql instance code
+data google_compute_network network {
+  count = var.private_enable ? 1 : 0
+
+  provider = google.target
+  name = var.private_network
+}
+
+resource "google_compute_global_address" "private_ip_address" {
+  count = var.private_enable ? 1 : 0
+
+  provider      = google.target
+  name          = "${var.cloudsql_name}-private-address"
+  purpose       = "VPC_PEERING"
+  address_type  = "INTERNAL"
+  prefix_length = 16
+  network       = data.google_compute_network.network[0].id
+}
+
+resource "google_service_networking_connection" "private_vpc_connection" {
+  count = var.private_enable ? 1 : 0
+
+  provider                = google.target
+  network                 = data.google_compute_network.network[0].id
+  service                 = "servicenetworking.googleapis.com"
+  reserved_peering_ranges = [google_compute_global_address.private_ip_address[0].name]
 }
