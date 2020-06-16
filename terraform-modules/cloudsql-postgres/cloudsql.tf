@@ -57,9 +57,7 @@ resource "google_sql_database_instance" "cloudsql_instance" {
   }
 }
 ## private sql instance code
-data google_compute_network network {
-  count = var.private_enable ? 1 : 0
-
+data "google_compute_network" network {
   provider = google.target
   name = var.private_network
 }
