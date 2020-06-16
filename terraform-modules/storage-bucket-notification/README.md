@@ -10,7 +10,7 @@
 ```
 module "bucket_notification" {
   # "github.com/" + org + "/" + repo name + ".git" + "//" + path within repo to base dir + "?ref=" + git object ref
-  source = "github.com/broadinstitute/terraform-shared.git//terraform-modules/storage-bucket-notification?ref=se-add-pubsub-modules"
+  source = "github.com/broadinstitute/terraform-shared.git//terraform-modules/storage-bucket-notification?ref=storage-bucket-notification-0.0.1"
 
   bucket_name = "aou-input"
   topic_name = "aou-topic"
