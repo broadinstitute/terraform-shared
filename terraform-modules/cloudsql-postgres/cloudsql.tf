@@ -60,6 +60,7 @@ resource "google_sql_database_instance" "cloudsql_instance" {
 data "google_compute_network" network {
   provider = google.target
   name = var.private_network
+  depends_on = [var.dependencies]
 }
 
 resource "google_compute_global_address" "private_ip_address" {
@@ -71,6 +72,7 @@ resource "google_compute_global_address" "private_ip_address" {
   address_type  = "INTERNAL"
   prefix_length = 16
   network       = data.google_compute_network.network.self_link
+  depends_on    = [var.dependencies]
 }
 
 resource "google_service_networking_connection" "private_vpc_connection" {
@@ -80,4 +82,5 @@ resource "google_service_networking_connection" "private_vpc_connection" {
   network                 = data.google_compute_network.network.self_link
   service                 = "servicenetworking.googleapis.com"
   reserved_peering_ranges = [google_compute_global_address.private_ip_address[0].name]
+  depends_on              = [var.dependencies]
 }
