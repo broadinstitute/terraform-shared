@@ -146,3 +146,9 @@ variable "private_network" {
   default = null
   description = "Name of the projects network that the NAT/VPC pairing sql ip will be put on."
 }
+
+variable "private_network_self_link" {
+  type = string
+  default = null
+  description = "Name of the projects network that the NAT/VPC pairing sql ip will be put on."
+}
