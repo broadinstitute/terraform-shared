@@ -16,7 +16,7 @@ resource "google_sql_database_instance" "cloudsql_instance" {
   region                = var.cloudsql_region
   database_version      = var.cloudsql_version
   name                  = "${var.cloudsql_name}-${random_id.cloudsql_id[0].hex}"
-  depends_on            = [ random_id.cloudsql_id, var.dependencies ]
+  depends_on            = [ random_id.cloudsql_id, var.dependencies, google_service_networking_connection.private_vpc_connection ]
 
   settings {
 
@@ -82,5 +82,5 @@ resource "google_service_networking_connection" "private_vpc_connection" {
   network                 = data.google_compute_network.network.self_link
   service                 = "servicenetworking.googleapis.com"
   reserved_peering_ranges = [google_compute_global_address.private_ip_address[0].name]
-  depends_on              = [var.dependencies]
+  depends_on              = [var.dependencies, google_compute_global_address.private_ip_address]
 }
