@@ -71,7 +71,7 @@ resource "google_compute_global_address" "private_ip_address" {
   purpose       = "VPC_PEERING"
   address_type  = "INTERNAL"
   prefix_length = 24
-  network       = var.private_network_self_link ? var.private_network_self_link : data.google_compute_network.network.self_link
+  network       = var.private_network_self_link != "" ? var.private_network_self_link : data.google_compute_network.network.self_link
   depends_on    = [var.dependencies]
 }
 
@@ -79,7 +79,7 @@ resource "google_service_networking_connection" "private_vpc_connection" {
   count = var.private_enable ? 1 : 0
 
   provider                = google.target
-  network                 = var.private_network_self_link ? var.private_network_self_link : data.google_compute_network.network.self_link
+  network                 = var.private_network_self_link != "" ? var.private_network_self_link : data.google_compute_network.network.self_link
   service                 = "servicenetworking.googleapis.com"
   reserved_peering_ranges = [google_compute_global_address.private_ip_address[0].name]
   depends_on              = [var.dependencies, google_compute_global_address.private_ip_address]
