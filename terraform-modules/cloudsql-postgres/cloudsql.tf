@@ -43,7 +43,7 @@ resource "google_sql_database_instance" "cloudsql_instance" {
 
     ip_configuration {
       ipv4_enabled  = var.private_enable == true ? false : true
-      private_network = var.private_enable == true ? var.private_network_self_link : null
+      private_network = var.private_enable == true ? local.private_network : null
       require_ssl   = true
       dynamic "authorized_networks" {
         for_each = var.cloudsql_authorized_networks
@@ -59,19 +59,19 @@ resource "google_sql_database_instance" "cloudsql_instance" {
 ## private sql instance code
 
 resource "google_compute_global_address" "private_ip_address" {
-  count = var.private_enable ? 1 : 0
+  count = var.enable_private_services ? 1 : 0
 
   provider      = google.target
   name          = "${var.cloudsql_name}-private-address"
   purpose       = "VPC_PEERING"
   address_type  = "INTERNAL"
-  prefix_length = 30
+  prefix_length = 16
   network       = var.private_network_self_link
   depends_on    = [var.dependencies]
 }
 
 resource "google_service_networking_connection" "private_vpc_connection" {
-  count = var.private_enable ? 1 : 0
+  count = var.enable_private_services ? 1 : 0
 
   provider                = google.target
   network                 = var.private_network_self_link
