@@ -152,3 +152,7 @@ variable "private_network_self_link" {
   default = null
   description = "Name of the projects network that the NAT/VPC pairing sql ip will be put on."
 }
+
+locals {
+  network = var.private_network_self_link != "" ? var.private_network_self_link : data.google_compute_network.network.self_link
+}
