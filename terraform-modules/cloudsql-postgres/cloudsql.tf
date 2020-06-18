@@ -65,7 +65,7 @@ resource "google_compute_global_address" "private_ip_address" {
   name          = "${var.cloudsql_name}-private-address"
   purpose       = "VPC_PEERING"
   address_type  = "INTERNAL"
-  prefix_length = 24
+  prefix_length = 32
   network       = var.private_network_self_link
   depends_on    = [var.dependencies]
 }
