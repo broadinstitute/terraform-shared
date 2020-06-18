@@ -141,18 +141,8 @@ variable "private_enable" {
   default = false
 }
 
-variable "private_network" {
-  type = string
-  default = null
-  description = "Name of the projects network that the NAT/VPC pairing sql ip will be put on."
-}
-
 variable "private_network_self_link" {
   type = string
   default = null
   description = "Name of the projects network that the NAT/VPC pairing sql ip will be put on."
-}
-
-locals {
-  network = var.private_network_self_link != "" ? var.private_network_self_link : data.google_compute_network.network.self_link
 }
