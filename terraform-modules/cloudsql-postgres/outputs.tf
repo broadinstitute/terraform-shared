@@ -1,14 +1,17 @@
 output "public_ip" {
   value = var.enable ? google_sql_database_instance.cloudsql_instance[0].first_ip_address : null
+  depends_on = [google_sql_database_instance.cloudsql_instance]
 }
 
 output "instance_name" {
   value = var.enable ? google_sql_database_instance.cloudsql_instance[0].name : null
+  depends_on = [google_sql_database_instance.cloudsql_instance]
 }
 
 output "root_user_password" {
-  value = var.enable ? random_id.root_user_password[0].hex : null
+  value = var.enable ? random_id.root_user_password.*.hex : null
   sensitive = true
+  depends_on = [random_id.root_user_password]
 }
 
 output "app_db_creds" {
@@ -20,5 +23,5 @@ output "app_db_creds" {
       password = google_sql_user.app_user[db].password
     }
   } : null
-  sensitive = true
+  depends_on = [google_sql_user.app_user,google_sql_database.app_database]
 }

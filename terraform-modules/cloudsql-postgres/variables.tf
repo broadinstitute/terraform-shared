@@ -141,8 +141,24 @@ variable "private_enable" {
   default = false
 }
 
+variable "enable_private_services" {
+  type = bool
+  description = "Enable flag for a private sql instance if set to true, a private sql isntance will be created."
+  default = false
+}
+
+variable "existing_vpc_network" {
+  type = string
+  default = null
+  description = "Name of the projects network that the NAT/VPC pairing sql ip will be put on."
+}
+
 variable "private_network_self_link" {
   type = string
   default = null
   description = "Name of the projects network that the NAT/VPC pairing sql ip will be put on."
+}
+
+locals {
+  private_network = var.enable_private_services ? var.private_network_self_link : var.existing_vpc_network
 }
