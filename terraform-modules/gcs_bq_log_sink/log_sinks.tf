@@ -18,13 +18,20 @@ resource "google_bigquery_dataset" "logs" {
   depends_on  = [random_id.id]
 }
 
+resource "google_bigquery_dataset_access" "access" {
+  dataset_id    = google_bigquery_dataset.logs[0].dataset_id
+  role          = "OWNER"
+  special_group = "allAuthenticatedUsers"
+  depends_on    = [google_bigquery_dataset.logs,google_logging_project_sink.bigquery-log-sink]
+}
+
 resource "google_logging_project_sink" "bigquery-log-sink" {
   count                  = var.enable_bigquery
   name                   = "${var.application_name}-${var.owner}-bigquery-log-sink${random_id.id.dec}"
   destination            = "bigquery.googleapis.com/projects/${var.project}/datasets/${google_bigquery_dataset.logs[0].dataset_id}"
   filter                 = var.log_filter
   unique_writer_identity = true
-  depends_on             = [google_bigquery_dataset.logs]
+  depends_on  = [google_bigquery_dataset.logs]
 }
 
 # grant writer access to bigquery.
@@ -45,6 +52,13 @@ resource "google_project_iam_binding" "bigquery-admin" {
 resource "google_project_iam_binding" "bigquery-log-writer-permisson" {
     count =  var.enable_bigquery
     role   = "roles/logging.configWriter"
+    members = [google_logging_project_sink.bigquery-log-sink[0].writer_identity]
+    depends_on  = [google_logging_project_sink.bigquery-log-sink]
+}
+
+resource "google_project_iam_binding" "pubsub-publisher-permisson" {
+    count =  var.enable_bigquery
+    role   = "roles/pubsub.publisher"
     members = [google_logging_project_sink.bigquery-log-sink[0].writer_identity]
     depends_on  = [google_logging_project_sink.bigquery-log-sink]
 }
@@ -96,37 +110,4 @@ resource "google_logging_project_sink" "pubsub-log-sink" {
   filter      = var.log_filter
   unique_writer_identity = true
   depends_on  = [random_id.id]
-}
-
-# Outputs
-output "pubsub_writer_identity" {
-  value = google_logging_project_sink.pubsub-log-sink.*.writer_identity
-}
-
-output "bigquery_writer_identity" {
-  value = google_logging_project_sink.bigquery-log-sink.*.writer_identity
-}
-
-output "gcs_writer_identity" {
-  value = google_logging_project_sink.bucket-log-sink.*.writer_identity
-}
-
-output "bucket_name" {
-  value = google_storage_bucket.logs.*.name
-}
-
-output "pubsub_name" {
-  value = google_pubsub_topic.pubsub.*.name
-}
-
-output "dataset_id" {
-  value = google_bigquery_dataset.logs.*.dataset_id
-}
-
-output "dataset_path" {
-  value = google_logging_project_sink.bigquery-log-sink.*.destination
-}
-
-output "log_filter" {
-  value = var.log_filter
 }
