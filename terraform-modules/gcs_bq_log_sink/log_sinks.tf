@@ -19,7 +19,6 @@ resource "google_bigquery_dataset" "logs" {
 }
 
 resource "google_bigquery_dataset_access" "access" {
-  provivder     =
   dataset_id    = google_bigquery_dataset.logs[0].dataset_id
   role          = "OWNER"
   user_by_email = "${google_logging_project_sink.bigquery-log-sink[0].writer_identity}"
