@@ -15,14 +15,11 @@ resource "google_bigquery_dataset" "logs" {
   labels = {
     env = var.owner
   }
-  depends_on  = [random_id.id]
-}
 
-resource "google_bigquery_dataset_access" "access" {
-  dataset_id    = google_bigquery_dataset.logs[0].dataset_id
+  access {
   role          = "OWNER"
   user_by_email = "${google_logging_project_sink.bigquery-log-sink[0].writer_identity}"
-  depends_on    = [google_bigquery_dataset.logs,google_logging_project_sink.bigquery-log-sink]
+  }
 }
 
 resource "google_logging_project_sink" "bigquery-log-sink" {
@@ -31,7 +28,6 @@ resource "google_logging_project_sink" "bigquery-log-sink" {
   destination            = "bigquery.googleapis.com/projects/${var.project}/datasets/${google_bigquery_dataset.logs[0].dataset_id}"
   filter                 = var.log_filter
   unique_writer_identity = true
-  depends_on  = [google_bigquery_dataset.logs]
 }
 
 # grant writer access to bigquery.
