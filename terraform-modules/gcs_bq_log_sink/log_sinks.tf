@@ -19,6 +19,7 @@ resource "google_bigquery_dataset" "logs" {
 }
 
 resource "google_bigquery_dataset_access" "access" {
+  provivder     =
   dataset_id    = google_bigquery_dataset.logs[0].dataset_id
   role          = "OWNER"
   user_by_email = "${google_logging_project_sink.bigquery-log-sink[0].writer_identity}"
@@ -110,37 +111,4 @@ resource "google_logging_project_sink" "pubsub-log-sink" {
   filter      = var.log_filter
   unique_writer_identity = true
   depends_on  = [random_id.id]
-}
-
-# Outputs
-output "pubsub_writer_identity" {
-  value = google_logging_project_sink.pubsub-log-sink.*.writer_identity
-}
-
-output "bigquery_writer_identity" {
-  value = google_logging_project_sink.bigquery-log-sink.*.writer_identity
-}
-
-output "gcs_writer_identity" {
-  value = google_logging_project_sink.bucket-log-sink.*.writer_identity
-}
-
-output "bucket_name" {
-  value = google_storage_bucket.logs.*.name
-}
-
-output "pubsub_name" {
-  value = google_pubsub_topic.pubsub.*.name
-}
-
-output "dataset_id" {
-  value = google_bigquery_dataset.logs.*.dataset_id
-}
-
-output "dataset_path" {
-  value = google_logging_project_sink.bigquery-log-sink.*.destination
-}
-
-output "log_filter" {
-  value = var.log_filter
 }
