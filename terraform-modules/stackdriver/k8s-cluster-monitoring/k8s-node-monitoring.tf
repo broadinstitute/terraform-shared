@@ -1,8 +1,8 @@
 
 locals {
   # API resource definitions which return desired timeseries for this alerting policy
-  node_cpu_metric    = "metric.type=\"kubernetes.io/node/cpu/allocatable_utilization\" resource.type=\"k8s_node\""
-  node_memory_metric = "metric.type=\"kubernetes.io/node/memory/allocatable_utilization\" resource.type=\"k8s_node\""
+  node_cpu_metric    = "metric.type=\"kubernetes.io/node/cpu/allocatable_utilization\" resource.type=\"k8s_node\" "
+  node_memory_metric = "metric.type=\"kubernetes.io/node/memory/allocatable_utilization\" resource.type=\"k8s_node\" metric.label.\"memory_type\"=\"non-evictable\""
   # Logic need to triggr the alert when there are multiple conditions for a policy
   condition_combine_method = "OR"
   # Thresholds the metrics must violate to trigger alert, both indicate percentages

@@ -1,6 +1,6 @@
 locals {
   memory_limit_threshold       = 0.95
-  volume_util_threshold        = 0.65
+  volume_util_threshold        = 0.95
   cpu_limit_util_threshold     = 0.95
   pod_memory_limit_util_metric = "metric.type=\"kubernetes.io/container/memory/limit_utilization\" resource.type=\"k8s_container\" metric.label.\"memory_type\"=\"non-evictable\""
   volume_util_metric           = "metric.type=\"kubernetes.io/pod/volume/utilization\" resource.type=\"k8s_pod\""
