@@ -1,6 +1,6 @@
 locals {
   memory_limit_threshold       = 0.95
-  volume_util_threshold        = 0.65
+  volume_util_threshold        = 0.95
   cpu_limit_util_threshold     = 0.95
   pod_memory_limit_util_metric = "metric.type=\"kubernetes.io/container/memory/limit_utilization\" resource.type=\"k8s_container\" metric.label.\"memory_type\"=\"non-evictable\""
   volume_util_metric           = "metric.type=\"kubernetes.io/pod/volume/utilization\" resource.type=\"k8s_pod\""
@@ -33,7 +33,7 @@ resource google_monitoring_alert_policy pod_memory_util {
       aggregations {
         per_series_aligner   = var.series_align_method
         alignment_period     = var.alignment_period
-        cross_series_reducer = var.reducer_method.none
+        cross_series_reducer = var.reducer_method.sum
         group_by_fields      = [var.group_by_labels.cluster_name, var.group_by_labels.namespace_name, var.group_by_labels.pod_name]
       }
     }
@@ -71,7 +71,7 @@ resource google_monitoring_alert_policy pod_memory_util {
       aggregations {
         per_series_aligner   = var.series_align_method
         alignment_period     = var.alignment_period
-        cross_series_reducer = var.reducer_method.none
+        cross_series_reducer = var.reducer_method.sum
         group_by_fields      = [var.group_by_labels.cluster_name, var.group_by_labels.namespace_name, var.group_by_labels.pod_name, var.group_by_labels.container_name]
       }
     }
