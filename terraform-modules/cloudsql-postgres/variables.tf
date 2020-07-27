@@ -42,6 +42,12 @@ variable "cloudsql_version" {
   description = "The version to use for CloudSQL instances."
 }
 
+variable "cloudsql_keepers" {
+  type = bool
+  default = false
+  description = "Whether to use keepers to re-generate instance name. Disabled by default for backwards-compatibility"
+}
+
 variable "cloudsql_require_ssl" {
   type = bool
   default = true
