@@ -6,6 +6,10 @@ resource "random_id" "cloudsql_id" {
   count = var.enable ? 1 : 0
 
   byte_length   = 8
+
+  keepers = {
+    database_version = var.cloudsql_version
+  }
 }
 
 resource "google_sql_database_instance" "cloudsql_instance" {
