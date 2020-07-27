@@ -7,9 +7,9 @@ resource "random_id" "cloudsql_id" {
 
   byte_length   = 8
 
-  keepers = {
+  keepers = var.cloudsql_keepers ? {
     database_version = var.cloudsql_version
-  }
+  } : null
 }
 
 resource "google_sql_database_instance" "cloudsql_instance" {
