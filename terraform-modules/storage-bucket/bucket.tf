@@ -1,10 +1,11 @@
 # This module creates a single bucket
 
 resource "google_storage_bucket" "bucket" {
-  name          = var.bucket_name
+  name     = var.bucket_name
   provider = google
+  count    = var.enable ? 1 : 0
 
-  location = var.location
+  location      = var.location
   storage_class = var.storage_class
 
   versioning {
@@ -40,11 +41,13 @@ resource "google_storage_bucket" "bucket" {
 # create ACLs
 
 resource "google_storage_bucket_iam_binding" "binding" {
-  for_each = var.bindings
+  for_each = var.enable == false ? [] : [var.bindings]
 
-  bucket = google_storage_bucket.bucket.name
-  role = each.value["role"]
-  members = each.value["members"]
+# Need to use the [0] reference in order to handle using count and enable flag.  and this
+#  module only creates a single bucket so hardcoding [0] is fine
+  bucket     = google_storage_bucket.bucket[0].name
+  role       = each.value["role"]
+  members    = each.value["members"]
   depends_on = [google_storage_bucket.bucket]
 
 }
