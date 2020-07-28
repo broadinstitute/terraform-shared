@@ -25,6 +25,7 @@ output wfl-instance {
     map(
       "public_ip", "${module.ip-dns.public_ip.address}",
       "input_bucket_name", "${module.input-bucket.bucket.name}",
+      "output_bucket_name", "${module.output-bucket.bucket.name}"
     )
   }"
 }

@@ -1,39 +1,16 @@
 module "input-bucket" {
   # terraform-shared repo
-  source = "github.com/broadinstitute/terraform-shared.git//terraform-modules/storage-bucket?ref=storage-bucket-0.0.1"
+  source = "github.com/broadinstitute/terraform-shared.git//terraform-modules/storage-bucket?ref=storage-bucket-0.0.2"
 
   providers = {
-    google = google
+    google = google.storage_provider
   }
 
   # Create one bucket and set ACLs
 
-  bucket_name = "${var.instance_id}-wfl-inputs"
-  versioning  = false
-  bindings = {
-    storage_admins = {
-      role = "roles/storage.admin"
-      members = [
-        "group:hornet@broadinstitute.org",
-      ]
-    },
-    admins = {
-      role = "roles/storage.objectAdmin"
-      members = [
-        "group:hornet@broadinstitute.org",
-      ]
-    },
-    viewers = {
-      role = "roles/storage.objectViewer"
-      members = [
-        "serviceAccount:wfl-non-prod@broad-gotc-dev.iam.gserviceaccount.com",
-      ]
-    },
-    viewers_legacy = {
-      role = "roles/storage.legacyBucketReader"
-      members = [
-        "serviceAccount:wfl-non-prod@broad-gotc-dev.iam.gserviceaccount.com",
-      ]
-    }
-  }
+  bucket_name     = var.input_bucket_name != null ? var.input_bucket_name : "${var.instance_id}-wfl-inputs"
+  versioning      = var.input_bucket_versioning
+  bindings        = var.input_bucket_bindings
+  lifecycle_rules = var.input_bucket_lifecycle_rules
+
 }
