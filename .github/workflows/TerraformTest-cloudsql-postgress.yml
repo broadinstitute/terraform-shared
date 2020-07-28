@@ -1,0 +1,54 @@
+name: Terraform Test - Cloudsql Postgresql module
+
+env:
+  terraform_directory: "terraform-modules/cloudsql-postgres"
+  terraform_version: "0.12.25"
+
+on:
+  pull_request:
+    branches: 
+      - master
+    paths:
+      - terraform-modules/cloudsql-postgres/**
+    
+jobs:
+  terraform_test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    # Run Terraform fmt (kind of a linter)
+    - name: Terraform format check
+      uses: hashicorp/terraform-github-actions@master
+      with:
+        tf_actions_version: ${{ env.terraform_version }}
+        tf_actions_subcommand: 'fmt'
+        tf_actions_fmt_write: false
+        tf_actions_comment: true
+        tf_actions_working_dir: ${{ env.terraform_directory }}/test
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    # Run Terraform init 
+    - name: Terraform init
+      uses: hashicorp/terraform-github-actions@master
+      with:
+        tf_actions_version: ${{ env.terraform_version }}
+        tf_actions_subcommand: 'init'
+        tf_actions_comment: true
+        tf_actions_working_dir: ${{ env.terraform_directory }}/test
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    # Run Terraform validate 
+    - name: Terraform validate
+      uses: hashicorp/terraform-github-actions@master
+      with:
+        tf_actions_version: ${{ env.terraform_version }}
+        tf_actions_subcommand: 'validate'
+        tf_actions_comment: true
+        tf_actions_working_dir: ${{ env.terraform_directory }}/test
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+

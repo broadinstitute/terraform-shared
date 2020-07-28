@@ -3,9 +3,9 @@
 #
 
 resource "random_id" "cloudsql_id" {
-  count = var.enable ? 1 : 0
+  count       = var.enable ? 1 : 0
 
-  byte_length   = 8
+  byte_length = 8
 
   keepers = var.cloudsql_keepers ? {
     database_version = var.cloudsql_version
@@ -15,40 +15,39 @@ resource "random_id" "cloudsql_id" {
 resource "google_sql_database_instance" "cloudsql_instance" {
   count = var.enable ? 1 : 0
 
-  provider              = google.target
-  project               = var.project
-  region                = var.cloudsql_region
-  database_version      = var.cloudsql_version
-  name                  = "${var.cloudsql_name}-${random_id.cloudsql_id[0].hex}"
-  depends_on            = [ random_id.cloudsql_id, var.dependencies, google_service_networking_connection.private_vpc_connection ]
+  provider         = google.target
+  region           = var.cloudsql_region
+  database_version = var.cloudsql_version
+  name             = "${var.cloudsql_name}-${random_id.cloudsql_id[0].hex}"
+  depends_on       = [ random_id.cloudsql_id, var.dependencies, google_service_networking_connection.private_vpc_connection ]
 
   settings {
 
     # POSTGRES CONFIG
-    availability_type   = var.postgres_availability_type
+    availability_type = var.postgres_availability_type
 
-    activation_policy   = var.cloudsql_activation_policy
-    disk_autoresize     = var.cloudsql_disk_autoresize
-    disk_type           = var.cloudsql_disk_type
-    replication_type    = var.cloudsql_replication_type
-    tier                = var.cloudsql_tier
+    activation_policy = var.cloudsql_activation_policy
+    disk_autoresize   = var.cloudsql_disk_autoresize
+    disk_type         = var.cloudsql_disk_type
+    replication_type  = var.cloudsql_replication_type
+    tier              = var.cloudsql_tier
 
     backup_configuration {
-      binary_log_enabled    = false
-      enabled               = true
-      start_time            = "06:00"
+      binary_log_enabled = false
+      enabled            = true
+      start_time         = "06:00"
     }
 
-#    maintenance_window {
-#        day             = "${var.cloudsql_maintenance_window_day}"
-#        hour            = "${var.cloudsql_maintenance_window_hour}"
-#        update_track    = "${var.cloudsql_maintenance_window_update_track}"
-#    }
+    #    maintenance_window {
+    #        day             = "${var.cloudsql_maintenance_window_day}"
+    #        hour            = "${var.cloudsql_maintenance_window_hour}"
+    #        update_track    = "${var.cloudsql_maintenance_window_update_track}"
+    #    }
 
     ip_configuration {
-      ipv4_enabled  = var.private_enable == true ? false : true
+      ipv4_enabled    = var.private_enable == true ? false : true
       private_network = var.private_enable == true ? local.private_network : null
-      require_ssl   = true
+      require_ssl     = true
       dynamic "authorized_networks" {
         for_each = var.cloudsql_authorized_networks
         content {
