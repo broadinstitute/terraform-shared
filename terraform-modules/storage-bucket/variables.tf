@@ -1,6 +1,12 @@
+variable "enable" {
+  type        = bool
+  description = "Enable flag for this module. If set to false, no resources will be created."
+  default     = true
+}
+
 variable "bucket_name" {
   description = "The name of the bucket."
-  type = string
+  type        = string
 }
 
 variable "versioning" {
@@ -23,7 +29,7 @@ variable "storage_class" {
 
 # ACL names and members
 variable "bindings" {
-  type = map(object({role = string, members = list(string)}))
+  type = map(object({ role = string, members = list(string) }))
 }
 
 variable "retention_policy" {
