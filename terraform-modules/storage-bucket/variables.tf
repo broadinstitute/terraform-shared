@@ -1,11 +1,11 @@
 variable "bucket_name" {
   description = "The name of the bucket."
-  type = string
+  type        = string
 }
 
 variable "versioning" {
   description = "Optional boolean to define versioning of the bucket. defaults to false."
-  type        = string
+  type        = bool
   default     = false
 }
 
@@ -23,7 +23,7 @@ variable "storage_class" {
 
 # ACL names and members
 variable "bindings" {
-  type = map(object({role = string, members = list(string)}))
+  type = map(object({ role = string, members = list(string) }))
 }
 
 variable "retention_policy" {
