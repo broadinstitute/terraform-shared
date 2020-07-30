@@ -1,5 +1,5 @@
 module "postgres" {
-  source = "github.com/broadinstitute/terraform-shared.git//terraform-modules/cloudsql-postgres?ref=hf_postgres_update"
+  source = "github.com/broadinstitute/terraform-shared.git//terraform-modules/cloudsql-postgres?ref=cloudsql-postgres-1.2.2"
 
   providers = {
     google.target = google
