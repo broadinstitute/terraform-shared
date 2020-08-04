@@ -8,6 +8,9 @@ module "postgres" {
   cloudsql_name              = "${var.instance_id}-wfl"
   cloudsql_version           = "POSTGRES_11"
   cloudsql_tier              = "db-custom-1-3840"
+  cloudsql_instance_labels   = {
+    wfl = "true"
+  }
   postgres_availability_type = "ZONAL"
   app_dbs = {
     default = {
