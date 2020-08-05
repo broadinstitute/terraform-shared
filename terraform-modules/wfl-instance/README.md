@@ -49,4 +49,17 @@ Module uses two providers. One provider is used for all the infrastructure that 
 | wfl-db-connection | PostgreSQL database connection string | string | 
 | wfl-dns-name | FQDN of wfl external IP | string | 
 
+## Labeling
 
+In pursuit of allowing Terraform resources to be better identified by deployment scripts, resources created by this module adopt the following labeling scheme based on the module inputs:
+
+| Key | Value |
+|-----|:-----:|
+| app_name | wfl |
+| instance_id | {instance_id} |
+
+The above scheme means that the following argument can [filter](https://cloud.google.com/sdk/gcloud/reference/topic/filters) `gcloud` list invocations to resources associated with this instance:
+
+```bash
+--filter="labels.app_name=wfl AND labels.instance_id={instance_id}"
+```
