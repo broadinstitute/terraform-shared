@@ -1,8 +1,35 @@
 
-variable dependencies {
-  type        = list
-  default     = []
-  description = "Work-around for Terraform 0.12's lack of support for 'depends_on' in custom modules."
+variable "depends_on_cluster" {
+  type        = string
+  default     = null
+  description = "Specify the module responsible for managing the cluster."
+
+  validation {
+    condition = var.depends_on_cluster != null
+    error_message = "The variable depends_on_cluster was null. You MUST specify what creates the cluster."
+  }
+}
+
+variable "cluster_name" {
+  type        = string
+  default     = null
+  description = "The name of the GKE cluster to use."
+
+  validation {
+    condition     = var.cluster_name != null
+    error_message = "The variable cluster_name was null. You MUST specify the name of the cluster."
+  }
+}
+
+variable "cluster_location" {
+  type        = string
+  default     = null
+  description = "The location of the GKE cluster to use."
+
+  validation {
+    condition     = var.cluster_location != null
+    error_message = "The variable cluster_location was null. You MUST specify the location of the cluster."
+  }
 }
 
 variable "dns_zone" {
@@ -124,4 +151,5 @@ locals {
     app_name = "wfl"
     instance_id = var.instance_id
   }
+  namespace = "${var.instance_id}-wfl"
 }
