@@ -35,6 +35,8 @@ resource "google_storage_bucket" "bucket" {
       }
     }
   }
+
+  labels = var.labels
 }
 
 # create ACLs
