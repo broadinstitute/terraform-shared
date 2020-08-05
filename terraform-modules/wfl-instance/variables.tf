@@ -118,3 +118,10 @@ variable "output_bucket_lifecycle_rules" {
   type        = list(object({ action = any, condition = any }))
   default     = []
 }
+
+locals {
+  labels = {
+    app_name = "wfl"
+    instance_id = var.instance_id
+  }
+}
