@@ -15,4 +15,6 @@ module "postgres" {
       username = "wfl"
     }
   }
+  cloudsql_instance_labels = local.labels
+
 }

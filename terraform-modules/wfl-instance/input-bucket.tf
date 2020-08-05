@@ -12,5 +12,6 @@ module "input-bucket" {
   versioning      = var.input_bucket_versioning
   bindings        = var.input_bucket_bindings
   lifecycle_rules = var.input_bucket_lifecycle_rules
+  labels          = local.labels
 
 }
