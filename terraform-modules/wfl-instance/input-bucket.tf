@@ -1,6 +1,6 @@
 module "input-bucket" {
   # terraform-shared repo
-  source = "github.com/broadinstitute/terraform-shared.git//terraform-modules/storage-bucket?ref=storage-bucket-0.0.2"
+  source = "github.com/broadinstitute/terraform-shared.git//terraform-modules/storage-bucket?ref=jack-r-warren/GH-877-wfl-instance-identification"
 
   providers = {
     google = google.storage_provider
