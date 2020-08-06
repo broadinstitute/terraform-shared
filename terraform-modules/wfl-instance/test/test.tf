@@ -12,4 +12,7 @@ module "test_wfl_instance" {
 
   instance_id = "test-just-a-test"
 
+  depends_on_cluster = "none"
+  cluster_name       = "No cluster here"
+  cluster_location   = "The North Pole"
 }
