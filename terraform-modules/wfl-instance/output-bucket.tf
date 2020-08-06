@@ -1,6 +1,6 @@
 module "output-bucket" {
   # terraform-shared repo
-  source = "github.com/broadinstitute/terraform-shared.git//terraform-modules/storage-bucket?ref=jack-r-warren/GH-877-wfl-instance-identification"
+  source = "github.com/broadinstitute/terraform-shared.git//terraform-modules/storage-bucket?ref=jack-r-warren%2FGH-877-wfl-instance-identification"
 
   providers = {
     google = google.storage_provider
