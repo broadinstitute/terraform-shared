@@ -18,6 +18,6 @@ provider "kubernetes" {
 
 resource "kubernetes_namespace" "instance_namespace" {
     metadata {
-        name = locals.namespace
+        name = local.namespace
     }
 }
