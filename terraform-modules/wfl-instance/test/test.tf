@@ -12,6 +12,7 @@ module "test_wfl_instance" {
 
   instance_id = "test-just-a-test"
 
+  gke_name           = "none"
   gke_endpoint       = "none"
   gke_ca_certificate = "none"
 }

@@ -16,13 +16,14 @@ NOTES:
 ```
 module "wfl" {                                                       
   # "github.com/" + org + "/" + repo name + ".git" + "//" + path within repo to base dir + "?ref=" + git object ref
-  source = "github.com/broadinstitute/terraform-shared.git//terraform-modules/wfl-instance?ref=wfl-instance-0.0.1"
+  source = "github.com/broadinstitute/terraform-shared.git//terraform-modules/wfl-instance?ref=wfl-instance-0.0.3"
 
   instance_id        = "my-wfl"         
   project            = "google-project"         
   owner              = "my-name"
 
-  gke_endpoint               = module.my_k8s_master.endpoint
+  gke_name           = module.my_k8s_master.name
+  gke_endpoint       = module.my_k8s_master.endpoint
   gke_ca_certificate = module.my_k8s_master.ca_certificate
 }                                                                        
 ```
@@ -69,9 +70,12 @@ In pursuit of allowing Terraform resources to be better identified by deployment
 |-----|:-----:|
 | app_name | wfl |
 | instance_id | {instance_id} |
+| app_cluster | {gke_name} |
 
 The above scheme means that the following argument can [filter](https://cloud.google.com/sdk/gcloud/reference/topic/filters) `gcloud` list invocations to resources associated with this instance:
 
 ```bash
 --filter="labels.app_name=wfl AND labels.instance_id={instance_id}"
 ```
+
+The `app_cluster` field is excluded from the above because it is meant less for filtering and more for resolving what cluster has the namespace configured.

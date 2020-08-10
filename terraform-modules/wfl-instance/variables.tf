@@ -113,6 +113,17 @@ variable "output_bucket_lifecycle_rules" {
   default     = []
 }
 
+variable "gke_name" {
+  description = "The name output from the module that makes the GKE cluster."
+  type        = string
+  default     = null
+
+  validation {
+    condition     = var.gke_name != null
+    error_message = "The variable gke_name was null. You MUST provide the name of the cluster."
+  }
+}
+
 variable "gke_endpoint" {
   description = "The endpoint output from the module that makes the GKE cluster."
   type        = string
@@ -139,6 +150,7 @@ locals {
   labels = {
     app_name = "wfl"
     instance_id = var.instance_id
+    app_cluster = var.gke_name
   }
   namespace = "${var.instance_id}-wfl"
 }
