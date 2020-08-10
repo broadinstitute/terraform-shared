@@ -1,6 +1,6 @@
 module "input-bucket" {
   # terraform-shared repo
-  source = "github.com/broadinstitute/terraform-shared.git//terraform-modules/storage-bucket?ref=storage-bucket-0.0.2"
+  source = "github.com/broadinstitute/terraform-shared.git//terraform-modules/storage-bucket?ref=storage-bucket-0.0.3"
 
   providers = {
     google = google.storage_provider
@@ -12,5 +12,6 @@ module "input-bucket" {
   versioning      = var.input_bucket_versioning
   bindings        = var.input_bucket_bindings
   lifecycle_rules = var.input_bucket_lifecycle_rules
+  labels          = local.labels
 
 }

@@ -30,3 +30,6 @@ output wfl-instance {
   }"
 }
 
+output wfl-kubernetes-namespace {
+  value = local.namespace
+}

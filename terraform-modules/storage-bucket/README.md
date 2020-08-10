@@ -52,6 +52,10 @@
     }
   }
 
+  labels = {
+    key = "value"
+  }
+
 ```
 ## Inputs
 | Name | Description | Type | Default | Required |
@@ -64,6 +68,7 @@
 | location | Bucket location | string | "US" | no |
 | lifecycle_rules | List of lifecycle rules to configure | object | null | no | 
 | retention_policy | Configuration of the bucket's data retention policy for how long obje cts in the bucket should be retained. | object | null | no | 
+| labels | A set of key/value label pairs to assign to the bucket | map | null | no |
 
 ## Outputs
 

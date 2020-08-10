@@ -1,10 +1,4 @@
 
-variable dependencies {
-  type        = list
-  default     = []
-  description = "Work-around for Terraform 0.12's lack of support for 'depends_on' in custom modules."
-}
-
 variable "dns_zone" {
   type    = string
   default = null
@@ -117,4 +111,46 @@ variable "output_bucket_lifecycle_rules" {
   description = "The bucket's Lifecycle Rules configuration."
   type        = list(object({ action = any, condition = any }))
   default     = []
+}
+
+variable "gke_name" {
+  description = "The name output from the module that makes the GKE cluster."
+  type        = string
+  default     = null
+
+  validation {
+    condition     = var.gke_name != null
+    error_message = "The variable gke_name was null. You MUST provide the name of the cluster."
+  }
+}
+
+variable "gke_endpoint" {
+  description = "The endpoint output from the module that makes the GKE cluster."
+  type        = string
+  default     = null
+
+  validation {
+    condition     = var.gke_endpoint != null
+    error_message = "The variable gke_endpoint was null. You MUST provide the endpoint created for the cluster."
+  }
+}
+
+variable "gke_ca_certificate" {
+  description = "The certificate output from the module that makes the GKE cluster."
+  type        = string
+  default     = null
+
+  validation {
+    condition     = var.gke_ca_certificate != null
+    error_message = "The variable gke_ca_certificate was null. You MUST provide the certificate created for the cluster."
+  }
+}
+
+locals {
+  labels = {
+    app_name = "wfl"
+    instance_id = var.instance_id
+    app_cluster = var.gke_name
+  }
+  namespace = "${var.instance_id}-wfl"
 }
