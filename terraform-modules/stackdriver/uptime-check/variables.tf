@@ -25,8 +25,31 @@ variable "service" {
 
 locals {
   check_name = "${var.service}-uptime"
+  port       = var.https_enabled ? "443" : "80"
 }
 
 #
 # Uptime Check Configuration Vars
 # 
+variable "path" {
+  type        = string
+  description = "The URI path to the service's status endpoint"
+  default     = "/status"
+}
+
+variable "https_enabled" {
+  type        = bool
+  description = "Flag to enable tls for the uptime check"
+  default     = true
+}
+
+variable "resource_type" {
+  type        = string
+  description = "The GCP resource type that the uptime check will monitor. Defaults to checking a fqdn"
+  default     = "uptime_url"
+}
+
+variable "fqdn" {
+  type        = string
+  description = "The fully qualified domain name to be used by the uptime check"
+}
