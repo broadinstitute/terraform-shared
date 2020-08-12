@@ -53,3 +53,19 @@ variable "fqdn" {
   type        = string
   description = "The fully qualified domain name to be used by the uptime check"
 }
+
+#
+# Notification Channel Vars
+#
+
+variable "alert_type" {
+  type        = string
+  description = "The platform an alert will be sent to if the uptime check fails ie: slack, pagerduty etc"
+  default     = "slack"
+}
+
+variable "slack_channel" {
+  type        = string
+  description = "The slack channel the alert should fire to"
+  default     = ""
+}
