@@ -64,7 +64,7 @@ variable "alert_type" {
   default     = "slack"
 }
 
-variable "slack_channel" {
+variable "channel_name" {
   type        = string
   description = "The slack channel the alert should fire to"
   default     = ""
