@@ -1,5 +1,5 @@
 locals {
-  uptime_metric = "metric.type=\"monitoring.googleapis.com/uptime_check/check_passed\" resource.type=\"uptime_url\" metric.label.\"check_id\"=\"${google_monitoring_uptime_check_config.uptime_check.uptime_check_id}\""
+  uptime_metric = "metric.type=\"monitoring.googleapis.com/uptime_check/check_passed\" resource.type=\"uptime_url\" metric.label.\"check_id\"=\"${google_monitoring_uptime_check_config.uptime_check[0].uptime_check_id}\""
 }
 
 resource "google_monitoring_alert_policy" "uptime_alert" {
