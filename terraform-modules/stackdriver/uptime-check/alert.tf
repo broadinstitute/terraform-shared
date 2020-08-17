@@ -15,7 +15,7 @@ resource "google_monitoring_alert_policy" "uptime_alert" {
 
     condition_threshold {
       threshold_value = 1
-      comparison      = "COMPARISON_GE"
+      comparison      = "COMPARISON_GT"
       duration        = "300s"
       filter          = local.uptime_metric
 
