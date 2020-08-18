@@ -69,3 +69,23 @@ variable "channel_name" {
   description = "The slack channel the alert should fire to"
   default     = ""
 }
+
+# Metric vars
+
+variable "combiner" {
+  type        = string
+  description = "Logical operator applied to conditions associated with an alert. Default behavior is to alert if any condition triggers"
+  default     = "OR"
+}
+
+variable "comparison" {
+  type        = string
+  description = "Comparison between a threshold value and current time series value that determines if an alert should fire. Valid inputs are COMPARISON_GT and COMPARISON_LT. Default behavior is to trigger alert if current value is above a threshold"
+  default     = "COMPARISON_GT"
+}
+
+variable "duration" {
+  type        = string
+  description = "Amount of time a series must violate a theshold before an alert triggers. Default is to trigger alert after 5 minutes violating a threshold"
+  default     = "300s"
+}

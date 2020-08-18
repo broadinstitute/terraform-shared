@@ -7,7 +7,7 @@ resource "google_monitoring_alert_policy" "uptime_alert" {
   provider = google.target
 
   display_name          = "${var.service}-unavailable"
-  combiner              = "OR"
+  combiner              = var.combiner
   notification_channels = []
 
   conditions {
@@ -15,11 +15,12 @@ resource "google_monitoring_alert_policy" "uptime_alert" {
 
     condition_threshold {
       threshold_value = 1
-      comparison      = "COMPARISON_GT"
-      duration        = "300s"
+      comparison      = var.comparison
+      duration        = var.duration
       filter          = local.uptime_metric
 
       aggregations {
+        # These values are specific to this metric and should not be adjusted 
         per_series_aligner   = "ALIGN_NEXT_OLDER"
         alignment_period     = "600s"
         group_by_fields      = []
