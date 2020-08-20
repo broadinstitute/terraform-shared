@@ -19,4 +19,15 @@ resource "google_monitoring_notification_channel" "slack_channel" {
   }
 }
 
-
+# Used for ssl alert
+resource "google_monitoring_notification_channel" "ssl_channel" {
+  count   = var.enabled ? 1 : 0
+  type    = "slack"
+  project = var.google_project
+  labels = {
+    "channel_name" = var.ssl_alert_channel
+  }
+  sensitive_labels {
+    auth_token = data.vault_generic_secret.slack_token.data["key"]
+  }
+}

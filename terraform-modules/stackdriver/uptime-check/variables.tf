@@ -70,6 +70,12 @@ variable "channel_name" {
   default     = ""
 }
 
+variable "ssl_alert_channel" {
+  type        = string
+  description = "The slack channel where ssl expiration alerts should go"
+  default     = "#ap-devops"
+}
+
 # Metric vars
 
 variable "combiner" {
