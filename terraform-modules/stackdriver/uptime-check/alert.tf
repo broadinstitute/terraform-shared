@@ -10,7 +10,7 @@ resource "google_monitoring_alert_policy" "uptime_alert" {
 
   display_name          = "${var.service}-availability"
   combiner              = var.combiner
-  notification_channels = [resource.google_monitoring_notification_channel.slack_channel[0].id]
+  notification_channels = [google_monitoring_notification_channel.slack_channel[0].id]
 
   conditions {
     display_name = "${var.service}-uptime"
