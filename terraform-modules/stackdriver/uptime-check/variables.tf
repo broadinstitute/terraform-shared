@@ -89,3 +89,15 @@ variable "duration" {
   description = "Amount of time a series must violate a theshold before an alert triggers. Default is to trigger alert after 5 minutes violating a threshold"
   default     = "300s"
 }
+
+variable "latency_threshold" {
+  type        = string
+  description = "Latency in ms that must be exceeded for 5 minutes to trigger the alert"
+  default     = "2500"
+}
+
+variable "ssl_threshold" {
+  type        = string
+  description = "number of days before a particular ssl expires an alert will trigger"
+  default     = "45"
+}
