@@ -56,7 +56,7 @@ resource "google_monitoring_alert_policy" "ssl_alert" {
 
   display_name          = "${var.service}-ssl-expiration"
   combiner              = var.combiner
-  notification_channels = [google_monitoring_notification_channel.devops_channel[0].id]
+  notification_channels = [google_monitoring_notification_channel.ssl_channel[0].id]
 
   conditions {
     display_name = "${var.service}-ssl-expiration"
