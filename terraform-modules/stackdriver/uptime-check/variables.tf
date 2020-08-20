@@ -101,3 +101,7 @@ variable "ssl_threshold" {
   description = "number of days before a particular ssl expires an alert will trigger"
   default     = "45"
 }
+
+variable "vault_addr" {
+  default = "https://clotho.broadinstitute.org:8200"
+}
