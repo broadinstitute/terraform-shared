@@ -8,6 +8,7 @@ data "vault_generic_secret" "slack_token" {
 }
 
 resource "google_monitoring_notification_channel" "slack_channel" {
+  count   = var.enable ? 1 : 0
   type    = "slack"
   project = var.google_project
   labels = {
