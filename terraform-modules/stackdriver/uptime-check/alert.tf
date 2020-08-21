@@ -44,7 +44,7 @@ resource "google_monitoring_alert_policy" "uptime_alert" {
         per_series_aligner   = "ALIGN_MEAN"
         alignment_period     = "60s"
         group_by_fields      = []
-        cross_series_reducer = "REDUCE_NONE"
+        cross_series_reducer = "REDUCE_MEAN"
       }
     }
   }
