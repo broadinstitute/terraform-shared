@@ -28,8 +28,8 @@ This documentation is generated with [terraform-docs](https://github.com/terrafo
 
 | Name | Version |
 |------|---------|
-| google.target | ~> 3.9 |
 | google | ~> 3.9 |
+| google.target | ~> 3.9 |
 
 ## Inputs
 
@@ -44,7 +44,7 @@ This documentation is generated with [terraform-docs](https://github.com/terrafo
 | resource\_type | The GCP resource type that the uptime check will monitor. Defaults to checking a fqdn | `string` | `"uptime_url"` | no |
 | fqdn | The fully qualified domain name to be used by the uptime check | `string` | n/a | yes |
 | channel\_names | The slack channel the alert should fire to | `list(string)` | `[]` | no |
-| ssl\_alert\_channel | The slack channel where ssl expiration alerts should go | `string` | `""` | no |
+| ops\_alert\_channel | The slack channel where ssl expiration alerts should go | `string` | `""` | no |
 | enable\_pagerduty | Boolean flag to indicate if DSDE pagerduty will be triggered when one of associated alerts fires. Can only be enabled in broad-dsde-prod | `bool` | `false` | no |
 | pagerduty\_channel | display name of the pagerduty integration in stackdriver | `string` | `""` | no |
 | slack\_token | Oauth token used to communicate with slack api. | `string` | n/a | yes |
