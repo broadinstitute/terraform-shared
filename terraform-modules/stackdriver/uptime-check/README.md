@@ -35,7 +35,7 @@ This documentation is generated with [terraform-docs](https://github.com/terrafo
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| enabled | enable flag for uptime check module | `bool` | n/a | yes |
+| enabled | enable flag for uptime check module | `bool` | `true` | no |
 | google\_project | Google project in which to create the uptime check and notification channels | `string` | n/a | yes |
 | timeout | The number of seconds before the check will automatically fail after not receiving a response | `string` | `"10s"` | no |
 | service | The name of the service uptime check will monitor | `string` | n/a | yes |
