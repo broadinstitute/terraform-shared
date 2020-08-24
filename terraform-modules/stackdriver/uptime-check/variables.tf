@@ -58,12 +58,6 @@ variable "fqdn" {
 # Notification Channel Vars
 #
 
-variable "alert_type" {
-  type        = string
-  description = "The platform an alert will be sent to if the uptime check fails ie: slack, pagerduty etc"
-  default     = "slack"
-}
-
 variable "channel_names" {
   type        = list(string)
   description = "The slack channel the alert should fire to"
@@ -73,7 +67,7 @@ variable "channel_names" {
 variable "ssl_alert_channel" {
   type        = string
   description = "The slack channel where ssl expiration alerts should go"
-  default     = "#ap-devops"
+  default     = ""
 }
 
 variable "enable_pagerduty" {
@@ -86,6 +80,11 @@ variable "pagerduty_channel" {
   type        = string
   description = "display name of the pagerduty integration in stackdriver"
   default     = ""
+}
+
+variable "slack_token" {
+  type        = string
+  description = "Oauth token used to communicate with slack api."
 }
 
 # Metric vars
@@ -118,8 +117,4 @@ variable "ssl_threshold" {
   type        = string
   description = "number of days before a particular ssl expires an alert will trigger"
   default     = "45"
-}
-
-variable "vault_addr" {
-  default = "https://clotho.broadinstitute.org:8200"
 }
