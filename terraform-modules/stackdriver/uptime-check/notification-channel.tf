@@ -12,7 +12,7 @@ locals {
 }
 
 data "google_monitoring_notification_channel" "pagerduty" {
-  count        = var.enable_pagerduty && locals.is_prod ? 1 : 0
+  count        = var.enable_pagerduty && local.is_prod ? 1 : 0
   display_name = var.pagerduty_channel
 }
 

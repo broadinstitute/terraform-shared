@@ -3,5 +3,6 @@ terraform {
 
   required_providers {
     google = "~> 3.9"
+    vault  = "~> 2.12"
   }
 }
