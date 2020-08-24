@@ -76,6 +76,18 @@ variable "ssl_alert_channel" {
   default     = "#ap-devops"
 }
 
+variable "enable_pagerduty" {
+  type        = bool
+  description = "Boolean flag to indicate if DSDE pagerduty will be triggered when one of associated alerts fires. Can only be enabled in broad-dsde-prod"
+  default     = false
+}
+
+variable "pagerduty_channel" {
+  type        = string
+  description = "display name of the pagerduty integration in stackdriver"
+  default     = ""
+}
+
 # Metric vars
 
 variable "combiner" {

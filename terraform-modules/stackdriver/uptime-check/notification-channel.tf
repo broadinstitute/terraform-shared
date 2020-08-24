@@ -7,6 +7,15 @@ data "vault_generic_secret" "slack_token" {
   path = "secret/suitable/terraform/stackdriver/slack-token"
 }
 
+locals {
+  is_prod = var.google_project == "broad-dsde-prod" ? true : false
+}
+
+data "google_monitoring_notification_channel" "pagerduty" {
+  count        = var.enable_pagerduty && locals.is_prod ? 1 : 0
+  display_name = var.pagerduty_channel
+}
+
 resource "google_monitoring_notification_channel" "slack_channel" {
   count   = var.enabled ? 1 : 0
   type    = "slack"
