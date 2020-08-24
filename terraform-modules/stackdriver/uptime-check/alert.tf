@@ -2,7 +2,7 @@ locals {
   uptime_metric         = "metric.type=\"monitoring.googleapis.com/uptime_check/check_passed\" resource.type=\"uptime_url\" metric.label.\"check_id\"=\"${google_monitoring_uptime_check_config.uptime_check[0].uptime_check_id}\""
   latency_metric        = "metric.type=\"monitoring.googleapis.com/uptime_check/request_latency\" resource.type=\"uptime_url\" metric.label.\"check_id\"=\"${google_monitoring_uptime_check_config.uptime_check[0].uptime_check_id}\""
   ssl_metric            = "metric.type=\"monitoring.googleapis.com/uptime_check/time_until_ssl_cert_expires\" resource.type=\"uptime_url\" metric.label.\"check_id\"=\"${google_monitoring_uptime_check_config.uptime_check[0].uptime_check_id}\""
-  notification_channels = var.enable_pagerduty ? concat(google_monitoring_notification_channel.slack_channels, google_monitoring_notification_channel.enable_pagerduty) : google_monitoring_notification_channel.slack_channels
+  notification_channels = var.enable_pagerduty ? concat(google_monitoring_notification_channel.slack_channels, google_monitoring_notification_channel.pagerduty) : google_monitoring_notification_channel.slack_channels
 }
 
 resource "google_monitoring_alert_policy" "uptime_alert" {
