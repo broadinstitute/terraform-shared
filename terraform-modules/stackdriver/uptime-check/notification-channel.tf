@@ -17,9 +17,11 @@ data "google_monitoring_notification_channel" "pagerduty" {
 }
 
 resource "google_monitoring_notification_channel" "slack_channel" {
-  count   = var.enabled ? 1 : 0
-  type    = "slack"
-  project = var.google_project
+  count = var.enabled ? 1 : 0
+
+  display_name = var.channel_name
+  type         = "slack"
+  project      = var.google_project
   labels = {
     "channel_name" = var.channel_name
   }
@@ -30,9 +32,11 @@ resource "google_monitoring_notification_channel" "slack_channel" {
 
 # Used for ssl alert
 resource "google_monitoring_notification_channel" "ssl_channel" {
-  count   = var.enabled ? 1 : 0
-  type    = "slack"
-  project = var.google_project
+  count = var.enabled ? 1 : 0
+
+  display_name = var.ssl_alert_channel
+  type         = "slack"
+  project      = var.google_project
   labels = {
     "channel_name" = var.ssl_alert_channel
   }
