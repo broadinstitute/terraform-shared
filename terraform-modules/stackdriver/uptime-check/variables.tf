@@ -64,7 +64,7 @@ variable "channel_names" {
   default     = []
 }
 
-variable "ssl_alert_channel" {
+variable "ops_alert_channel" {
   type        = string
   description = "The slack channel where ssl expiration alerts should go"
   default     = ""
