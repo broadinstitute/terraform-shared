@@ -30,7 +30,7 @@ resource "google_monitoring_notification_channel" "ssl_channel" {
   type         = "slack"
   project      = var.google_project
   labels = {
-    "channel_name" = var.ssl_alert_channel
+    "channel_name" = var.ops_alert_channel
   }
   sensitive_labels {
     auth_token = var.slack_token
