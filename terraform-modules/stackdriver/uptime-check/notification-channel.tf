@@ -23,10 +23,10 @@ resource "google_monitoring_notification_channel" "slack_channels" {
 }
 
 # Used for ssl alert
-resource "google_monitoring_notification_channel" "ssl_channel" {
+resource "google_monitoring_notification_channel" "ops_channel" {
   count = var.enabled ? 1 : 0
 
-  display_name = var.ssl_alert_channel
+  display_name = var.ops_alert_channel
   type         = "slack"
   project      = var.google_project
   labels = {
