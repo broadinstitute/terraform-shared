@@ -64,10 +64,10 @@ variable "alert_type" {
   default     = "slack"
 }
 
-variable "channel_name" {
-  type        = string
+variable "channel_names" {
+  type        = list(string)
   description = "The slack channel the alert should fire to"
-  default     = ""
+  default     = []
 }
 
 variable "ssl_alert_channel" {

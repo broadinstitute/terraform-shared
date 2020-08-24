@@ -16,14 +16,14 @@ data "google_monitoring_notification_channel" "pagerduty" {
   display_name = var.pagerduty_channel
 }
 
-resource "google_monitoring_notification_channel" "slack_channel" {
-  count = var.enabled ? 1 : 0
+resource "google_monitoring_notification_channel" "slack_channels" {
+  count = var.enabled ? length(var.channel_names) : 0
 
-  display_name = var.channel_name
+  display_name = var.channel_names[count.index]
   type         = "slack"
   project      = var.google_project
   labels = {
-    "channel_name" = var.channel_name
+    "channel_name" = var.channel_names[count.index]
   }
   sensitive_labels {
     auth_token = data.vault_generic_secret.slack_token.data["key"]
