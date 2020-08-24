@@ -23,14 +23,13 @@ This documentation is generated with [terraform-docs](https://github.com/terrafo
 |------|---------|
 | terraform | >= 0.12 |
 | google | ~> 3.9 |
-| vault | ~> 2.12 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| google | ~> 3.9 |
 | google.target | ~> 3.9 |
+| google | ~> 3.9 |
 
 ## Inputs
 
