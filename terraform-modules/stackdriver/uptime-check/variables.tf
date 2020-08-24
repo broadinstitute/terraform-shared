@@ -4,7 +4,8 @@
 
 variable "enabled" {
   type        = bool
-  description = "enable flag for uptime check module "
+  description = "enable flag for uptime check module"
+  default     = true
 }
 
 variable "google_project" {
