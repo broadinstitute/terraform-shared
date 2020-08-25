@@ -22,6 +22,8 @@ resource "google_compute_backend_service" "load-balancer-backend-service-https" 
     group = var.load_balancer_instance_groups
   }
 
+  security_policy = length(var.load_balancer_rules) != 0 ? google_compute_security_policy.policy[0].self_link : null
+
   health_checks = google_compute_health_check.https.*.self_link
 }
 
