@@ -5,7 +5,7 @@ resource "google_compute_security_policy" "policy" {
   name = "${var.load_balancer_name}-policy"
 
   rule {
-    action   = "deny"
+    action   = "deny(403)"
     priority = "2147483647"
     match {
       versioned_expr = "SRC_IPS_V1"
