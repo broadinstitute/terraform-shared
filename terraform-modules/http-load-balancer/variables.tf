@@ -15,6 +15,12 @@ variable "load_balancer_ssl_policy_create" {
   default = 1
 }
 
+variable "load_balancer_ssl_policy_profile" {
+  type = string
+  description = "SSL Policy profile"
+  default = "MODERN"
+}
+
 # enable/disable var
 variable "enable_flag" {
   default = 1
@@ -39,6 +45,18 @@ variable "load_balancer_ssl_policy_enable" {
 variable "load_balancer_instance_groups" {
   description = "Comma separated list of google self_links"
   default     = ""
+}
+
+variable "load_balancer_rules" {
+  description = "List of security policy rules to apply to LB"
+  type = set(object({
+      action=string,
+      priority=string,
+      ip_ranges=list(string),
+      description=string
+    })
+  )
+  default = []
 }
 
 # Health check vars
