@@ -20,6 +20,7 @@ resource "google_bigquery_dataset" "logs" {
 }
 
 resource "google_bigquery_dataset_access" "access" {
+  count         = var.enable_bigquery
   dataset_id    = google_bigquery_dataset.logs[0].dataset_id
   role          = "OWNER"
   special_group = "allAuthenticatedUsers"
