@@ -1,6 +1,6 @@
 resource "google_compute_address" "static" {
   provider = google.default
-  count    = var.count
+  count    = var.runners
 
   name = "github-runner-${var.repo}-${count.index + 1}-ip"
 }
@@ -15,7 +15,7 @@ data "google_compute_image" "debian" {
 resource "google_compute_instance" "runner" {
   provider   = google.default
   depends_on = [google_compute_address.static]
-  count      = var.count
+  count      = var.runners
 
   name                      = "github-runner-${var.repo}-${count.index + 1}"
   description               = "GitHub Actions runner ${count.index + 1} for broadinstitute/${var.repo}"
