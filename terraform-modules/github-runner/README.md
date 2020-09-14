@@ -24,7 +24,17 @@ module "test_runner" {
 ```
 
 ## Inputs
-More to be documented here once this is code-complete...
+| Name | Description | Type | Default | Required |
+|------|-------------|:----:|:-----:|:-----:|
+| vault-role-id-path | A `gs://...` path that the instance's service account can read the vault role ID from | string | NULL | yes |
+| vault-secret-id-path | A `gs://...` path that the instance's service account can read the vault secret ID from | string | NULL | yes |
+| github-personal-access-token-path | A `secret/...` path within Vault to use to get a GH PAT to register the runner | string | NULL | yes |
+| repo | The name of the GitHub repo to be a runner for, without the owner prefix | string | NULL | yes |
+| service-account | he email of the service account to use on the instance | string | NULL | yes |
+| zone | The zone to provision the GCE instance in | string | "us-central1-a" | no |
+| machine-type | The type of GCE instance to provision | string | "n1-standard-1" | no |
+| boot-disk-size | The size of the GCE instance boot disk in gigabytes | number | 10 | no |
+| runners | The number of individual instances to provision | number | 1 | no |
 
 ## Limitations
 
