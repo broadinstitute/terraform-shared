@@ -25,7 +25,7 @@ resource "google_compute_instance" "runner" {
 
   service_account {
     email  = var.service-account
-    scopes = ["default"]
+    scopes = ["cloud-platform", "userinfo-email", "https://www.googleapis.com/auth/userinfo.profile"]
   }
 
   network_interface {
