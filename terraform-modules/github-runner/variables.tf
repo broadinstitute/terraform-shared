@@ -48,6 +48,12 @@ variable "service-account" {
   }
 }
 
+variable "service-account-scopes" {
+  type        = list(string)
+  description = "Scopes for the service account to have on the instance"
+  default     = ["cloud-platform", "userinfo-email", "https://www.googleapis.com/auth/userinfo.profile"]
+}
+
 variable "zone" {
   type        = string
   description = "The zone to provision the GCE instance in"
