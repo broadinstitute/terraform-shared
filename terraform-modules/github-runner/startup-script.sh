@@ -19,11 +19,6 @@ if [[ $SECRET_ID_PATH == gs* ]]; then
     SECRET_ID_PATH=${$HOME/vault-agent/secret-id}
 fi
 
-if [[ $REPO == */* ]]; then
-    echo "REPO must not be prefixed with the owner, see TF module docs"
-    exit 1
-fi
-
 # Install software
 apt-get update
 apt-get -y install \
