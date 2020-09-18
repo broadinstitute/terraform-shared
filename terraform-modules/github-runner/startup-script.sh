@@ -8,6 +8,7 @@ SECRET_ID_PATH=$(curl http://metadata.google.internal/computeMetadata/v1/instanc
 REPO=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/repo -H "Metadata-Flavor: Google")
 GITHUB_PAT_PATH=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/github-pat-secret-path -H "Metadata-Flavor: Google")
 RUNNER_NAME=$(curl "http://metadata.google.internal/computeMetadata/v1/instance/name" -H "Metadata-Flavor: Google")
+RUNNER_LABELS=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/runner-labels -H "Metadata-Flavor: Google")
 
 if [[ $ROLE_ID_PATH == gs* ]]; then
     gsutil cp $ROLE_ID_PATH $HOME/vault-agent/role-id
@@ -99,7 +100,12 @@ tar xzf "./${RUNNER_FILE}" -C runner --overwrite
 
 chown -R actions ./runner
 pushd ./runner
-./config.sh --unattended --url "https://github.com/${REPO}" --token $REGISTRATION_TOKEN --name $RUNNER_NAME
+
+if [[ ! -z "$RUNNER_LABELS" ]]; then
+    ./config.sh --unattended --url "https://github.com/${REPO}" --token $REGISTRATION_TOKEN --name $RUNNER_NAME --labels $RUNNER_LABELS
+else
+    ./config.sh --unattended --url "https://github.com/${REPO}" --token $REGISTRATION_TOKEN --name $RUNNER_NAME
+fi
 
 ./svc.sh install actions
 ./svc.sh start

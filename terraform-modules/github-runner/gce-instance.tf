@@ -1,8 +1,16 @@
+resource "random_id" "id" {
+  byte_length = 8
+}
+
+locals {
+  base-name = substr("gh-runner-${var.repo}-${random_id.id}", 0, 58)
+}
+
 resource "google_compute_address" "static" {
   provider = google.default
   count    = var.runners
 
-  name = "github-runner-${var.repo}-${count.index + 1}-ip"
+  name = "${local.base-name}-${count.index + 1}-ip"
 }
 
 data "google_compute_image" "debian" {
@@ -17,7 +25,7 @@ resource "google_compute_instance" "runner" {
   depends_on = [google_compute_address.static]
   count      = var.runners
 
-  name                      = "github-runner-${var.repo}-${count.index + 1}"
+  name                      = "${local.base-name}-${count.index + 1}"
   description               = "GitHub Actions runner ${count.index + 1} for broadinstitute/${var.repo}"
   machine_type              = var.machine-type
   zone                      = var.zone
@@ -49,6 +57,7 @@ resource "google_compute_instance" "runner" {
     github-pat-secret-path = var.github-personal-access-token-path
     repo                   = "broadinstitute/${var.repo}"
     shutdown-script        = file("${path.module}/shutdown-script.sh")
+    runner-labels          = join(",", var.runner-labels)
   }
 
   metadata_startup_script = file("${path.module}/startup-script.sh")

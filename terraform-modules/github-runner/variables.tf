@@ -38,6 +38,12 @@ variable "repo" {
   }
 }
 
+variable "runner-labels" {
+  type = set(string)
+  description = "Labels to put on the runner in GitHub"
+  default = []
+}
+
 variable "service-account" {
   type        = string
   description = "The email of the service account to use on the instance"
