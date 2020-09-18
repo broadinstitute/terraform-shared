@@ -4,7 +4,7 @@ variable "vault-role-id-path" {
 
   validation {
     condition     = length(regexall("^gs://.*", var.vault-role-id-path)) == 1
-    error_message = "The path to a vault role ID must be given as a `gs://...` path"
+    error_message = "The path to a vault role ID must be given as a `gs://...` path."
   }
 }
 
@@ -14,7 +14,7 @@ variable "vault-secret-id-path" {
 
   validation {
     condition     = length(regexall("^gs://.*", var.vault-secret-id-path)) == 1
-    error_message = "The path to a vault secret ID must be given as a `gs://...` path"
+    error_message = "The path to a vault secret ID must be given as a `gs://...` path."
   }
 }
 
@@ -23,8 +23,8 @@ variable "github-personal-access-token-path" {
   description = "A `secret/...` path within Vault to use to get a GH PAT to register the runner"
 
   validation {
-    condition     = length(regexall("^secret/.*", var.vault-secret-id-path)) == 1
-    error_message = "The path to a Vault Secret ID must be given as a `gs://...` path"
+    condition     = length(regexall("^secret/.*", var.github-personal-access-token-path)) == 1
+    error_message = "The path to a Vault Secret ID must be given as a `gs://...` path."
   }
 }
 
@@ -34,7 +34,7 @@ variable "repo" {
 
   validation {
     condition     = length(regexall("^[^/]*$", var.repo)) == 1
-    error_message = "The repo must not include the owner"
+    error_message = "The repo must not include the owner."
   }
 }
 
@@ -50,7 +50,7 @@ variable "service-account" {
 
   validation {
     condition     = length(regexall("^[^@]+@[^@]+$", var.service-account)) == 1
-    error_message = "The service account must be given as a full email"
+    error_message = "The service account must be given as a full email."
   }
 }
 
