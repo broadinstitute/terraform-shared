@@ -51,7 +51,7 @@ resource "google_compute_instance" "runner" {
     auto_delete = true
   }
 
-  metadata {
+  metadata = {
     role-id-path           = var.vault-role-id-path
     secret-id-path         = var.vault-secret-id-path
     github-pat-secret-path = var.github-personal-access-token-path
