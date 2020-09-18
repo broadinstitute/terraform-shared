@@ -3,7 +3,7 @@ resource "random_id" "id" {
 }
 
 locals {
-  base-name = substr("gh-runner-${var.repo}-${random_id.id}", 0, 58)
+  base-name = substr("gh-runner-${var.repo}-${random_id.id.hex}", 0, 58)
 }
 
 resource "google_compute_address" "static" {
