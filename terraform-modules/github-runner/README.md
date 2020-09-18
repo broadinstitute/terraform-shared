@@ -9,7 +9,7 @@ module "test_runner" {
   source = "github.com/broadinstitute/terraform-shared.git//terraform-modules/github-runner?ref=github-runner-0.0.1"
 
   providers = {
-    default = google
+    google = google.broad-gotc-dev
   }
 
   # Bucket names containing "google" are globally invalid,
@@ -21,7 +21,7 @@ module "test_runner" {
   github-personal-access-token-path = "secret/dsde/gotc/some/path"
 
   repo            = "gotc-deploy"
-  service-account = "ci-prod@broad-gotc-prod.iam.gserviceaccount.com"
+  service-account = "ci-non-prod@broad-gotc-dev.iam.gserviceaccount.com"
 }
 ```
 

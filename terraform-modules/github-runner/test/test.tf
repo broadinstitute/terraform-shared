@@ -1,4 +1,5 @@
 provider "google" {
+  alias   = "broad-gotc-dev"
   project = "broad-gotc-dev"
 }
 
@@ -6,7 +7,7 @@ module "test_runner" {
   source = "../"
 
   providers = {
-    default = google
+    google = google.broad-gotc-dev
   }
 
   # Bucket names containing "google" are globally invalid,
@@ -18,5 +19,5 @@ module "test_runner" {
   github-personal-access-token-path = "secret/dsde/gotc/some/path"
 
   repo            = "gotc-deploy"
-  service-account = "ci-prod@broad-gotc-prod.iam.gserviceaccount.com"
+  service-account = "ci-non-prod@broad-gotc-dev.iam.gserviceaccount.com"
 }

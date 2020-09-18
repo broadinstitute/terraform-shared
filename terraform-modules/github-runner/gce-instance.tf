@@ -7,21 +7,18 @@ locals {
 }
 
 resource "google_compute_address" "static" {
-  provider = google.default
   count    = var.runners
 
   name = "${local.base-name}-${count.index + 1}-ip"
 }
 
 data "google_compute_image" "debian" {
-  provider = google.default
 
   family  = "debian-10"
   project = "debian-cloud"
 }
 
 resource "google_compute_instance" "runner" {
-  provider   = google.default
   depends_on = [google_compute_address.static]
   count      = var.runners
 
