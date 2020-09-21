@@ -12,10 +12,10 @@ resource "google_compute_address" "static" {
   name = "${local.base-name}-${count.index + 1}-ip"
 }
 
-data "google_compute_image" "debian" {
+data "google_compute_image" "ubuntu" {
 
-  family  = "debian-10"
-  project = "debian-cloud"
+  family  = "ubuntu-2004-lts"
+  project = "ubuntu-os-cloud"
 }
 
 resource "google_compute_instance" "runner" {
@@ -43,7 +43,7 @@ resource "google_compute_instance" "runner" {
   boot_disk {
     initialize_params {
       size  = var.boot-disk-size
-      image = data.google_compute_image.debian.self_link
+      image = data.google_compute_image.ubuntu.self_link
     }
     auto_delete = true
   }
