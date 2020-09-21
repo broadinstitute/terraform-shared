@@ -3,6 +3,7 @@
 set -e
 
 # Arguments from metadata
+ACTIONS_USER="actions"
 ROLE_ID_PATH=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/role-id-path -H "Metadata-Flavor: Google")
 SECRET_ID_PATH=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/secret-id-path -H "Metadata-Flavor: Google")
 REPO=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/repo -H "Metadata-Flavor: Google")
@@ -20,37 +21,35 @@ if [[ $SECRET_ID_PATH == gs* ]]; then
     SECRET_ID_PATH="$HOME/vault-agent/secret-id"
 fi
 
+# Configure users
+sudo groupadd -f docker
+id -u $ACTIONS_USER &>/dev/null || sudo useradd -m $ACTIONS_USER --groups docker
+newgrp docker
+
+# Use gcloud as docker credential helper
+sudo -u $ACTIONS_USER bash -c 'gcloud auth configure-docker --quiet'
+
 # Install software
-apt-get update
-apt-get -y install \
+sudo apt-get update
+sudo apt-get -y install \
     apt-transport-https \
     ca-certificates \
     gnupg-agent \
     software-properties-common \
     jq
 
-curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
-add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
+curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
 
-curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add -
-apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
 
-apt-get update
-apt-get remove \
-    docker \
-    docker-engine \
-    docker.io \
-    containerd \
-    runc
-apt-get -y install \
+sudo apt-get update
+sudo apt-get -y install \
     docker-ce \
     docker-ce-cli \
     containerd.io \
     vault
-
-# Configure actions user
-groupadd -f docker
-id -u actions &>/dev/null || useradd -m actions --groups docker
 
 # Configure Vault agent
 mkdir -p $HOME/vault-agent
@@ -104,7 +103,7 @@ RUNNER_FILE="actions-runner-linux-x64-${LATEST_VERSION}.tar.gz"
 curl -O -L "https://github.com/actions/runner/releases/download/${LATEST_VERSION_LABEL}/${RUNNER_FILE}"
 tar xzf "./${RUNNER_FILE}" -C runner --overwrite
 
-chown -R actions ./runner
+chown -R $ACTIONS_USER ./runner
 pushd ./runner
 
 if [[ ! -z "$RUNNER_LABELS" ]]; then
@@ -113,5 +112,5 @@ else
     ./config.sh --unattended --url "https://github.com/${REPO}" --token $REGISTRATION_TOKEN --name $RUNNER_NAME
 fi
 
-./svc.sh install actions
+./svc.sh install $ACTIONS_USER
 ./svc.sh start
