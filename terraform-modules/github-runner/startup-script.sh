@@ -12,12 +12,12 @@ RUNNER_LABELS=$(curl http://metadata.google.internal/computeMetadata/v1/instance
 
 if [[ $ROLE_ID_PATH == gs* ]]; then
     gsutil cp $ROLE_ID_PATH $HOME/vault-agent/role-id
-    ROLE_ID_PATH=${$HOME/vault-agent/role-id}
+    ROLE_ID_PATH="$HOME/vault-agent/role-id"
 fi
 
 if [[ $SECRET_ID_PATH == gs* ]]; then
     gsutil cp $SECRET_ID_PATH $HOME/vault-agent/secret-id
-    SECRET_ID_PATH=${$HOME/vault-agent/secret-id}
+    SECRET_ID_PATH="$HOME/vault-agent/secret-id"
 fi
 
 # Install software
