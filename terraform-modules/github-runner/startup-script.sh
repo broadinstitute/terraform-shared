@@ -22,6 +22,12 @@ fi
 
 # Install software
 apt-get update
+apt-get remove \
+    docker \
+    docker-engine \
+    docker.io \
+    containerd \
+    runc
 apt-get -y install \
     apt-transport-https \
     ca-certificates \
