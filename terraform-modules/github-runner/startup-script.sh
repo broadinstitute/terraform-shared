@@ -35,6 +35,8 @@ EOF
 
 # Use gcloud as docker credential helper
 sudo -u $ACTIONS_USER bash -c 'gcloud auth configure-docker --quiet'
+sudo ln -s /snap/google-cloud-sdk/current/bin/docker-credential-gcloud /usr/local/bin
+
 
 # Install software
 sudo apt-get update
@@ -87,12 +89,12 @@ auto_auth {
     }
 }
 EOF
-chown $ACTIONS_USER "/home/$ACTIONS_USER/.vault-token"
 chmod 600 $HOME/vault-agent/*
 rm -f $HOME/vault-agent.log
 nohup vault agent -config=$HOME/vault-agent/vault-agent.hcl &>$HOME/vault-agent.log &
 echo "Vault agent logs available in $HOME/vault-agent.log, sleeping to let it come online..."
 sleep 10s
+chown $ACTIONS_USER "/home/$ACTIONS_USER/.vault-token"
 
 # Configure auto-restart
 echo "0 3 * * * /sbin/shutdown -r now" | crontab -
