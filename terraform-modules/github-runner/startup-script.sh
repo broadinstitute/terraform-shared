@@ -121,4 +121,5 @@ else
     sudo -u $ACTIONS_USER -H ./config.sh --unattended --url "https://github.com/${REPO}" --token $REGISTRATION_TOKEN --name $RUNNER_NAME
 fi
 
-sudo -u $ACTIONS_USER -H sh -c "./svc.sh install $ACTIONS_USER && ./svc.sh start"
+./svc.sh install $ACTIONS_USER 
+./svc.sh start

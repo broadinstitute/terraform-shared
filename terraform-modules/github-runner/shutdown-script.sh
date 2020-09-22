@@ -16,6 +16,7 @@ REMOVAL_TOKEN=$(curl -s -X POST https://api.github.com/repos/${REPO}/actions/run
 
 pushd ./runner
 
-sudo -u $ACTIONS_USER -H sh -c "./svc.sh stop && ./svc.sh uninstall"
+./svc.sh stop
+./svc.sh uninstall
 
 sudo -u $ACTIONS_USER -H ./config.sh remove --token $REMOVAL_TOKEN
