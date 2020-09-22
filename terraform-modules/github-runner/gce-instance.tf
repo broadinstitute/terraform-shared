@@ -8,16 +8,13 @@ resource "random_id" "base-id" {
 # not really take effect until a restart)
 resource "random_id" "runner-id" {
   keepers = {
-    metadata = {
-      role-id-path           = var.vault-role-id-path
-      secret-id-path         = var.vault-secret-id-path
-      vault-server           = var.vault-server
-      github-pat-secret-path = var.github-personal-access-token-path
-      repo                   = "broadinstitute/${var.repo}"
-      shutdown-script        = file("${path.module}/shutdown-script.sh")
-      runner-labels          = join(",", var.runner-labels)
-      actions-user           = var.actions-user
-    }
+    role-id-path           = var.vault-role-id-path
+    secret-id-path         = var.vault-secret-id-path
+    vault-server           = var.vault-server
+    github-pat-secret-path = var.github-personal-access-token-path
+    repo                   = "broadinstitute/${var.repo}"
+    runner-labels          = join(",", var.runner-labels)
+    actions-user           = var.actions-user
   }
 
   byte_length = 4
@@ -70,7 +67,16 @@ resource "google_compute_instance" "runner" {
     auto_delete = true
   }
 
-  metadata = random_id.runner-id.keepers.metadata
+  metadata = {
+    role-id-path           = random_id.runner-id.keepers.role-id-path
+    secret-id-path         = random_id.runner-id.keepers.secret-id-path
+    vault-server           = random_id.runner-id.keepers.vault-server
+    github-pat-secret-path = random_id.runner-id.keepers.github-pat-secret-path
+    repo                   = random_id.runner-id.keepers.repo
+    runner-labels          = random_id.runner-id.keepers.runner-labels
+    actions-user           = random_id.runner-id.keepers.actions-user
+    shutdown-script        = var.shutdown-script
+  }
 
   metadata_startup_script = file("${path.module}/startup-script.sh")
 }
