@@ -102,7 +102,7 @@ echo "0 3 * * * /sbin/shutdown -r now" | crontab -
 # Runner config
 mkdir -p runner
 VAULT_TOKEN=$(</home/$ACTIONS_USER/.vault-token)
-GITHUB_PAT=$(VAULT_TOKEN=$VAULT_TOKEN vault read -address=$VAULT_ADDR $GITHUB_PAT_PATH -format=json | jq -r '.token')
+GITHUB_PAT=$(VAULT_TOKEN=$VAULT_TOKEN vault read -address=$VAULT_ADDR $GITHUB_PAT_PATH -format=json | jq -r '.data.token')
 
 REGISTRATION_TOKEN=$(curl -s -X POST https://api.github.com/repos/${REPO}/actions/runners/registration-token -H "accept: application/vnd.github.everest-preview+json" -H "authorization: token ${GITHUB_PAT}" | jq -r '.token')
 
