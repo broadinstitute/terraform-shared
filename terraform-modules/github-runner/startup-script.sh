@@ -87,7 +87,9 @@ auto_auth {
 }
 EOF
 chmod 600 $HOME/vault-agent/*
-nohup vault agent -config=$HOME/vault-agent/vault-agent.hcl &>/dev/null &
+rm -f $HOME/vault-agent.log
+nohup vault agent -config=$HOME/vault-agent/vault-agent.hcl &>$HOME/vault-agent.log &
+echo "Vault agent logs available in $HOME/vault-agent.log"
 
 # Configure auto-restart
 echo "0 3 * * * /sbin/shutdown -r now" | crontab -
