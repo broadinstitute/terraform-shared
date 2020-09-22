@@ -13,7 +13,6 @@ resource "google_compute_address" "static" {
 }
 
 data "google_compute_image" "ubuntu" {
-
   family  = "ubuntu-2004-lts"
   project = "ubuntu-os-cloud"
 }
@@ -26,7 +25,10 @@ resource "google_compute_instance" "runner" {
   description               = "GitHub Actions runner ${count.index + 1} for broadinstitute/${var.repo}"
   machine_type              = var.machine-type
   zone                      = var.zone
+
+  # Allow runners to go offline for TF `apply` but explicitly bring them back up after
   allow_stopping_for_update = true
+  desired_status            = "RUNNING"
 
   service_account {
     email  = var.service-account
