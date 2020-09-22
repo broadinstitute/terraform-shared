@@ -116,9 +116,9 @@ chown -R $ACTIONS_USER ./runner
 pushd ./runner
 
 if [[ ! -z "$RUNNER_LABELS" ]]; then
-    sudo -u $ACTIONS_USER -H "./config.sh --unattended --url "https://github.com/${REPO}" --token $REGISTRATION_TOKEN --name $RUNNER_NAME --labels $RUNNER_LABELS"
+    sudo -u $ACTIONS_USER -H ./config.sh --unattended --url "https://github.com/${REPO}" --token $REGISTRATION_TOKEN --name $RUNNER_NAME --labels $RUNNER_LABELS
 else
-    sudo -u $ACTIONS_USER -H "./config.sh --unattended --url "https://github.com/${REPO}" --token $REGISTRATION_TOKEN --name $RUNNER_NAME"
+    sudo -u $ACTIONS_USER -H ./config.sh --unattended --url "https://github.com/${REPO}" --token $REGISTRATION_TOKEN --name $RUNNER_NAME
 fi
 
 sudo -u $ACTIONS_USER -H sh -c "./svc.sh install $ACTIONS_USER && ./svc.sh start"
