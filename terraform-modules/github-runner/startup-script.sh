@@ -35,7 +35,7 @@ EOF
 
 # Use gcloud as docker credential helper
 sudo -u $ACTIONS_USER bash -c 'gcloud auth configure-docker --quiet'
-sudo ln -s /snap/google-cloud-sdk/current/bin/docker-credential-gcloud /usr/local/bin
+sudo ln -f -s /snap/google-cloud-sdk/current/bin/docker-credential-gcloud /usr/local/bin
 
 
 # Install software
