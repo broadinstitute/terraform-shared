@@ -21,10 +21,10 @@ resource "google_compute_instance" "runner" {
   depends_on = [google_compute_address.static]
   count      = var.runners
 
-  name                      = "${local.base-name}-${count.index + 1}"
-  description               = "GitHub Actions runner ${count.index + 1} for broadinstitute/${var.repo}"
-  machine_type              = var.machine-type
-  zone                      = var.zone
+  name         = "${local.base-name}-${count.index + 1}"
+  description  = "GitHub Actions runner ${count.index + 1} for broadinstitute/${var.repo}"
+  machine_type = var.machine-type
+  zone         = var.zone
 
   # Allow runners to go offline for TF `apply` but explicitly bring them back up after
   allow_stopping_for_update = true
