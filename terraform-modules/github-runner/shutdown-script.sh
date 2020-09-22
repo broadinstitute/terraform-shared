@@ -1,7 +1,5 @@
 #! /bin/bash
 
-set -e
-
 # Arguments from metadata
 ACTIONS_USER=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/actions-user -H "Metadata-Flavor: Google")
 VAULT_ADDR=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/vault-server -H "Metadata-Flavor: Google")
