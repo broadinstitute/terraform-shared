@@ -29,14 +29,13 @@ newgrp docker
 
 # Set up environment variables for actions user
 rm -f /home/$ACTIONS_USER/.bash_profile
-cat <<EOF >> /home/$ACTIONS_USER/.bash_profile
+cat <<EOF >>/home/$ACTIONS_USER/.bash_profile
 export VAULT_ADDR="$VAULT_ADDR"
 EOF
 
 # Use gcloud as docker credential helper
 sudo -u $ACTIONS_USER bash -c 'gcloud auth configure-docker --quiet'
 sudo ln -f -s /snap/google-cloud-sdk/current/bin/docker-credential-gcloud /usr/local/bin
-
 
 # Install software
 sudo apt-get update
@@ -49,12 +48,15 @@ sudo apt-get -y install \
 
 curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
 sudo add-apt-repository \
-   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
-   $(lsb_release -cs) \
-   stable"
+    "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+    $(lsb_release -cs) \
+    stable"
 
 curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
-sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+sudo apt-add-repository \
+    "deb [arch=amd64] https://apt.releases.hashicorp.com \
+    $(lsb_release -cs) \
+    main"
 
 sudo apt-get update
 sudo apt-get -y install \
@@ -66,7 +68,7 @@ sudo apt-get -y install \
 # Configure Vault agent
 mkdir -p $HOME/vault-agent
 rm -f $HOME/vault-agent/vault-agent.hcl
-cat <<EOF >> $HOME/vault-agent/vault-agent.hcl
+cat <<EOF >>$HOME/vault-agent/vault-agent.hcl
 pid_file = "$HOME/vault-agent/pidfile"
 
 vault {
@@ -121,5 +123,5 @@ else
     sudo -u $ACTIONS_USER -H ./config.sh --unattended --url "https://github.com/${REPO}" --token $REGISTRATION_TOKEN --name $RUNNER_NAME
 fi
 
-./svc.sh install $ACTIONS_USER 
+./svc.sh install $ACTIONS_USER
 ./svc.sh start
