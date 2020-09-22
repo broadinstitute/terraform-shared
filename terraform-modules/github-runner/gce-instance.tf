@@ -75,7 +75,7 @@ resource "google_compute_instance" "runner" {
     repo                   = random_id.runner-id.keepers.repo
     runner-labels          = random_id.runner-id.keepers.runner-labels
     actions-user           = random_id.runner-id.keepers.actions-user
-    shutdown-script        = var.shutdown-script
+    shutdown-script        = file("${path.module}/shutdown-script.sh")
   }
 
   metadata_startup_script = file("${path.module}/startup-script.sh")
