@@ -81,18 +81,13 @@ auto_auth {
     }
     sink "file" {
         config = {
-            path = "/home/actions/.vault-token"
-            mode = 0400
-        }
-    }
-    sink "file" {
-        config = {
-            path = "$HOME/.vault-token"
-            mode = 0400
+            path = "/home/$ACTIONS_USER/.vault-token"
+            mode = 0660
         }
     }
 }
 EOF
+chown $ACTIONS_USER "/home/$ACTIONS_USER/.vault-token"
 chmod 600 $HOME/vault-agent/*
 rm -f $HOME/vault-agent.log
 nohup vault agent -config=$HOME/vault-agent/vault-agent.hcl &>$HOME/vault-agent.log &
@@ -104,7 +99,8 @@ echo "0 3 * * * /sbin/shutdown -r now" | crontab -
 
 # Runner config
 mkdir -p runner
-GITHUB_PAT=$(vault read -address=$VAULT_ADDR $GITHUB_PAT_PATH -format=json | jq -r '.token')
+VAULT_TOKEN=$(</home/$ACTIONS_USER/.vault-token)
+GITHUB_PAT=$(VAULT_TOKEN=$VAULT_TOKEN vault read -address=$VAULT_ADDR $GITHUB_PAT_PATH -format=json | jq -r '.token')
 
 REGISTRATION_TOKEN=$(curl -s -X POST https://api.github.com/repos/${REPO}/actions/runners/registration-token \ 
     -H "accept: application/vnd.github.everest-preview+json" \
