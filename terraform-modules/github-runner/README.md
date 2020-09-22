@@ -30,10 +30,12 @@ module "test_runner" {
 |------|-------------|:----:|:-----:|:-----:|
 | vault-role-id-path | A `gs://...` path that the instance's service account can read the vault role ID from | string | NULL | yes |
 | vault-secret-id-path | A `gs://...` path that the instance's service account can read the vault secret ID from | string | NULL | yes |
+| vault-server | The address of the vault server | string | https://clotho.broadinstitute.org:8200 | no |
 | github-personal-access-token-path | A `secret/...` path within Vault to use to get a GH PAT to register the runner | string | NULL | yes |
 | repo | The name of the GitHub repo to be a runner for, without the owner prefix | string | NULL | yes |
 | labels | Labels to put on the runner in GitHub | set(string) | [] | no |
-| service-account | he email of the service account to use on the instance | string | NULL | yes |
+| service-account | The email of the service account to use on the instance | string | NULL | yes |
+| actions-user | The username of the non-root to create to run actions as | string | "actions" | no |
 | zone | The zone to provision the GCE instance in | string | "us-central1-a" | no |
 | machine-type | The type of GCE instance to provision | string | "n1-standard-1" | no |
 | boot-disk-size | The size of the GCE instance boot disk in gigabytes | number | 10 | no |

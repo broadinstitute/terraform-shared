@@ -7,7 +7,7 @@ locals {
 }
 
 resource "google_compute_address" "static" {
-  count    = var.runners
+  count = var.runners
 
   name = "${local.base-name}-${count.index + 1}-ip"
 }
@@ -51,10 +51,12 @@ resource "google_compute_instance" "runner" {
   metadata = {
     role-id-path           = var.vault-role-id-path
     secret-id-path         = var.vault-secret-id-path
+    vault-server           = var.vault-server
     github-pat-secret-path = var.github-personal-access-token-path
     repo                   = "broadinstitute/${var.repo}"
     shutdown-script        = file("${path.module}/shutdown-script.sh")
     runner-labels          = join(",", var.runner-labels)
+    actions-user           = var.actions-user
   }
 
   metadata_startup_script = file("${path.module}/startup-script.sh")

@@ -3,8 +3,8 @@
 set -e
 
 # Arguments from metadata
-ACTIONS_USER="actions"
-VAULT_ADDR="https://clotho.broadinstitute.org:8200"
+ACTIONS_USER=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/actions-user -H "Metadata-Flavor: Google")
+VAULT_ADDR=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/vault-server -H "Metadata-Flavor: Google")
 ROLE_ID_PATH=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/role-id-path -H "Metadata-Flavor: Google")
 SECRET_ID_PATH=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/secret-id-path -H "Metadata-Flavor: Google")
 REPO=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/repo -H "Metadata-Flavor: Google")
@@ -104,7 +104,7 @@ mkdir -p runner
 VAULT_TOKEN=$(</home/$ACTIONS_USER/.vault-token)
 GITHUB_PAT=$(VAULT_TOKEN=$VAULT_TOKEN vault read -address=$VAULT_ADDR $GITHUB_PAT_PATH -format=json | jq -r '.data.token')
 
-REGISTRATION_TOKEN=$(curl -s -X POST https://api.github.com/repos/${REPO}/actions/runners/registration-token -H "accept: application/vnd.github.everest-preview+json" -H "authorization: token ${GITHUB_PAT}" | jq -r '.token')
+REGISTRATION_TOKEN=$(curl -s -X POST https://api.github.com/repos/${REPO}/actions/runners/registration-token -H "accept: application/vnd.github.v3+json" -H "authorization: token ${GITHUB_PAT}" | jq -r '.token')
 
 LATEST_VERSION_LABEL=$(curl -s -X GET 'https://api.github.com/repos/actions/runner/releases/latest' | jq -r '.tag_name')
 LATEST_VERSION=$(echo ${LATEST_VERSION_LABEL:1})

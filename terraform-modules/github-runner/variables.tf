@@ -18,6 +18,12 @@ variable "vault-secret-id-path" {
   }
 }
 
+variable "vault-server" {
+  type        = string
+  description = "The address of the vault server"
+  default     = "https://clotho.broadinstitute.org:8200"
+}
+
 variable "github-personal-access-token-path" {
   type        = string
   description = "A `secret/...` path within Vault to use to get a GH PAT to register the runner"
@@ -39,9 +45,9 @@ variable "repo" {
 }
 
 variable "runner-labels" {
-  type = set(string)
+  type        = set(string)
   description = "Labels to put on the runner in GitHub"
-  default = []
+  default     = []
 }
 
 variable "service-account" {
@@ -58,6 +64,12 @@ variable "service-account-scopes" {
   type        = list(string)
   description = "Scopes for the service account to have on the instance"
   default     = ["cloud-platform", "userinfo-email", "https://www.googleapis.com/auth/userinfo.profile"]
+}
+
+variable "actions-user" {
+  type        = string
+  description = "The username of the non-root to create to run actions as"
+  default     = "actions"
 }
 
 variable "zone" {
