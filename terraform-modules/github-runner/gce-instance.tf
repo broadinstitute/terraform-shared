@@ -18,8 +18,7 @@ data "google_compute_image" "ubuntu" {
 }
 
 resource "google_compute_instance" "runner" {
-  depends_on = [google_compute_address.static]
-  count      = var.runners
+  count = var.runners
 
   name         = "${local.base-name}-${count.index + 1}"
   description  = "GitHub Actions runner ${count.index + 1} for broadinstitute/${var.repo}"
