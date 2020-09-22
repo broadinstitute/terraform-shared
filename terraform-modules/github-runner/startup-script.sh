@@ -89,7 +89,8 @@ EOF
 chmod 600 $HOME/vault-agent/*
 rm -f $HOME/vault-agent.log
 nohup vault agent -config=$HOME/vault-agent/vault-agent.hcl &>$HOME/vault-agent.log &
-echo "Vault agent logs available in $HOME/vault-agent.log"
+echo "Vault agent logs available in $HOME/vault-agent.log, sleeping to let it come online..."
+sleep 10s
 
 # Configure auto-restart
 echo "0 3 * * * /sbin/shutdown -r now" | crontab -
