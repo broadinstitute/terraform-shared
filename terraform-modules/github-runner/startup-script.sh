@@ -4,6 +4,7 @@ set -e
 
 # Arguments from metadata
 ACTIONS_USER="actions"
+VAULT_ADDR="https://clotho.broadinstitute.org:8200"
 ROLE_ID_PATH=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/role-id-path -H "Metadata-Flavor: Google")
 SECRET_ID_PATH=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/secret-id-path -H "Metadata-Flavor: Google")
 REPO=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/repo -H "Metadata-Flavor: Google")
@@ -25,6 +26,12 @@ fi
 sudo groupadd -f docker
 id -u $ACTIONS_USER &>/dev/null || sudo useradd -m $ACTIONS_USER --groups docker
 newgrp docker
+
+# Set up environment variables for actions user
+rm -f /home/$ACTIONS_USER/.bash_profile
+cat <<EOF >> /home/$ACTIONS_USER/.bash_profile
+export VAULT_ADDR="$VAULT_ADDR"
+EOF
 
 # Use gcloud as docker credential helper
 sudo -u $ACTIONS_USER bash -c 'gcloud auth configure-docker --quiet'
@@ -61,7 +68,7 @@ cat <<EOF >> $HOME/vault-agent/vault-agent.hcl
 pid_file = "$HOME/vault-agent/pidfile"
 
 vault {
-    address = "https://clotho.broadinstitute.org:8200"
+    address = "$VAULT_ADDR"
 }
 
 auto_auth {
@@ -113,10 +120,9 @@ chown -R $ACTIONS_USER ./runner
 pushd ./runner
 
 if [[ ! -z "$RUNNER_LABELS" ]]; then
-    ./config.sh --unattended --url "https://github.com/${REPO}" --token $REGISTRATION_TOKEN --name $RUNNER_NAME --labels $RUNNER_LABELS
+    sudo -u $ACTIONS_USER -H "./config.sh --unattended --url "https://github.com/${REPO}" --token $REGISTRATION_TOKEN --name $RUNNER_NAME --labels $RUNNER_LABELS"
 else
-    ./config.sh --unattended --url "https://github.com/${REPO}" --token $REGISTRATION_TOKEN --name $RUNNER_NAME
+    sudo -u $ACTIONS_USER -H "./config.sh --unattended --url "https://github.com/${REPO}" --token $REGISTRATION_TOKEN --name $RUNNER_NAME"
 fi
 
-./svc.sh install $ACTIONS_USER
-./svc.sh start
+sudo -u $ACTIONS_USER -H sh -c "./svc.sh install $ACTIONS_USER && ./svc.sh start"
