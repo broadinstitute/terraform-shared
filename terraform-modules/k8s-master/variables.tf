@@ -81,6 +81,11 @@ variable enable_workload_identity {
   description = "If true, enables k8s<->GCP SA linking in the cluster. See: https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity."
 }
 
+variable enable_shielded_nodes {
+  type        = bool
+  default     = false
+  description = "If true, enables shielded nodes. https://cloud.google.com/kubernetes-engine/docs/how-to/shielded-gke-nodes"
+}
 
 #
 # Istio

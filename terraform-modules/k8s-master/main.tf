@@ -83,6 +83,8 @@ resource google_container_cluster cluster {
     }
   }
 
+  enable_shielded_nodes = var.enable_shielded_nodes
+
   # OMISSION: CIS compliance: Enable Private Cluster
   private_cluster_config {
     enable_private_endpoint = var.enable_private_endpoint
