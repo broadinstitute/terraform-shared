@@ -48,6 +48,7 @@ Multiple instances of this module can be created with different labels, service 
 | Name | Description | Type |
 |------|-------------|:----:|
 | instance-external-ips | The static public IPs of the runners | list(string) |
+| instance-external-cidrs | The static public IPs of the runners in CIDR format | list(string) |
 | instance-names | The names of the runners | list(string) |
 
 ## Features
