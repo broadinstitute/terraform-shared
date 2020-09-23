@@ -91,7 +91,7 @@ auto_auth {
     }
 }
 EOF
-chmod 600 "$HOME/vault-agent/*"
+chmod 600 $HOME/vault-agent/*
 rm -f "$HOME/vault-agent.log"
 nohup vault agent -config="$HOME/vault-agent/vault-agent.hcl" &>"$HOME/vault-agent.log" &
 echo "Vault agent logs available in $HOME/vault-agent.log, sleeping to let it come online..."
