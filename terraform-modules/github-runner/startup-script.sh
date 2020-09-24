@@ -67,7 +67,8 @@ sudo apt-get -y install \
     docker-ce-cli \
     containerd.io \
     vault \
-    kubectl
+
+sudo snap install kubectl
 
 # Configure Vault agent
 mkdir -p "$HOME/vault-agent"
