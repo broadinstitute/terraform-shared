@@ -24,7 +24,7 @@ fi
 
 # Configure users
 sudo groupadd -f docker
-id -u "$ACTIONS_USER" &>/dev/null || sudo useradd -m "$ACTIONS_USER" --groups docker
+id -u "$ACTIONS_USER" >/dev/null 2>&1 || sudo useradd -m "$ACTIONS_USER" --groups docker
 newgrp docker
 
 # Set up environment variables for actions user
@@ -93,7 +93,7 @@ auto_auth {
 EOF
 chmod 600 $HOME/vault-agent/*
 rm -f "$HOME/vault-agent.log"
-nohup vault agent -config="$HOME/vault-agent/vault-agent.hcl" &>"$HOME/vault-agent.log" &
+nohup vault agent -config="$HOME/vault-agent/vault-agent.hcl" >"$HOME/vault-agent.log" 2>&1 &
 echo "Vault agent logs available in $HOME/vault-agent.log, sleeping to let it come online..."
 sleep 10s
 chown "$ACTIONS_USER" "/home/$ACTIONS_USER/.vault-token"
@@ -104,11 +104,11 @@ echo "0 3 * * * /sbin/shutdown -r now" | crontab -
 # Runner config
 mkdir -p runner
 VAULT_TOKEN=$(</home/$ACTIONS_USER/.vault-token)
-GITHUB_PAT=$(VAULT_TOKEN="$VAULT_TOKEN" vault read -address="$VAULT_ADDR" "$GITHUB_PAT_PATH" -format=json | jq -r '.data.token')
+GITHUB_PAT=$(VAULT_TOKEN="$VAULT_TOKEN" vault read -address="$VAULT_ADDR" "$GITHUB_PAT_PATH" -format=json | jq -r .data.token)
 
 REGISTRATION_TOKEN=$(curl -s -X POST https://api.github.com/repos/${REPO}/actions/runners/registration-token -H "accept: application/vnd.github.v3+json" -H "authorization: token ${GITHUB_PAT}" | jq -r '.token')
 
-LATEST_VERSION_LABEL=$(curl -s -X GET 'https://api.github.com/repos/actions/runner/releases/latest' | jq -r '.tag_name')
+LATEST_VERSION_LABEL=$(curl -s -X GET 'https://api.github.com/repos/actions/runner/releases/latest' | jq -r .tag_name)
 LATEST_VERSION=$(echo ${LATEST_VERSION_LABEL:1})
 RUNNER_FILE="actions-runner-linux-x64-${LATEST_VERSION}.tar.gz"
 curl -O -L "https://github.com/actions/runner/releases/download/${LATEST_VERSION_LABEL}/${RUNNER_FILE}"
@@ -117,10 +117,10 @@ tar xzf "./${RUNNER_FILE}" -C runner --overwrite
 chown -R "$ACTIONS_USER" ./runner
 pushd ./runner
 
-if [[ ! -z "$RUNNER_LABELS" ]]; then
-    sudo -u "$ACTIONS_USER" -H ./config.sh --unattended --url "https://github.com/${REPO}" --token "$REGISTRATION_TOKEN" --name "$RUNNER_NAME" --labels "$RUNNER_LABELS"
-else
+if [[ -z "$RUNNER_LABELS" ]]; then
     sudo -u "$ACTIONS_USER" -H ./config.sh --unattended --url "https://github.com/${REPO}" --token "$REGISTRATION_TOKEN" --name "$RUNNER_NAME"
+else
+    sudo -u "$ACTIONS_USER" -H ./config.sh --unattended --url "https://github.com/${REPO}" --token "$REGISTRATION_TOKEN" --name "$RUNNER_NAME" --labels "$RUNNER_LABELS"
 fi
 
 ./svc.sh install "$ACTIONS_USER"
