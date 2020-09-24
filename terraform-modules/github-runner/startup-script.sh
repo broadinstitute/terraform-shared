@@ -112,7 +112,7 @@ tar xzf "./${RUNNER_FILE}" -C runner --overwrite
 # Set up environment variables for the runner
 touch ./runner/.env
 declare -a VARS=(
-    "VAULT_ADDR=\"$VAULT_ADDR\""
+    "VAULT_ADDR=$VAULT_ADDR"
 )
 for VAR in "${VARS[@]}"; do
     if ! grep -Fxq "$VAR" ./runner/.env; then
