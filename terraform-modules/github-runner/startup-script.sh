@@ -22,16 +22,20 @@ if [[ "$SECRET_ID_PATH" == gs* ]]; then
     SECRET_ID_PATH="$HOME/vault-agent/secret-id"
 fi
 
+# Set up environment variables for subsequent logins (i.e. actions user)
+declare -a VARS=(
+    "VAULT_ADDR=\"$VAULT_ADDR\""
+)
+for VAR in "${VARS[@]}"; do
+    if ! grep -Fxq "$VAR" /etc/environment; then
+        echo "$VAR" >> /etc/environment
+    fi
+done
+
 # Configure users
 sudo groupadd -f docker
 id -u "$ACTIONS_USER" >/dev/null 2>&1 || sudo useradd -m "$ACTIONS_USER" --groups docker
 newgrp docker
-
-# Set up environment variables for actions user
-rm -f "/home/$ACTIONS_USER/.bash_profile"
-cat <<EOF >>"/home/$ACTIONS_USER/.bash_profile"
-export VAULT_ADDR="$VAULT_ADDR"
-EOF
 
 # Use gcloud as docker credential helper
 sudo -u "$ACTIONS_USER" bash -c 'gcloud auth configure-docker --quiet'
@@ -62,7 +66,8 @@ sudo apt-get -y install \
     docker-ce \
     docker-ce-cli \
     containerd.io \
-    vault
+    vault \
+    kubectl
 
 # Configure Vault agent
 mkdir -p "$HOME/vault-agent"
