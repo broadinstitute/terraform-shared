@@ -59,3 +59,16 @@ Out-of-the-box on each runner you get:
 - Docker (and kubectl) preinstalled and GCP set as a credential helper
 - Automatic registration with the target GitHub repo on startup (and de-registration on shutdown)
 - Automatic restarts every night at 3 AM to update everything to latest version (Docker, Vault, OS via `apt-get update`, GitHub Action Runner software)
+
+## Debugging
+If things go horribly wrong, you can use GCP UI to find the problematic instance and grab the `gcloud` command to SSH in.
+
+To see logs . . .
+- of the startup script, use `sudo journalctl -u google-startup-scripts.service`
+- of the Vault agent, use `less /vault-agent.log`
+- of the runner service, use `sudo journalctl -u $(cat /runner/.service)`
+- of the runner application, look in the files in `ls -la /runner/_diag | grep Runner_`
+  - The runner application is always used as a service, so should be the same info, just might be easier to browse one versus the other
+- of individual jobs, look in the files in `ls -la /runner/_diag | grep Worker_`
+
+Keep in mind that you should think of the instances as essentially ephemeral (they're not for logging purposes, but Terraform can destroy them whenever). To make a change stick you'll want to encode it in Terraform or the scripts here, which are run nightly.
