@@ -68,7 +68,7 @@ sudo apt-get -y install \
     containerd.io \
     vault \
 
-sudo snap install kubectl
+sudo snap install --classic kubectl
 
 # Configure Vault agent
 mkdir -p "$HOME/vault-agent"
