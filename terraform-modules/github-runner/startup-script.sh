@@ -109,18 +109,19 @@ RUNNER_FILE="actions-runner-linux-x64-${LATEST_VERSION}.tar.gz"
 curl -O -L "https://github.com/actions/runner/releases/download/${LATEST_VERSION_LABEL}/${RUNNER_FILE}"
 tar xzf "./${RUNNER_FILE}" -C runner --overwrite
 
-chown -R "$ACTIONS_USER" ./runner
-pushd ./runner
-
-# Set up environment variables for runner
+# Set up environment variables for the runner
+touch ./runner/.env
 declare -a VARS=(
     "VAULT_ADDR=\"$VAULT_ADDR\""
 )
 for VAR in "${VARS[@]}"; do
-    if ! grep -Fxq "$VAR" .env; then
-        echo "$VAR" >> .env
+    if ! grep -Fxq "$VAR" ./runner/.env; then
+        echo "$VAR" >> ./runner/.env
     fi
 done
+
+chown -R "$ACTIONS_USER" ./runner
+pushd ./runner
 
 # Start runner
 if [[ -z "$RUNNER_LABELS" ]]; then
