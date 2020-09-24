@@ -12,14 +12,16 @@ GITHUB_PAT_PATH=$(curl http://metadata.google.internal/computeMetadata/v1/instan
 RUNNER_LABELS=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/runner-labels -H "Metadata-Flavor: Google")
 RUNNER_NAME=$(curl "http://metadata.google.internal/computeMetadata/v1/instance/name" -H "Metadata-Flavor: Google")
 
+mkdir -p "/vault-agent"
+
 if [[ "$ROLE_ID_PATH" == gs* ]]; then
-    gsutil cp "$ROLE_ID_PATH" "$HOME/vault-agent/role-id"
-    ROLE_ID_PATH="$HOME/vault-agent/role-id"
+    gsutil cp "$ROLE_ID_PATH" "/vault-agent/role-id"
+    ROLE_ID_PATH="/vault-agent/role-id"
 fi
 
 if [[ "$SECRET_ID_PATH" == gs* ]]; then
-    gsutil cp "$SECRET_ID_PATH" "$HOME/vault-agent/secret-id"
-    SECRET_ID_PATH="$HOME/vault-agent/secret-id"
+    gsutil cp "$SECRET_ID_PATH" "/vault-agent/secret-id"
+    SECRET_ID_PATH="/vault-agent/secret-id"
 fi
 
 # Configure users
@@ -61,10 +63,9 @@ sudo apt-get -y install \
 sudo snap install --classic kubectl
 
 # Configure Vault agent
-mkdir -p "$HOME/vault-agent"
-rm -f "$HOME/vault-agent/vault-agent.hcl"
-cat <<EOF >>"$HOME/vault-agent/vault-agent.hcl"
-pid_file = "$HOME/vault-agent/pidfile"
+rm -f "/vault-agent/vault-agent.hcl"
+cat <<EOF >>"/vault-agent/vault-agent.hcl"
+pid_file = "/vault-agent/pidfile"
 
 vault {
     address = "$VAULT_ADDR"
@@ -85,10 +86,11 @@ auto_auth {
     }
 }
 EOF
-chmod 600 $HOME/vault-agent/*
-rm -f "$HOME/vault-agent.log"
-sudo -u "$ACTIONS_USER" nohup vault agent -config="$HOME/vault-agent/vault-agent.hcl" >"$HOME/vault-agent.log" 2>&1 &
-echo "Vault agent logs available in $HOME/vault-agent.log, sleeping to let it come online..."
+chmod 600 /vault-agent/*
+chown -R "$ACTIONS_USER" /vault-agent/
+rm -f "/vault-agent.log"
+sudo -u "$ACTIONS_USER" nohup vault agent -config="/vault-agent/vault-agent.hcl" >"/vault-agent.log" 2>&1 &
+echo "Vault agent logs available in /vault-agent.log, sleeping to let it come online..."
 sleep 10s
 
 # Configure auto-restart
