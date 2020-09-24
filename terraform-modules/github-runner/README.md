@@ -25,7 +25,7 @@ module "test_runner" {
 
 It can take a minute or so after Terraform "creates" the instance resources for the runners to actually appear in GitHub (Terraform doesn't track the startup script that does the configuring).
 
-Multiple instances of this module can be created with different labels, service accounts, or vault permissions if there's a desire to segment permissions. To simply create multiple runners with the same configuration, just set the `runners` variable to something higher than its default of `1`.
+Multiple instances of this module can be created with different labels, service accounts, or Vault auth if there's a desire to segment permissions. To simply create multiple runners with the same configuration, just set the `runners` variable to something higher than its default of `1`.
 
 ## Inputs
 | Name | Description | Type | Default | Required |
@@ -56,12 +56,12 @@ Out-of-the-box on each runner you get:
 - A static Broad-controlled public IP
 - Vault preinstalled and authenticated (via the given role/secret ID paths)
 - GCP utilities preinstalled and authenticated (for `service-account` with `service-account-scopes`)
-- Docker (and kubectl) preinstalled and GCP set as a credential helper
+- Docker (and kubectl) preinstalled and `gcloud` set as a credential helper
 - Automatic registration with the target GitHub repo on startup (and de-registration on shutdown)
-- Automatic restarts every night at 3 AM to update everything to latest version (Docker, Vault, OS via `apt-get update`, GitHub Action Runner software)
+- Automatic restarts every night at 3 AM to update everything to latest version (Docker, Vault, kubectl, OS via `apt-get update`, GitHub Action Runner software)
 
 ## Debugging
-If things go horribly wrong, you can use GCP UI to find the problematic instance and grab the `gcloud` command to SSH in.
+If things go horribly wrong, you can use GCP UI to find the problematic instance and grab the `gcloud` command to SSH in via non-split VPN.
 
 To see logs . . .
 - of the startup script, use `sudo journalctl -u google-startup-scripts.service`
