@@ -10,11 +10,11 @@ module "test_runner" {
     google = google.broad-gotc-dev
   }
 
-  # SA for both getting the Vault IDs below and for anything else needed
+  # SA for both getting the Vault IDs below and anything else needed
   # within actions (including broadinstitute Docker)
   service-account = "ci-non-prod@broad-gotc-dev.iam.gserviceaccount.com"
 
-  # Vault access both for getting the GitHub token below and for anything else
+  # Vault access for both getting the GitHub token below and anything else
   # needed within actions
   vault-role-id-path   = "gs://some-google-bucket/role-id"
   vault-secret-id-path = "gs://some-google-bucket/secret-id"
