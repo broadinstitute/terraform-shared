@@ -22,16 +22,6 @@ if [[ "$SECRET_ID_PATH" == gs* ]]; then
     SECRET_ID_PATH="$HOME/vault-agent/secret-id"
 fi
 
-# Set up environment variables for subsequent logins (i.e. actions user)
-declare -a VARS=(
-    "VAULT_ADDR=\"$VAULT_ADDR\""
-)
-for VAR in "${VARS[@]}"; do
-    if ! grep -Fxq "$VAR" /etc/environment; then
-        echo "$VAR" >> /etc/environment
-    fi
-done
-
 # Configure users
 sudo groupadd -f docker
 id -u "$ACTIONS_USER" >/dev/null 2>&1 || sudo useradd -m "$ACTIONS_USER" --groups docker
@@ -122,6 +112,17 @@ tar xzf "./${RUNNER_FILE}" -C runner --overwrite
 chown -R "$ACTIONS_USER" ./runner
 pushd ./runner
 
+# Set up environment variables for runner
+declare -a VARS=(
+    "VAULT_ADDR=\"$VAULT_ADDR\""
+)
+for VAR in "${VARS[@]}"; do
+    if ! grep -Fxq "$VAR" .env; then
+        echo "$VAR" >> .env
+    fi
+done
+
+# Start runner
 if [[ -z "$RUNNER_LABELS" ]]; then
     sudo -u "$ACTIONS_USER" -H ./config.sh --unattended --url "https://github.com/${REPO}" --token "$REGISTRATION_TOKEN" --name "$RUNNER_NAME"
 else
