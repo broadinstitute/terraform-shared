@@ -75,7 +75,6 @@ auto_auth {
         config = {
             role_id_file_path = "$ROLE_ID_PATH"
             secret_id_file_path = "$SECRET_ID_PATH"
-            remove_secret_id_file_after_reading = false
         }
     }
     sink "file" {
@@ -88,10 +87,9 @@ auto_auth {
 EOF
 chmod 600 $HOME/vault-agent/*
 rm -f "$HOME/vault-agent.log"
-nohup vault agent -config="$HOME/vault-agent/vault-agent.hcl" >"$HOME/vault-agent.log" 2>&1 &
+sudo -u "$ACTIONS_USER" nohup vault agent -config="$HOME/vault-agent/vault-agent.hcl" >"$HOME/vault-agent.log" 2>&1 &
 echo "Vault agent logs available in $HOME/vault-agent.log, sleeping to let it come online..."
 sleep 10s
-chown "$ACTIONS_USER" "/home/$ACTIONS_USER/.vault-token"
 
 # Configure auto-restart
 echo "0 3 * * * /sbin/shutdown -r now" | crontab -

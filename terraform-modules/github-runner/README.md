@@ -56,6 +56,6 @@ Out-of-the-box on each runner you get:
 - A static Broad-controlled public IP
 - Vault preinstalled and authenticated (via the given role/secret ID paths)
 - GCP utilities preinstalled and authenticated (for `service-account` with `service-account-scopes`)
-- Docker preinstalled and GCP set as a credential helper
+- Docker (and kubectl) preinstalled and GCP set as a credential helper
 - Automatic registration with the target GitHub repo on startup (and de-registration on shutdown)
 - Automatic restarts every night at 3 AM to update everything to latest version (Docker, Vault, OS via `apt-get update`, GitHub Action Runner software)
