@@ -8,13 +8,13 @@ GITHUB_PAT_PATH=$(curl http://metadata.google.internal/computeMetadata/v1/instan
 
 # Runner config
 VAULT_TOKEN=$(</home/$ACTIONS_USER/.vault-token)
-GITHUB_PAT=$(VAULT_TOKEN="$VAULT_TOKEN" vault read -address="$VAULT_ADDR" "$GITHUB_PAT_PATH" -format=json | jq -r '.data.token')
+GITHUB_PAT=$(VAULT_TOKEN="$VAULT_TOKEN" vault read -address="$VAULT_ADDR" "$GITHUB_PAT_PATH" -format=json | jq -r .data.token)
 
-REMOVAL_TOKEN=$(curl -s -X POST https://api.github.com/repos/${REPO}/actions/runners/remove-token -H "accept: application/vnd.github.v3+json" -H "authorization: token ${GITHUB_PAT}" | jq -r '.token')
+REMOVAL_TOKEN=$(curl -s -X POST https://api.github.com/repos/${REPO}/actions/runners/remove-token -H "accept: application/vnd.github.v3+json" -H "authorization: token ${GITHUB_PAT}" | jq -r .token)
 
 pushd ./runner
 
 ./svc.sh stop
 ./svc.sh uninstall
 
-sudo -u "$ACTIONS_USER "-H ./config.sh remove --token "$REMOVAL_TOKEN"
+sudo -u "$ACTIONS_USER" -H ./config.sh remove --token "$REMOVAL_TOKEN"
