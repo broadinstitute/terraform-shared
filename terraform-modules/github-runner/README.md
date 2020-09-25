@@ -42,7 +42,7 @@ Multiple instances of this module can be created with different labels, service 
 | repo | The name of the GitHub repo to be a runner for, without the owner prefix | string | NULL | yes |
 | runner-labels | Labels to put on the runner in GitHub | set(string) | [] | no |
 | service-account | The email of the service account to use on the instance | string | NULL | yes |
-| service-account-scopes | Scopes for the service account to have on the instance | ["cloud-platform", "userinfo-email", "https://www.googleapis.com/auth/userinfo.profile"] | no |
+| service-account-scopes | Scopes for the service account to have on the instance | list(string) | ["cloud-platform", "userinfo-email", "https://www.googleapis.com/auth/userinfo.profile"] | no |
 | actions-user | The username of the non-root to create to run actions as | string | "actions" | no |
 | zone | The zone to provision the GCE instance in | string | "us-central1-a" | no |
 | machine-type | The type of GCE instance to provision | string | "n1-standard-1" | no |
