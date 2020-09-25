@@ -30,7 +30,7 @@ id -u "$ACTIONS_USER" >/dev/null 2>&1 || sudo useradd -m "$ACTIONS_USER" --group
 newgrp docker
 
 # Use gcloud as docker credential helper
-sudo -u "$ACTIONS_USER" bash -c 'gcloud auth configure-docker --quiet'
+sudo -u "$ACTIONS_USER" bash -c '/snap/bin/gcloud auth configure-docker --quiet'
 
 # Install software
 sudo apt-get update
