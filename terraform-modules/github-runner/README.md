@@ -4,7 +4,7 @@ This module creates some number of self-hosted GitHub runners for a specific rep
 ```hcl
 module "test_runner" {
   # "github.com/" + org + "/" + repo name + ".git" + "//" + path within repo to base dir + "?ref=" + git object ref
-  source = "github.com/broadinstitute/terraform-shared.git//terraform-modules/github-runner?ref=github-runner-0.1.0"
+  source = "github.com/broadinstitute/terraform-shared.git//terraform-modules/github-runner?ref=github-runner-0.2.0"
 
   providers = {
     google = google.broad-gotc-dev
@@ -62,7 +62,7 @@ Out-of-the-box on each runner you get:
 - Vault preinstalled and authenticated (via the given role/secret ID paths)
 - GCP utilities preinstalled and authenticated (for `service-account` with `service-account-scopes`)
 - Docker (and kubectl) preinstalled and `gcloud` set as a credential helper
-  - Docker runs in [rootless mode](https://docs.docker.com/engine/security/rootless/) to simplify permissions and enhance security -- "root" in containers maps to the normal user that runs actions 
+  - Docker runs in [rootless mode](https://docs.docker.com/engine/security/rootless/) to simplify permissions and enhance security -- the root user inside containers maps to the normal user that runs actions on the host
 - Automatic registration with the target GitHub repo on startup (and de-registration on shutdown)
 - Automatic restarts every night at 3 AM to update everything to latest version (Docker, Vault, kubectl, OS via `apt-get update`, GitHub Action Runner software)
 
