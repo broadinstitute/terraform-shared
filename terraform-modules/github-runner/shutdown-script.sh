@@ -17,4 +17,4 @@ pushd ./runner
 ./svc.sh stop
 ./svc.sh uninstall
 
-sudo -Hiu "$ACTIONS_USER" -H ./config.sh remove --token "$REMOVAL_TOKEN"
+sudo -Hiu "$ACTIONS_USER" bash -c "cd /runner; ./config.sh remove --token '$REMOVAL_TOKEN'"

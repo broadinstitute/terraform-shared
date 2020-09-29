@@ -122,9 +122,13 @@ pushd ./runner
 
 # Start runner
 if [[ -z "$RUNNER_LABELS" ]]; then
-    sudo -Hiu "$ACTIONS_USER" ./config.sh --unattended --url "https://github.com/${REPO}" --token "$REGISTRATION_TOKEN" --name "$RUNNER_NAME"
+    sudo -Hiu "$ACTIONS_USER" bash -c \
+        "cd /runner; \
+        ./config.sh --unattended --url 'https://github.com/${REPO}' --token '$REGISTRATION_TOKEN' --name '$RUNNER_NAME'"
 else
-    sudo -Hiu "$ACTIONS_USER" ./config.sh --unattended --url "https://github.com/${REPO}" --token "$REGISTRATION_TOKEN" --name "$RUNNER_NAME" --labels "$RUNNER_LABELS"
+    sudo -Hiu "$ACTIONS_USER" bash -c \
+        "cd /runner; \
+        ./config.sh --unattended --url 'https://github.com/${REPO}' --token '$REGISTRATION_TOKEN' --name '$RUNNER_NAME' --labels '$RUNNER_LABELS'"
 fi
 
 ./svc.sh install "$ACTIONS_USER"
