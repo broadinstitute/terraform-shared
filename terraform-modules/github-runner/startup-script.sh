@@ -25,12 +25,8 @@ if [[ "$SECRET_ID_PATH" == gs* ]]; then
 fi
 
 # Configure users
-sudo groupadd -f docker
-id -u "$ACTIONS_USER" >/dev/null 2>&1 || sudo useradd -m "$ACTIONS_USER" --groups docker
-newgrp docker
-
-# Use gcloud as docker credential helper
-sudo -u "$ACTIONS_USER" bash -c '/snap/bin/gcloud auth configure-docker --quiet'
+id -u "$ACTIONS_USER" >/dev/null 2>&1 || sudo useradd -m "$ACTIONS_USER"
+sudo -Hiu "$ACTIONS_USER" bash -c 'gcloud auth configure-docker --quiet'
 
 # Install software
 sudo apt-get update
@@ -41,12 +37,6 @@ sudo apt-get -y install \
     software-properties-common \
     jq
 
-curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
-sudo add-apt-repository \
-    "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
-    $(lsb_release -cs) \
-    stable"
-
 curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
 sudo apt-add-repository \
     "deb [arch=amd64] https://apt.releases.hashicorp.com \
@@ -55,12 +45,17 @@ sudo apt-add-repository \
 
 sudo apt-get update
 sudo apt-get -y install \
-    docker-ce \
-    docker-ce-cli \
-    containerd.io \
     vault \
+    uidmap
 
 sudo snap install --classic kubectl
+
+# Install/configure docker to run as actions user
+rm -rf "/home/$ACTIONS_USER/.docker/run"
+sudo -Hiu "$ACTIONS_USER" bash -c "curl -fsSL https://get.docker.com/rootless | sh"
+rm -f "/docker.log"
+sudo -Hiu "$ACTIONS_USER" nohup /home/actions/bin/dockerd-rootless.sh --experimental >"/docker.log" 2>&1 &
+echo "Docker logs available in /docker.log"
 
 # Configure Vault agent
 rm -f "/vault-agent/vault-agent.hcl"
@@ -89,7 +84,7 @@ EOF
 chmod 600 /vault-agent/*
 chown -R "$ACTIONS_USER" /vault-agent/
 rm -f "/vault-agent.log"
-sudo -u "$ACTIONS_USER" nohup vault agent -config="/vault-agent/vault-agent.hcl" >"/vault-agent.log" 2>&1 &
+sudo -Hiu "$ACTIONS_USER" nohup vault agent -config="/vault-agent/vault-agent.hcl" >"/vault-agent.log" 2>&1 &
 echo "Vault agent logs available in /vault-agent.log, sleeping to let it come online..."
 sleep 10s
 
@@ -113,10 +108,12 @@ tar xzf "./${RUNNER_FILE}" -C runner --overwrite
 touch ./runner/.env
 declare -a VARS=(
     "VAULT_ADDR=$VAULT_ADDR"
+    "DOCKER_HOST=unix:///home/$ACTIONS_USER/.docker/run/docker.sock"
+    "XDG_RUNTIME_DIR=/home/$ACTIONS_USER/.docker/run"
 )
 for VAR in "${VARS[@]}"; do
     if ! grep -Fxq "$VAR" ./runner/.env; then
-        echo "$VAR" >> ./runner/.env
+        echo "$VAR" >>./runner/.env
     fi
 done
 
@@ -125,9 +122,9 @@ pushd ./runner
 
 # Start runner
 if [[ -z "$RUNNER_LABELS" ]]; then
-    sudo -u "$ACTIONS_USER" -H ./config.sh --unattended --url "https://github.com/${REPO}" --token "$REGISTRATION_TOKEN" --name "$RUNNER_NAME"
+    sudo -Hiu "$ACTIONS_USER" ./config.sh --unattended --url "https://github.com/${REPO}" --token "$REGISTRATION_TOKEN" --name "$RUNNER_NAME"
 else
-    sudo -u "$ACTIONS_USER" -H ./config.sh --unattended --url "https://github.com/${REPO}" --token "$REGISTRATION_TOKEN" --name "$RUNNER_NAME" --labels "$RUNNER_LABELS"
+    sudo -Hiu "$ACTIONS_USER" ./config.sh --unattended --url "https://github.com/${REPO}" --token "$REGISTRATION_TOKEN" --name "$RUNNER_NAME" --labels "$RUNNER_LABELS"
 fi
 
 ./svc.sh install "$ACTIONS_USER"
