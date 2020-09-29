@@ -62,6 +62,7 @@ Out-of-the-box on each runner you get:
 - Vault preinstalled and authenticated (via the given role/secret ID paths)
 - GCP utilities preinstalled and authenticated (for `service-account` with `service-account-scopes`)
 - Docker (and kubectl) preinstalled and `gcloud` set as a credential helper
+  - Docker runs in [rootless mode](https://docs.docker.com/engine/security/rootless/) to simplify permissions and enhance security -- "root" in containers maps to the normal user that runs actions 
 - Automatic registration with the target GitHub repo on startup (and de-registration on shutdown)
 - Automatic restarts every night at 3 AM to update everything to latest version (Docker, Vault, kubectl, OS via `apt-get update`, GitHub Action Runner software)
 
@@ -71,9 +72,12 @@ If things go horribly wrong, you can use GCP UI to find the problematic instance
 To see logs . . .
 - of the startup script, use `sudo journalctl -u google-startup-scripts.service`
 - of the Vault agent, use `less /vault-agent.log`
+- of the Docker daemon, use `less /docker.log`
 - of the runner service, use `sudo journalctl -u $(cat /runner/.service)`
 - of the runner application, look in the files in `ls -la /runner/_diag | grep Runner_`
   - The runner application is always used as a service, so should be the same info, just might be easier to browse one versus the other
 - of individual jobs, look in the files in `ls -la /runner/_diag | grep Worker_`
 
-Keep in mind that you should think of the instances as essentially ephemeral (they're not for logging purposes, but Terraform can destroy them whenever). To make a change stick you'll want to encode it in Terraform or the scripts here, which are run nightly.
+The instances should be considered ephemeral because Terraform will destroy and recreate them at will to produce expected `apply` behavior.
+
+**If a runner appears broken in a way that the nightly restarts won't fix,** `taint` the `random_id.runner-id` resource inside this module: you'll get completely fresh runners with the same external IPs as the old ones. Destroyed runners are always cleaned up as best as possible.
