@@ -52,7 +52,7 @@ resource google_monitoring_alert_policy node_resource_alerts {
     display_name = "node-memory-utilization"
 
     # Variables for creating alerting metrics are used for readability
-    # as many of them contain long monitoring API strings. See variables.tf for more details 
+    # as many of them contain long monitoring API strings. See variables.tf for more details
     condition_threshold {
 
       threshold_value = local.node_memory_threshold
