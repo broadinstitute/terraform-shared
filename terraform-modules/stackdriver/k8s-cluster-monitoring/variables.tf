@@ -64,3 +64,9 @@ variable "group_by_labels" {
   }
   description = "Mapping of monitored resource labels to their gcloud monitoring api name. Used for aggregating timeseries data together"
 }
+
+variable "enable_prometheus_filter" {
+  type        = bool
+  description = "Enable flag for this module. If set to false, no resources will be created that need prometheus."
+  default     = false
+}
