@@ -102,3 +102,18 @@ variable "cloudsql_authorized_networks" {
   type = list(string)
   default = []
 }
+
+variable "cloudsql_database_flags" {
+  type = map
+  default = {
+   "log_output" = "FILE",
+   "sql_mode" = "STRICT_ALL_TABLES",
+   "slow_query_log" = "on",
+   "general_log" = "on",
+   "query_cache_type" = "1",
+   "query_cache_limit" = "1048576",
+   "query_cache_size" = "10485760",
+   "innodb_autoinc_lock_mode" = "2",
+   "max_allowed_packet" = "1073741824",
+  }
+}

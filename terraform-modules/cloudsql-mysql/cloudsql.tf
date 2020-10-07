@@ -46,51 +46,14 @@ resource "google_sql_database_instance" "cloudsql-instance" {
       }
     }
 
-    database_flags {
-      name  = "log_output"
-      value = "FILE"
+    dynamic "database_flags" {
+      for_each = var.cloudsql_database_flags
+      content {
+       name  = database_flags.key
+       value = database_flags.value
+      }
     }
-
-    database_flags {
-      name  = "sql_mode"
-      value = "STRICT_ALL_TABLES"
-    }
-
-    database_flags {
-      name  = "slow_query_log"
-      value = "on"
-    }
-
-    database_flags {
-      name  = "general_log"
-      value = "on"
-    }
-
-    database_flags {
-      name  = "query_cache_type"
-      value = "1"
-    }
-
-    database_flags {
-      name  = "query_cache_limit"
-      value = "1048576"
-    }
-
-    database_flags {
-      name  = "query_cache_size"
-      value = "10485760"
-    }
-
-    database_flags {
-      name  = "innodb_autoinc_lock_mode"
-      value = "2"
-    }
-
-    database_flags {
-      name  = "max_allowed_packet"
-      value = "1073741824"
-    }
-
+      
     user_labels = "${var.cloudsql_instance_labels}"
 
   }
