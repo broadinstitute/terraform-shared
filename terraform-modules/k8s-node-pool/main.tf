@@ -5,7 +5,10 @@ resource google_container_node_pool pool {
   name       = var.name
   location   = var.location
   cluster    = var.master_name
-  node_count = var.node_count
+
+  # Scaling settings -- only one of node_count or autoscaling should be supplied
+  node_count  = var.node_count
+  autoscaling = var.autoscaling
 
   management {
     # CIS compliance: enable automatic repair
