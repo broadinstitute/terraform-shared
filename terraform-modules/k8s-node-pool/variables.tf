@@ -22,7 +22,14 @@ variable location {
 
 variable node_count {
   type        = number
-  description = "Number of nodes to provision in the pool."
+  description = "Number of nodes to provision in the pool. Required if autoscaling not set"
+  default     = null
+}
+
+variable autoscaling {
+  type        = object({ min_node_count = number, max_node_count = number })
+  description = "Autoscaling settings. Required if node_count not set"
+  default     = null
 }
 
 variable machine_type {
