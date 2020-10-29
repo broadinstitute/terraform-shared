@@ -8,6 +8,12 @@ resource google_container_node_pool pool {
 
   # Scaling settings -- only one of node_count or autoscaling should be supplied
   node_count = var.node_count
+
+  # When using autoscaling, initial_node_count must be set, otherwise
+  # an empty node pool is created, even if the minimum is > 0
+  # (See https://github.com/hashicorp/terraform-provider-google/issues/2126)
+  initial_node_count = var.autoscaling == null ? null : var.autoscaling.min_node_count
+
   dynamic "autoscaling" {
     for_each = var.autoscaling == null ? [] : [var.autoscaling]
 
