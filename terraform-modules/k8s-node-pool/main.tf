@@ -11,8 +11,10 @@ resource google_container_node_pool pool {
   dynamic "autoscaling" {
     for_each = var.autoscaling == null ? [] : [var.autoscaling]
 
-    min_node_count = autoscaling.min_node_count
-    max_node_count = autoscaling.max_node_count
+    content {
+      min_node_count = autoscaling.min_node_count
+      max_node_count = autoscaling.max_node_count
+    }
   }
 
   management {
