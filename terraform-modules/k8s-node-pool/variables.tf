@@ -29,7 +29,10 @@ variable node_count {
 variable autoscaling {
   type        = object({ min_node_count = number, max_node_count = number })
   description = "Autoscaling settings. Required if node_count not set"
-  default     = null
+  default     = {
+    min_node_count = null
+    max_node_count = null
+  }
 }
 
 variable machine_type {

@@ -8,7 +8,10 @@ resource google_container_node_pool pool {
 
   # Scaling settings -- only one of node_count or autoscaling should be supplied
   node_count  = var.node_count
-  autoscaling = var.autoscaling
+  autoscaling {
+    min_node_count = var.autoscaling.min_node_count
+    max_node_count = var.autoscaling.max_node_count
+  }
 
   management {
     # CIS compliance: enable automatic repair
