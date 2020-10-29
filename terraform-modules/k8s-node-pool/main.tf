@@ -7,10 +7,12 @@ resource google_container_node_pool pool {
   cluster    = var.master_name
 
   # Scaling settings -- only one of node_count or autoscaling should be supplied
-  node_count  = var.node_count
-  autoscaling {
-    min_node_count = var.autoscaling.min_node_count
-    max_node_count = var.autoscaling.max_node_count
+  node_count = var.node_count
+  dynamic "autoscaling" {
+    for_each = var.autoscaling == null ? [] : [var.autoscaling]
+
+    min_node_count = autoscaling.min_node_count
+    max_node_count = autoscaling.max_node_count
   }
 
   management {
