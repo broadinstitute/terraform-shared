@@ -1,6 +1,8 @@
 resource google_container_node_pool pool {
   provider = google-beta
 
+  count = var.enable ? 1 : 0
+
   depends_on = [var.dependencies]
   name       = var.name
   location   = var.location

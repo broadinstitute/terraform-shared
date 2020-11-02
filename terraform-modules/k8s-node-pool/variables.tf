@@ -5,6 +5,12 @@ variable dependencies {
   description = "Work-around for Terraform 0.12's lack of support for 'depends_on' in custom modules"
 }
 
+variable enable {
+  type        = bool
+  description = "Enable flag for this module. If set to false, no resources will be created."
+  default     = true
+}
+
 variable name {
   type        = string
   description = "Name to assign to the node pool."
