@@ -44,8 +44,8 @@ variable "cloudsql_version" {
 }
 
 variable "cloudsql_keepers" {
-  type = bool
-  default = false
+  type        = bool
+  default     = false
   description = "Whether to use keepers to re-generate instance name. Disabled by default for backwards-compatibility"
 }
 
@@ -143,27 +143,36 @@ variable "cloudsql_authorized_networks" {
 # private sql vars
 
 variable "private_enable" {
-  type = bool
+  type        = bool
   description = "Enable flag for a private sql instance if set to true, a private sql isntance will be created."
-  default = false
+  default     = false
 }
 
 variable "enable_private_services" {
-  type = bool
+  type        = bool
   description = "Enable flag for a private sql instance if set to true, a private sql isntance will be created."
-  default = false
+  default     = false
 }
 
 variable "existing_vpc_network" {
-  type = string
-  default = null
+  type        = string
+  default     = null
   description = "Name of the projects network that the NAT/VPC pairing sql ip will be put on."
 }
 
 variable "private_network_self_link" {
-  type = string
-  default = null
+  type        = string
+  default     = null
   description = "Name of the projects network that the NAT/VPC pairing sql ip will be put on."
+}
+
+# Every once in a while, you do actually want to delete the database, this flag to makes
+# it possible to do so.
+# https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/sql_database_instance#deletion_protection
+variable "cloudsql_deletion_protection" {
+  type        = bool
+  default     = true
+  description = "Deletion protection. Set to false to make it possible delete this database. BE CAREFUL!"
 }
 
 locals {
