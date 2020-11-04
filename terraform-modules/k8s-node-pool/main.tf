@@ -55,11 +55,21 @@ resource google_container_node_pool pool {
     labels   = var.labels
     tags     = var.tags
 
+    taint = var.taints
+
     oauth_scopes = [
       "https://www.googleapis.com/auth/compute",
       "https://www.googleapis.com/auth/devstorage.read_only",
       "https://www.googleapis.com/auth/logging.write",
       "https://www.googleapis.com/auth/monitoring",
     ]
+  }
+
+  # Ignore changes to taints. We set them up at pool creation time, but don't
+  # update them afterwards, because it could trigger node pool recreation and cause
+  # an outage. See
+  # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/container_cluster#taint
+  lifecycle {
+    ignore_changes = [node_config.taint]
   }
 }
