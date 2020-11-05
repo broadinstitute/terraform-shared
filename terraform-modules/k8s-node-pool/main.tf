@@ -69,7 +69,7 @@ resource google_container_node_pool pool {
   # update them afterwards, because it could trigger node pool recreation and cause
   # an outage. See
   # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/container_cluster#taint
-  lifecycle {
-    ignore_changes = [node_config[0].taint]
-  }
+  #lifecycle {
+  #  ignore_changes = [node_config[0].taint]
+  #}
 }
