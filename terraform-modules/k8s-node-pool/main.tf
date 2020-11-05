@@ -42,7 +42,7 @@ resource google_container_node_pool pool {
     # CIS compliance: COS image
     image_type      = "COS"
     machine_type    = var.machine_type
-    disk_size_gb    = 300 # var.disk_size_gb
+    disk_size_gb    = var.disk_size_gb
     service_account = var.service_account
 
     # Protect node metadata
@@ -69,7 +69,7 @@ resource google_container_node_pool pool {
   # update them afterwards, because it could trigger node pool recreation and cause
   # an outage. See
   # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/container_cluster#taint
-  #lifecycle {
-  #  ignore_changes = [node_config[*].taint]
-  #}
+  lifecycle {
+    ignore_changes = [node_config[*].taint]
+  }
 }
