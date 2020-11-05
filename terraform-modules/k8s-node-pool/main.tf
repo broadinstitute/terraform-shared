@@ -70,6 +70,6 @@ resource google_container_node_pool pool {
   # an outage. See
   # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/container_cluster#taint
   lifecycle {
-    ignore_changes = [node_config[*].taint]
+    ignore_changes = [node_config[0].taint]
   }
 }
