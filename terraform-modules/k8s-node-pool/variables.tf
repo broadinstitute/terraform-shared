@@ -77,6 +77,12 @@ variable tags {
   default = []
 }
 
+variable taints {
+  description = "A list of taints to apply to the node pool. Used at pool creation time and ignored afterwards"
+  type        = list(object({ key = string, value = string, effect = string }))
+  default     = []
+}
+
 variable upgrade_settings {
   type = object({ max_surge = number, max_unavailable = number })
   default = {
