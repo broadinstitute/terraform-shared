@@ -4,9 +4,9 @@ locals {
 }
 
 resource "google_monitoring_alert_policy" "uptime_alert" {
-  count    = var.enabled ? 1 : 0
-  provider = google.target
-
+  count                 = var.enabled ? 1 : 0
+  provider              = google.target
+  project               = var.google_project
   display_name          = "${var.service}-availability"
   combiner              = var.combiner
   notification_channels = var.notification_channels
