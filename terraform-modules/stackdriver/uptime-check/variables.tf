@@ -89,9 +89,3 @@ variable "latency_threshold" {
   description = "Latency in ms that must be exceeded for 5 minutes to trigger the alert"
   default     = "2500"
 }
-
-variable "ssl_threshold" {
-  type        = string
-  description = "number of days before a particular ssl expires an alert will trigger"
-  default     = "45"
-}
