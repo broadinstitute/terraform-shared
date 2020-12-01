@@ -9,12 +9,9 @@
  * and average request latency. With default configuration alerts will fire if an uptime check fails for  > 5 minutes or
  * latency is above 2500ms for > 5 minutes
  *
- * This module supports sending alerts via slack and pagerduty. Alerting via pagerduty can only be enabled in production
- * environments and is specified via the `enable_pagerduty` flag, no other action is needed. Sending alerts to one or multiple
- * slack channels is also supported. Slack channels must be passed in as a list of the form `channel_names = ["#channel-name",...]`
- * ### In order for alerts to fire properly to slack make sure the bot user `@terraformstackdriver` is added to your channel
+ * This module supports sending alerts via cloud monitoring notfication channels. Sending alerts to one or multiple
+ * slack channels is also supported.
  *
- * This module also creates a few Ops specific alerts that alert the DevOps team directly. No additional inputs are needed.
  *
  * This documentation is generated with [terraform-docs](https://github.com/terraform-docs/terraform-docs) `terraform-docs markdown --no-sort . > README.md`
  */
