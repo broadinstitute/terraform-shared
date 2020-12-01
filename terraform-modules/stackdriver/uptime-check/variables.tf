@@ -27,6 +27,7 @@ variable "service" {
 variable "notification_channels" {
   type        = list(string)
   description = "List of google notification channel ids that alerts will be sent to"
+  default     = []
 }
 
 locals {
