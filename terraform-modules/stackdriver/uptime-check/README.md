@@ -8,12 +8,8 @@ Currently the metrics that are monitored by this module are the success/failure 
 and average request latency. With default configuration alerts will fire if an uptime check fails for  > 5 minutes or  
 latency is above 2500ms for > 5 minutes
 
-This module supports sending alerts via slack and pagerduty. Alerting via pagerduty can only be enabled in production  
-environments and is specified via the `enable_pagerduty` flag, no other action is needed. Sending alerts to one or multiple  
-slack channels is also supported. Slack channels must be passed in as a list of the form `channel_names = ["#channel-name",...]`
-### In order for alerts to fire properly to slack make sure the bot user `@terraformstackdriver` is added to your channel
-
-This module also creates a few Ops specific alerts that alert the DevOps team directly. No additional inputs are needed.
+This module supports sending alerts via cloud monitoring notfication channels. Sending alerts to one or multiple  
+slack channels is also supported.
 
 This documentation is generated with [terraform-docs](https://github.com/terraform-docs/terraform-docs) `terraform-docs markdown --no-sort . > README.md`
 
@@ -28,7 +24,6 @@ This documentation is generated with [terraform-docs](https://github.com/terrafo
 
 | Name | Version |
 |------|---------|
-| google | ~> 3.9 |
 | google.target | ~> 3.9 |
 
 ## Inputs
@@ -39,15 +34,11 @@ This documentation is generated with [terraform-docs](https://github.com/terrafo
 | google\_project | Google project in which to create the uptime check and notification channels | `string` | n/a | yes |
 | timeout | The number of seconds before the check will automatically fail after not receiving a response | `string` | `"10s"` | no |
 | service | The name of the service uptime check will monitor | `string` | n/a | yes |
+| notification\_channels | List of google notification channel ids that alerts will be sent to | `list(string)` | n/a | yes |
 | path | The URI path to the service's status endpoint | `string` | `"/status"` | no |
 | https\_enabled | Flag to enable tls for the uptime check | `bool` | `true` | no |
 | resource\_type | The GCP resource type that the uptime check will monitor. Defaults to checking a fqdn | `string` | `"uptime_url"` | no |
 | fqdn | The fully qualified domain name to be used by the uptime check | `string` | n/a | yes |
-| channel\_names | The slack channel the alert should fire to | `list(string)` | `[]` | no |
-| ops\_alert\_channel | The slack channel where ssl expiration alerts should go | `string` | `""` | no |
-| enable\_pagerduty | Boolean flag to indicate if DSDE pagerduty will be triggered when one of associated alerts fires. Can only be enabled in broad-dsde-prod | `bool` | `false` | no |
-| pagerduty\_channel | display name of the pagerduty integration in stackdriver | `string` | `""` | no |
-| slack\_token | Oauth token used to communicate with slack api. | `string` | n/a | yes |
 | combiner | Logical operator applied to conditions associated with an alert. Default behavior is to alert if any condition triggers | `string` | `"OR"` | no |
 | comparison | Comparison between a threshold value and current time series value that determines if an alert should fire. Valid inputs are COMPARISON\_GT and COMPARISON\_LT. Default behavior is to trigger alert if current value is above a threshold | `string` | `"COMPARISON_GT"` | no |
 | duration | Amount of time a series must violate a theshold before an alert triggers. Default is to trigger alert after 5 minutes violating a threshold | `string` | `"300s"` | no |

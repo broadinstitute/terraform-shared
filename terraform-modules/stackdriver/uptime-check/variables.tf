@@ -24,6 +24,12 @@ variable "service" {
   description = "The name of the service uptime check will monitor"
 }
 
+variable "notification_channels" {
+  type        = list(string)
+  description = "List of google notification channel ids that alerts will be sent to"
+  default     = []
+}
+
 locals {
   check_name = "${var.service}-uptime"
   port       = var.https_enabled ? "443" : "80"
@@ -56,37 +62,7 @@ variable "fqdn" {
 }
 
 #
-# Notification Channel Vars
-#
 
-variable "channel_names" {
-  type        = list(string)
-  description = "The slack channel the alert should fire to"
-  default     = []
-}
-
-variable "ops_alert_channel" {
-  type        = string
-  description = "The slack channel where ssl expiration alerts should go"
-  default     = ""
-}
-
-variable "enable_pagerduty" {
-  type        = bool
-  description = "Boolean flag to indicate if DSDE pagerduty will be triggered when one of associated alerts fires. Can only be enabled in broad-dsde-prod"
-  default     = false
-}
-
-variable "pagerduty_channel" {
-  type        = string
-  description = "display name of the pagerduty integration in stackdriver"
-  default     = ""
-}
-
-variable "slack_token" {
-  type        = string
-  description = "Oauth token used to communicate with slack api."
-}
 
 # Metric vars
 
@@ -112,10 +88,4 @@ variable "latency_threshold" {
   type        = string
   description = "Latency in ms that must be exceeded for 5 minutes to trigger the alert"
   default     = "2500"
-}
-
-variable "ssl_threshold" {
-  type        = string
-  description = "number of days before a particular ssl expires an alert will trigger"
-  default     = "45"
 }
