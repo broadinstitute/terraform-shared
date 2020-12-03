@@ -57,6 +57,11 @@ resource "google_sql_database_instance" "cloudsql_instance" {
     }
 
     user_labels = var.cloudsql_instance_labels
+
+    database_flags {
+      name  = "max_connections"
+      value = var.postgres_max_connections
+    }
   }
 }
 ## private sql instance code
