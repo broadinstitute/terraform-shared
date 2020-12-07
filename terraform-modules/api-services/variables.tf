@@ -1,5 +1,5 @@
 variable google_project {
-  description = "Google project to enable services in"
+  description = "Google project to enable services in. Defaults to provider project when left blank."
   type        = string
   default     = ""
 }
