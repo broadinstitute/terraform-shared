@@ -91,6 +91,12 @@ variable "postgres_availability_type" {
   description = "Postgres availability type"
 }
 
+variable "postgres_max_connections" {
+  type        = number
+  default     = 100
+  description = "Maximum number of concurrent connections to the database server"
+}
+
 # variable "cloudsql_maintenance_window_enable" {
 #   default = "0"
 #   description = "Enable custom GCE sql instance maintenance window for CloudSQL instances."
