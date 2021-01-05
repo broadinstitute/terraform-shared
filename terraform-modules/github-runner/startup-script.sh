@@ -51,7 +51,7 @@ sudo apt-get -y install \
 sudo snap install --classic kubectl
 
 # Install/configure docker to run as actions user
-rm -rf "/home/$ACTIONS_USER/.docker/run"
+rm -rf "/home/$ACTIONS_USER/bin/dockerd" "/home/$ACTIONS_USER/.docker/run"
 sudo -Hiu "$ACTIONS_USER" bash -c "curl -fsSL https://get.docker.com/rootless | sh"
 rm -f "/docker.log"
 sudo -Hiu "$ACTIONS_USER" XDG_RUNTIME_DIR="/home/$ACTIONS_USER/.docker/run" nohup /home/actions/bin/dockerd-rootless.sh --experimental >"/docker.log" 2>&1 &
