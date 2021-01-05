@@ -5,7 +5,7 @@ provider "google" {
 
 module "test_runner" {
   # "github.com/" + org + "/" + repo name + ".git" + "//" + path within repo to base dir + "?ref=" + git object ref
-  source = "github.com/broadinstitute/terraform-shared.git//terraform-modules/github-runner?ref=github-runner-0.2.0"
+  source = "github.com/broadinstitute/terraform-shared.git//terraform-modules/github-runner?ref=github-runner-0.2.1"
 
   providers = {
     google = google.broad-gotc-dev
