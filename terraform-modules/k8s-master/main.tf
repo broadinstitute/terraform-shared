@@ -43,6 +43,8 @@ resource google_container_cluster cluster {
   # Silly, but necessary to have a default pool of 0 nodes. This allows the node definition to be handled cleanly
   # in a separate file
   remove_default_node_pool = true
+  initial_node_count = 1
+
   dynamic "database_encryption" {
     for_each = var.database_encryption
 
@@ -51,7 +53,6 @@ resource google_container_cluster cluster {
       state    = database_encryption.value.state
     }
   }
-  initial_node_count = 1
 
   # CIS compliance: disable legacy Auth
   enable_legacy_abac = false
