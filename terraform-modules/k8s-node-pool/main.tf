@@ -63,8 +63,12 @@ resource google_container_node_pool pool {
       "https://www.googleapis.com/auth/logging.write",
       "https://www.googleapis.com/auth/monitoring",
     ]
-  }
 
+    shielded_instance_config {
+      enable_secure_boot          = var.enable_secure_boot
+      enable_integrity_monitoring = var.enable_integrity_monitoring
+    }
+  }
   # Ignore changes to taints. We set them up at pool creation time, but don't
   # update them afterwards, because it could trigger node pool recreation and cause
   # an outage. See
