@@ -90,3 +90,13 @@ variable upgrade_settings {
     max_unavailable = 0
   }
 }
+
+variable enable_integrity_monitoring {
+  type    = bool
+  default = true
+}
+
+variable enable_secure_boot {
+  type    = bool
+  default = false
+}

@@ -13,7 +13,7 @@ resource google_container_cluster cluster {
 
   name       = var.name
   location   = var.location
-  depends_on = [var.dependencies]
+  depends_on = [var.dependencies,data.google_project.project]
 
   network    = var.network
   subnetwork = var.subnetwork
@@ -39,10 +39,20 @@ resource google_container_cluster cluster {
     ]
   }
 
+
   # Silly, but necessary to have a default pool of 0 nodes. This allows the node definition to be handled cleanly
   # in a separate file
   remove_default_node_pool = true
-  initial_node_count       = 1
+  initial_node_count = 1
+
+  dynamic "database_encryption" {
+    for_each = var.database_encryption
+
+    content {
+      key_name = database_encryption.value.key_name
+      state    = database_encryption.value.state
+    }
+  }
 
   # CIS compliance: disable legacy Auth
   enable_legacy_abac = false
@@ -83,7 +93,10 @@ resource google_container_cluster cluster {
     }
   }
 
-  enable_shielded_nodes = var.enable_shielded_nodes
+  # CIS compliance: shielded nodes, binary authorization
+  enable_shielded_nodes       = var.enable_shielded_nodes
+  enable_binary_authorization = var.enable_binary_authorization
+
 
   # OMISSION: CIS compliance: Enable Private Cluster
   private_cluster_config {
@@ -110,7 +123,7 @@ resource google_container_cluster cluster {
       disabled = false
     }
     istio_config {
-      disabled = !var.istio_enable
+      disabled = ! var.istio_enable
       auth     = var.istio_auth
     }
   }
