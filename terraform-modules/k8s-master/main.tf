@@ -10,7 +10,7 @@ resource google_container_cluster cluster {
 
   name       = var.name
   location   = var.location
-  depends_on = [var.dependencies,data.google_project.project]
+  depends_on = [var.dependencies]
 
   network    = var.network
   subnetwork = var.subnetwork
