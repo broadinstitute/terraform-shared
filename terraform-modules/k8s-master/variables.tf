@@ -5,6 +5,12 @@ variable dependencies {
   description = "Work-around for Terraform 0.12's lack of support for 'depends_on' in custom modules."
 }
 
+variable project {
+  type        = string
+  description = "Google project"
+  default     = null
+}
+
 variable name {
   type        = string
   description = "Name to assign to the master / GKE cluster."
