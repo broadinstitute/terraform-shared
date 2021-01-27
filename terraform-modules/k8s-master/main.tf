@@ -1,6 +1,3 @@
-# Needed for getting the ID of the project backing the k8s resource.
-data google_project project {}
-
 # Needed for getting the latest valid master version in the target location.
 # This lets us do fuzzy version specs (i.e. '1.14.' instead of '1.14.5-gke.10')
 data google_container_engine_versions cluster_versions {
@@ -13,7 +10,7 @@ resource google_container_cluster cluster {
 
   name       = var.name
   location   = var.location
-  depends_on = [var.dependencies,data.google_project.project]
+  depends_on = [var.dependencies]
 
   network    = var.network
   subnetwork = var.subnetwork
@@ -89,7 +86,7 @@ resource google_container_cluster cluster {
   dynamic "workload_identity_config" {
     for_each = var.enable_workload_identity ? ["Placeholder value to force the loop to iterate once"] : []
     content {
-      identity_namespace = "${data.google_project.project.project_id}.svc.id.goog"
+      identity_namespace = "${var.project}.svc.id.goog"
     }
   }
 
