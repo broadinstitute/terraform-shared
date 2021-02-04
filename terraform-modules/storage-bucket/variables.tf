@@ -66,14 +66,11 @@ variable "labels" {
   default = {}
 }
 
-variable "log_bucket" {
-  description = "The name of the logging bucket."
-  type        = string
-  default     = ""
-}
-
-variable "log_object_prefix" {
-  description = "The prefix to use for the logs"
-  type        = string
-  default     = ""
+variable "log" {
+  description = "set to log on the bucket"
+  type = object({
+    log_bucket        = string
+    log_object_prefix = string
+  })
+  default = null
 }
