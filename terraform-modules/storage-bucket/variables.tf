@@ -66,7 +66,7 @@ variable "labels" {
   default = {}
 }
 
-variable "log" {
+variable "logging" {
   description = "set to log on the bucket"
   type = object({
     log_bucket        = string
