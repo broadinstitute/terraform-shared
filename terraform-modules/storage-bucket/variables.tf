@@ -65,3 +65,11 @@ variable "labels" {
   type = map
   default = {}
 }
+
+variable "log_bucket" {
+
+}
+
+variable "log_bucket_prefix" {
+
+}
