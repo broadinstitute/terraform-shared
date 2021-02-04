@@ -69,7 +69,7 @@ variable "labels" {
 variable "log_bucket" {
   description = "The name of the logging bucket."
   type        = string
-  default     = ""
+  default     = null
 }
 
 variable "log_object_prefix" {
