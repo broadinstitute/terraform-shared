@@ -12,7 +12,7 @@ resource "google_storage_bucket" "bucket" {
   }
 
   dynamic "logging" {
-    for_each = var.log_bucket == null ? [] : [var.log]
+    for_each = var.log == null ? [] : [var.log]
     content {
       log_bucket        = var.log.log_bucket
       log_object_prefix = var.log.log_object_prefix
