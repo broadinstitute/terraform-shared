@@ -13,7 +13,7 @@ resource "google_storage_bucket" "bucket" {
 
   logging {
     log_bucket        = var.log_bucket
-    log_object_prefix = var.log_bucket_prefix
+    log_object_prefix = var.log_object_prefix
   }
 
   dynamic "retention_policy" {
