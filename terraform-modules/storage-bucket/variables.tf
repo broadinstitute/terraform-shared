@@ -65,3 +65,12 @@ variable "labels" {
   type = map
   default = {}
 }
+
+variable "logging" {
+  description = "set to log on the bucket"
+  type = object({
+    log_bucket        = string
+    log_object_prefix = string
+  })
+  default = null
+}

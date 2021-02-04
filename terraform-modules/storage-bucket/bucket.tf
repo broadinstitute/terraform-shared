@@ -11,6 +11,14 @@ resource "google_storage_bucket" "bucket" {
     enabled = var.versioning
   }
 
+  dynamic "logging" {
+    for_each = var.logging == null ? [] : [var.logging]
+    content {
+      log_bucket        = var.logging.log_bucket
+      log_object_prefix = var.logging.log_object_prefix
+    }
+  }
+
   dynamic "retention_policy" {
     for_each = var.retention_policy == null ? [] : [var.retention_policy]
     content {
