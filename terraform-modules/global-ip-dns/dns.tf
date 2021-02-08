@@ -9,7 +9,7 @@ resource "google_compute_global_address" "global_ip" {
 
 module "dns-set" {
   # terraform-shared repo
-  source = "github.com/broadinstitute/terraform-shared.git//terraform-modules/external-dns?ref=external-dns-0.1.0"
+  source = "github.com/broadinstitute/terraform-shared.git//terraform-modules/external-dns?ref=ra_master_remove_experimental_validations"
   providers = {
     google = google.dns_provider
   }
