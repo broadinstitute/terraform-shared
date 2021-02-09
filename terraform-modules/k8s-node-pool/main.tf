@@ -40,7 +40,7 @@ resource google_container_node_pool pool {
 
   node_config {
     # CIS compliance: COS image
-    image_type      = "COS"
+    image_type      = var.image_type
     machine_type    = var.machine_type
     disk_size_gb    = var.disk_size_gb
     service_account = var.service_account
