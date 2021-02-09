@@ -100,3 +100,8 @@ variable enable_secure_boot {
   type    = bool
   default = false
 }
+
+variable image_type {
+  type    = string
+  default = "COS"
+}
