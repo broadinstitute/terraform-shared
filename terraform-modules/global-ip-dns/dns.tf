@@ -14,7 +14,7 @@ module "dns-set" {
     google = google.dns_provider
   }
 
-  dns_names = var.auth_proxy_dns_name
+  dns_names = [var.auth_proxy_dns_name]
   zone_gcp_name=var.auth_proxy_dns_project
   zone_dns_name=var.auth_proxy_dns_zone
 
