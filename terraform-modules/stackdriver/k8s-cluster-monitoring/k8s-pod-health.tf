@@ -29,7 +29,7 @@ resource google_monitoring_alert_policy pod_health_alert {
 
       aggregations {
         per_series_aligner   = "ALIGN_DELTA"
-        alignment_period     = var.alignment_period
+        alignment_period     = "600s"
         cross_series_reducer = var.reducer_method.sum
         group_by_fields      = [var.group_by_labels.cluster_name, var.group_by_labels.namespace_name, var.group_by_labels.container_name, var.group_by_labels.pod_name]
       }
