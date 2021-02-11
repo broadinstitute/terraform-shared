@@ -6,7 +6,7 @@ env:
 
 defaults:
   run:
-    working-directory: "deploy/gotc-dev/terraform"
+    working-directory: "terraform-modules/wfl-instance"
 
 on:
   pull_request:
