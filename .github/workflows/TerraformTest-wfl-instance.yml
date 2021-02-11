@@ -4,6 +4,10 @@ env:
   terraform_directory: "terraform-modules/wfl-instance"
   terraform_version: "0.13.6"
 
+defaults:
+  run:
+    working-directory: "terraform-modules/wfl-instance"
+
 on:
   pull_request:
     branches: 
@@ -15,40 +19,30 @@ jobs:
   terraform_test:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
+    - uses: actions/checkout@v2
 
-    # Run Terraform fmt (kind of a linter)
+    - uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ env.terraform_version }}
+
+      # Run Terraform fmt (kind of a linter)
     - name: Terraform format check
-      uses: hashicorp/terraform-github-actions@master
-      with:
-        tf_actions_version: ${{ env.terraform_version }}
-        tf_actions_subcommand: 'fmt'
-        tf_actions_fmt_write: false
-        tf_actions_comment: true
-        tf_actions_working_dir: ${{ env.terraform_directory }}/test
+      id: fmt
+      run: terraform fmt
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    # Run Terraform init 
+      # Run Terraform init
     - name: Terraform init
-      uses: hashicorp/terraform-github-actions@master
-      with:
-        tf_actions_version: ${{ env.terraform_version }}
-        tf_actions_subcommand: 'init'
-        tf_actions_comment: true
-        tf_actions_working_dir: ${{ env.terraform_directory }}/test
+      id: init
+      run: terraform init
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    # Run Terraform validate 
+      # Run Terraform validate
     - name: Terraform validate
-      uses: hashicorp/terraform-github-actions@master
-      with:
-        tf_actions_version: ${{ env.terraform_version }}
-        tf_actions_subcommand: 'validate'
-        tf_actions_comment: true
-        tf_actions_working_dir: ${{ env.terraform_directory }}/test
+      id: validate
+      run: terraform validate
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
