@@ -2,7 +2,7 @@ name: Terraform Test - wfl-instance module
 
 env:
   terraform_directory: "terraform-modules/wfl-instance"
-  terraform_version: "0.12.25"
+  terraform_version: "0.13.6"
 
 on:
   pull_request:

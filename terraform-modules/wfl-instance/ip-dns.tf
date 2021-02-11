@@ -1,6 +1,6 @@
 module "ip-dns" {
 
-  source = "github.com/broadinstitute/terraform-shared.git//terraform-modules/global-ip-dns?ref=global-ip-dns-0.0.1"
+  source = "github.com/broadinstitute/terraform-shared.git//terraform-modules/global-ip-dns?ref=ra_master_remove_experimental_validations"
 
   providers = {
     google              = google

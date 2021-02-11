@@ -9,11 +9,15 @@ resource "google_compute_global_address" "global_ip" {
 
 module "dns-set" {
   # terraform-shared repo
-  source = "github.com/broadinstitute/terraform-shared.git//terraform-modules/external-dns?ref=external-dns-0.1.0"
+  source = "github.com/broadinstitute/terraform-shared.git//terraform-modules/external-dns?ref=ra_master_remove_experimental_validations"
   providers = {
     google = google.dns_provider
   }
 
-  target_dns_zone_name = var.auth_proxy_dns_zone
-  records              = local.records
+  dns_names = [var.auth_proxy_dns_name]
+  zone_gcp_name=var.auth_proxy_dns_project
+  zone_dns_name=var.auth_proxy_dns_zone
+
+//  target_dns_zone_name = var.auth_proxy_dns_zone
+//  records              = local.records
 }

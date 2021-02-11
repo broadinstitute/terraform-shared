@@ -1,10 +1,18 @@
 terraform {
-  required_version = ">= 0.12.20"
-  experiments      = [variable_validation]
+  required_version = ">= 0.13.6"
 
   required_providers {
-    google      = ">= 3.2.0"
-    google-beta = ">= 3.2.0"
-    random      = ">= 2.2"
+    google = {
+      source = "hashicorp/google"
+      version = ">= 3.55.0"
+    }
+    google-beta = {
+      source = "hashicorp/google-beta"
+      version = ">= 3.55.0"
+    }
+    random = {
+      source = "hashicorp/random"
+      version = ">= 3.0.1"
+    }
   }
 }
