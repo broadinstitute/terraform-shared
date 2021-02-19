@@ -13,7 +13,7 @@ systemctl disable firewalld.service
 #install pip and ansible
 yum install epel-release -y
 yum update
-yum install  python36 python36-pip git jq -y
+yum install python36 python36-pip git jq python-setuptools -y
 python3.6 -m pip install --upgrade pip
 python3.6 -m pip install virtualenv
 virtualenv /usr/local/bin/ansible
@@ -55,3 +55,6 @@ ansible-pull provisioner.yml -C ${ANSIBLE_BRANCH} -d /var/lib/ansible/local -U h
 
 touch /etc/sysconfig/gce-metadata-run
 chmod 0644 /etc/sysconfig/gce-metadata-run
+
+# Prevent yum-cron from arbitrarily updating docker packages
+echo "exclude = docker* containerd.io" >> /etc/yum/yum-cron.conf
