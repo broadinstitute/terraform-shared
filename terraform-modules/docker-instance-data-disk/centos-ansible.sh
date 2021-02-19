@@ -55,3 +55,6 @@ ansible-pull provisioner.yml -C ${ANSIBLE_BRANCH} -d /var/lib/ansible/local -U h
 
 touch /etc/sysconfig/gce-metadata-run
 chmod 0644 /etc/sysconfig/gce-metadata-run
+
+# Prevent yum-cron from arbitrarily updating docker packages
+echo "exclude = docker* containerd.io" >> /etc/yum/yum-cron.conf
