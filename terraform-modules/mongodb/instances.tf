@@ -1,7 +1,7 @@
 
 # Docker instance(s)
 module "instances" {
-  source        = "github.com/broadinstitute/terraform-shared.git//terraform-modules/docker-instance-data-disk?ref=gm/centos-startup-tweaks"
+  source        = "github.com/broadinstitute/terraform-shared.git//terraform-modules/docker-instance-data-disk?ref=gm-centos-startup-tweaks"
 
   providers = {
     google.target = google.target
