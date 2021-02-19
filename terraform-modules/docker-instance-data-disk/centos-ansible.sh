@@ -13,7 +13,7 @@ systemctl disable firewalld.service
 #install pip and ansible
 yum install epel-release -y
 yum update
-yum install  python36 python36-pip git jq -y
+yum install python36 python36-pip git jq python-setuptools -y
 python3.6 -m pip install --upgrade pip
 python3.6 -m pip install virtualenv
 virtualenv /usr/local/bin/ansible
