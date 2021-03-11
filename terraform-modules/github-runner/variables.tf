@@ -96,7 +96,7 @@ variable "runners" {
   default     = 1
 }
 
-variable "useFamily" {
+variable "useImageFamily" {
   type        = bool
   description = "True means to use family. False means to use specific instance"
   default     = true
