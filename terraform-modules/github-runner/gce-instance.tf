@@ -70,7 +70,7 @@ resource "google_compute_instance" "runner" {
   boot_disk {
     initialize_params {
       size  = var.boot-disk-size
-      image = var.useImageFamily ? data.google_compute_image.ubuntu_family.self_link : data.google_compute_image.ubuntu_name.self_link
+      image = var.useImageFamily ? data.google_compute_image.ubuntu_family[0].self_link : data.google_compute_image.ubuntu_name[0].self_link
     }
     auto_delete = true
   }
