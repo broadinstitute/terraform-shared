@@ -29,8 +29,16 @@ resource "google_compute_address" "static" {
 }
 
 # Base the runner on latest Ubuntu
-data "google_compute_image" "ubuntu" {
+data "google_compute_image" "ubuntu_family" {
+  count = var.useFamily ? 1 : 0
   family  = "ubuntu-2004-lts"
+  project = "ubuntu-os-cloud"
+}
+
+# Base the runner on a set Ubuntu
+data "google_compute_image" "ubuntu_name" {
+  count = var.useFamily ? 0 : 1
+  name  = "ubuntu-2004-focal-v20210223"
   project = "ubuntu-os-cloud"
 }
 
@@ -62,7 +70,7 @@ resource "google_compute_instance" "runner" {
   boot_disk {
     initialize_params {
       size  = var.boot-disk-size
-      image = data.google_compute_image.ubuntu.self_link
+      image = var.useFamily ? data.google_compute_image.ubuntu_family.self_link : data.google_compute_image.ubuntu_name.self_link
     }
     auto_delete = true
   }

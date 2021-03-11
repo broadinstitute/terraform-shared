@@ -95,3 +95,9 @@ variable "runners" {
   description = "The number of individual instances to provision"
   default     = 1
 }
+
+variable "useFamily" {
+  type        = bool
+  description = "True means to use family. False means to use specific instance"
+  default     = true
+}
