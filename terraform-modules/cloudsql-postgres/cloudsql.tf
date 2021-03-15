@@ -67,10 +67,10 @@ resource "google_sql_database_instance" "cloudsql_instance" {
     }
 
     insights_config {
-      query_insights_enabled  = var.cloudsql_insights_config.query_insights_enabled
-      query_string_length     = var.cloudsql_insights_config.query_string_length
-      record_application_tags = var.cloudsql_insights_config.record_application_tags
-      record_client_address   = var.cloudsql_insights_config.record_client_address
+      query_insights_enabled  = local.cloudsql_insights_config.query_insights_enabled
+      query_string_length     = local.cloudsql_insights_config.query_string_length
+      record_application_tags = local.cloudsql_insights_config.record_application_tags
+      record_client_address   = local.cloudsql_insights_config.record_client_address
     }
   }
 }

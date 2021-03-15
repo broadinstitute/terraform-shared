@@ -87,13 +87,17 @@ variable "cloudsql_replication_type" {
 
 variable "cloudsql_insights_config" {
   type = map
-  default = {
+  default =
+  description = "Config parameters for Query Insights"
+}
+locals {
+  cloudsql_insights_config_defaults = {
     query_insights_enabled  = false,
     query_string_length     = null,
     record_application_tags = null,
     record_client_address   = null
   }
-  description = "Config parameters for Query Insights"
+  cloudsql_insights_config = merge(local.cloudsql_insights_config_defaults, var.cloudsql_insights_config)
 }
 
 variable "postgres_availability_type" {
