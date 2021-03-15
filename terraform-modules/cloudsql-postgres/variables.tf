@@ -86,8 +86,8 @@ variable "cloudsql_replication_type" {
 }
 
 variable "cloudsql_insights_config" {
-  type = map
-  default =
+  type        = map
+  default     = {}
   description = "Config parameters for Query Insights"
 }
 locals {
