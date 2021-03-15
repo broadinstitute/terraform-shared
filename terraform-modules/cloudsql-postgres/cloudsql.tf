@@ -66,11 +66,8 @@ resource "google_sql_database_instance" "cloudsql_instance" {
       }
     }
 
-    dynamic "insights_config" {
-      for_each = var.cloudsql_insights_config
-      content {
-        insights_config.key = insights_config.value
-      }
+    insights_config {
+      query_insights_enabled = var.cloudsql_insights_config.query_insights_enabled
     }
   }
 }

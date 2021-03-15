@@ -86,8 +86,8 @@ variable "cloudsql_replication_type" {
 }
 
 variable "cloudsql_insights_config" {
-  type        = map
-  default     = {}
+  type        = object({ query_insights_enabled = bool })
+  default     = { query_insights_enabled = false }
   description = "Config parameters for Query Insights" # https://github.com/hashicorp/terraform-provider-google/pull/8434
 }
 
