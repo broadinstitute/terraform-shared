@@ -3,7 +3,7 @@
 #
 
 resource "random_id" "cloudsql_id" {
-  count       = var.enable ? 1 : 0
+  count = var.enable ? 1 : 0
 
   byte_length = 8
 
@@ -19,7 +19,7 @@ resource "google_sql_database_instance" "cloudsql_instance" {
   region           = var.cloudsql_region
   database_version = var.cloudsql_version
   name             = "${var.cloudsql_name}-${random_id.cloudsql_id[0].hex}"
-  depends_on       = [ random_id.cloudsql_id, var.dependencies, google_service_networking_connection.private_vpc_connection ]
+  depends_on       = [random_id.cloudsql_id, var.dependencies, google_service_networking_connection.private_vpc_connection]
 
   settings {
 
@@ -58,9 +58,19 @@ resource "google_sql_database_instance" "cloudsql_instance" {
 
     user_labels = var.cloudsql_instance_labels
 
-    database_flags {
-      name  = "max_connections"
-      value = var.postgres_max_connections
+    dynamic "database_flags" {
+      for_each = var.cloudsql_database_flags
+      content {
+        name  = database_flags.key
+        value = database_flags.value
+      }
+    }
+
+    insights_config {
+      query_insights_enabled  = local.cloudsql_insights_config.query_insights_enabled
+      query_string_length     = local.cloudsql_insights_config.query_string_length
+      record_application_tags = local.cloudsql_insights_config.record_application_tags
+      record_client_address   = local.cloudsql_insights_config.record_client_address
     }
   }
 }

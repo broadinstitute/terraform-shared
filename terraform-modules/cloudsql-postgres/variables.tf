@@ -44,8 +44,8 @@ variable "cloudsql_version" {
 }
 
 variable "cloudsql_keepers" {
-  type = bool
-  default = false
+  type        = bool
+  default     = false
   description = "Whether to use keepers to re-generate instance name. Disabled by default for backwards-compatibility"
 }
 
@@ -85,16 +85,31 @@ variable "cloudsql_replication_type" {
   description = "The default replication type for CloudSQL instances"
 }
 
+variable "cloudsql_insights_config" {
+  type        = map
+  default     = {}
+  description = "Config parameters for Query Insights"
+}
+locals {
+  cloudsql_insights_config_defaults = {
+    query_insights_enabled  = false,
+    query_string_length     = null,
+    record_application_tags = null,
+    record_client_address   = null
+  }
+  cloudsql_insights_config = merge(local.cloudsql_insights_config_defaults, var.cloudsql_insights_config)
+}
+
 variable "postgres_availability_type" {
   type        = string
   default     = "REGIONAL"
   description = "Postgres availability type"
 }
 
-variable "postgres_max_connections" {
-  type        = number
-  default     = 100
-  description = "Maximum number of concurrent connections to the database server"
+variable "cloudsql_database_flags" {
+  type        = map
+  default     = {}
+  description = "Database flags to pass to the CloudSQL instance"
 }
 
 # variable "cloudsql_maintenance_window_enable" {
@@ -149,26 +164,26 @@ variable "cloudsql_authorized_networks" {
 # private sql vars
 
 variable "private_enable" {
-  type = bool
+  type        = bool
   description = "Enable flag for a private sql instance if set to true, a private sql isntance will be created."
-  default = false
+  default     = false
 }
 
 variable "enable_private_services" {
-  type = bool
+  type        = bool
   description = "Enable flag for a private sql instance if set to true, a private sql isntance will be created."
-  default = false
+  default     = false
 }
 
 variable "existing_vpc_network" {
-  type = string
-  default = null
+  type        = string
+  default     = null
   description = "Name of the projects network that the NAT/VPC pairing sql ip will be put on."
 }
 
 variable "private_network_self_link" {
-  type = string
-  default = null
+  type        = string
+  default     = null
   description = "Name of the projects network that the NAT/VPC pairing sql ip will be put on."
 }
 
