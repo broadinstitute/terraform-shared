@@ -3,7 +3,7 @@
 #
 
 resource "random_id" "cloudsql_id" {
-  count       = var.enable ? 1 : 0
+  count = var.enable ? 1 : 0
 
   byte_length = 8
 
@@ -19,7 +19,7 @@ resource "google_sql_database_instance" "cloudsql_instance" {
   region           = var.cloudsql_region
   database_version = var.cloudsql_version
   name             = "${var.cloudsql_name}-${random_id.cloudsql_id[0].hex}"
-  depends_on       = [ random_id.cloudsql_id, var.dependencies, google_service_networking_connection.private_vpc_connection ]
+  depends_on       = [random_id.cloudsql_id, var.dependencies, google_service_networking_connection.private_vpc_connection]
 
   settings {
 
@@ -62,6 +62,8 @@ resource "google_sql_database_instance" "cloudsql_instance" {
       name  = "max_connections"
       value = var.postgres_max_connections
     }
+
+    insights_config = var.cloudsql_insights_config
   }
 }
 ## private sql instance code
