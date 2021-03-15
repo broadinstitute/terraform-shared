@@ -86,8 +86,18 @@ variable "cloudsql_replication_type" {
 }
 
 variable "cloudsql_insights_config" {
-  type        = object({ query_insights_enabled = bool })
-  default     = { query_insights_enabled = false }
+  type = object({
+    query_insights_enabled  = boolean,
+    query_istring_length    = number,
+    record_application_type = boolean,
+    record_client_addres    = boolean
+  })
+  default = {
+    query_insights_enabled  = false,
+    query_string_length     = null,
+    record_application_type = null,
+    record_client_address   = null
+  }
   description = "Config parameters for Query Insights"
 }
 
