@@ -63,7 +63,9 @@ resource "google_sql_database_instance" "cloudsql_instance" {
       value = var.postgres_max_connections
     }
 
-    insights_config = var.cloudsql_insights_config
+    insights_config {
+      query_insights_enabled = var.cloudsql_insights_config.query_insights_enabled
+    }
   }
 }
 ## private sql instance code
