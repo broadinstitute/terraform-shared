@@ -90,7 +90,7 @@ variable "cloudsql_insights_config" {
   default = {
     query_insights_enabled  = false,
     query_string_length     = null,
-    record_application_type = null,
+    record_application_tags = null,
     record_client_address   = null
   }
   description = "Config parameters for Query Insights"
