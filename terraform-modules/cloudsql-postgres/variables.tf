@@ -103,12 +103,6 @@ variable "cloudsql_database_flags" {
   description = "Database flags to pass to the CloudSQL instance"
 }
 
-variable "postgres_max_connections" {
-  type        = number
-  default     = 100
-  description = "Maximum number of concurrent connections to the database server"
-}
-
 # variable "cloudsql_maintenance_window_enable" {
 #   default = "0"
 #   description = "Enable custom GCE sql instance maintenance window for CloudSQL instances."
