@@ -5,7 +5,7 @@ provider "google" {
 module "test_postgres" {
   source = "../"
 
-  clousql_database_flags = {
+  cloudsql_database_flags = {
     max_connections = 100
   }
 
