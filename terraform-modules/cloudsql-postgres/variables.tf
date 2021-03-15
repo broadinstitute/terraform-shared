@@ -88,7 +88,7 @@ variable "cloudsql_replication_type" {
 variable "cloudsql_insights_config" {
   type        = object({ query_insights_enabled = bool })
   default     = { query_insights_enabled = false }
-  description = "Config parameters for Query Insights" # https://github.com/hashicorp/terraform-provider-google/pull/8434
+  description = "Config parameters for Query Insights"
 }
 
 variable "postgres_availability_type" {
