@@ -58,9 +58,12 @@ resource "google_sql_database_instance" "cloudsql_instance" {
 
     user_labels = var.cloudsql_instance_labels
 
-    database_flags {
-      name  = "max_connections"
-      value = var.postgres_max_connections
+    dynamic "database_flags" {
+      for_each = var.cloudsql_database_flags
+      content {
+        name  = database_flags.key
+        value = database_flags.value
+      }
     }
 
     insights_config {

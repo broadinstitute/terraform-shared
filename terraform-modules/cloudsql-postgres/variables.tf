@@ -97,6 +97,12 @@ variable "postgres_availability_type" {
   description = "Postgres availability type"
 }
 
+variable "cloudsql_database_flags" {
+  type        = map
+  default     = {}
+  description = "Database flags to pass to the CloudSQL instance"
+}
+
 variable "postgres_max_connections" {
   type        = number
   default     = 100
