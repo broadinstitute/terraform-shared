@@ -89,3 +89,9 @@ variable "latency_threshold" {
   description = "Latency in ms that must be exceeded for 5 minutes to trigger the alert"
   default     = "2500"
 }
+
+variable "alert_documentation" {
+  type        = string
+  description = "documentation to display in alert messages"
+  default     = ""
+}
