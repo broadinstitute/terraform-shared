@@ -12,7 +12,7 @@ resource "google_monitoring_alert_policy" "uptime_alert" {
   notification_channels = var.notification_channels
 
   documentation {
-    content = var.uptime_documentation
+    content = var.alert_documentation
   }
 
   conditions {

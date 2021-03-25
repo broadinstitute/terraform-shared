@@ -90,7 +90,7 @@ variable "latency_threshold" {
   default     = "2500"
 }
 
-variable "uptime_documentation" {
+variable "alert_documentation" {
   type        = string
   description = "documentation to display in alert messages"
   default     = ""
