@@ -11,6 +11,10 @@ resource "google_monitoring_alert_policy" "uptime_alert" {
   combiner              = var.combiner
   notification_channels = var.notification_channels
 
+  documentation {
+    content = var.uptime_documentation
+  }
+
   conditions {
     display_name = "${var.service}-uptime"
 
