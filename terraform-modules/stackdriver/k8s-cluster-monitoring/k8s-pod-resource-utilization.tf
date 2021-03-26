@@ -2,9 +2,9 @@ locals {
   memory_limit_threshold       = 0.95
   volume_util_threshold        = 0.95
   cpu_limit_util_threshold     = 0.95
-  pod_memory_limit_util_metric = "metric.type=\"kubernetes.io/container/memory/limit_utilization\" resource.type=\"k8s_container\" metric.label.\"memory_type\"=\"non-evictable\" resource.label.\"container_name\"!=\"metadata-proxy\""
-  volume_util_metric           = "metric.type=\"kubernetes.io/pod/volume/utilization\" resource.type=\"k8s_pod\""
-  cpu_limit_util_metric        = "metric.type=\"kubernetes.io/container/cpu/limit_utilization\" resource.type=\"k8s_container\""
+  pod_memory_limit_util_metric = "metric.type=\"kubernetes.io/container/memory/limit_utilization\" resource.type=\"k8s_container\" metric.label.\"memory_type\"=\"non-evictable\" resource.label.\"namespace_name\"!=\"kube-system\""
+  volume_util_metric           = "metric.type=\"kubernetes.io/pod/volume/utilization\" resource.type=\"k8s_pod\" resource.label.\"namespace_name\"!=\"kube-system\""
+  cpu_limit_util_metric        = "metric.type=\"kubernetes.io/container/cpu/limit_utilization\" resource.type=\"k8s_container\" resource.label.\"namespace_name\"!=\"kube-system\""
 }
 
 resource google_monitoring_alert_policy pod_memory_util {
