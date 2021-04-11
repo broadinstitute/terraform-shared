@@ -187,6 +187,12 @@ variable "private_network_self_link" {
   description = "Name of the projects network that the NAT/VPC pairing sql ip will be put on."
 }
 
+variable "cloudsql_retained_backups" {
+  type        = number
+  default     = 7
+  description = "Number of days to retain backups"
+}
+
 locals {
   private_network = var.enable_private_services ? var.private_network_self_link : var.existing_vpc_network
 }
