@@ -154,7 +154,7 @@ variable "gke_ca_certificate" {
 locals {
   labels = {
     app_name = "wfl"
-    instance_id = var.instance_id_label_prefix == null ? "${var.instance_id_label_prefix}-${var.instance_id}" : var.instance_id
+    instance_id = var.instance_id_label_prefix != null ? "${var.instance_id_label_prefix}-${var.instance_id}" : var.instance_id
     app_cluster = var.gke_name
   }
   namespace = "${var.instance_id}-wfl"
