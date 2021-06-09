@@ -7,6 +7,12 @@ variable "approle" {
 }
 
 variable "vault_address" {
-  type  = string
+  type    = string
   default = "https://clotho.broadinstitute.org:8200"
+}
+
+variable "token_no_default_policy" {
+  type        = bool
+  default     = true
+  description = "making this toggleable to avoid potential damaging changes to existing approles"
 }
