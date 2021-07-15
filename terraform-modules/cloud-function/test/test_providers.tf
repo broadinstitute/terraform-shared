@@ -4,4 +4,5 @@ provider "google" {
 }
 
 provider "vault" {
+  address = "https://clotho.broadinstitute.org:8200/"
 }
