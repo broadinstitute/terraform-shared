@@ -140,13 +140,15 @@ module "test_cloud_function" {
 
 </details>
 
-## Providers
+## Requirements
 
-The following providers are used by this module:
+The following requirements are needed by this module:
 
-- <a name="provider_google"></a> [google](#provider\_google) (>= 3.65.0)
+- <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) (>= 0.12.19)
 
-- <a name="provider_vault"></a> [vault](#provider\_vault) (>= 2.8.0)
+- <a name="requirement_google"></a> [google](#requirement\_google) (>= 3.65.0)
+
+- <a name="requirement_vault"></a> [vault](#requirement\_vault) (>= 2.8.0)
 
 ## Required Inputs
 
