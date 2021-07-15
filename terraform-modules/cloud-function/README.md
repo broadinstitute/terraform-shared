@@ -3,57 +3,68 @@
 A convenience module helping securely deploy Google Cloud Functions.
 
 It has core behavior similar to the normal [cloud function resource](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloudfunctions_function),
-but it has several other features included:
-- Can create a named service account to avoid the potentially-insecure [App Engine default SA](https://cloud.google.com/functions/docs/securing/function-identity#runtime_service_account)
-    - By default, [service\_account\_create](#input\_service\_account\_create) is `true` and [service\_account\_id](#input\_service\_account\_id) will be set to `{function_name}-sa`
-    - [service\_account\_create](#input\_service\_account\_create) can be set to `false` and [service\_account\_id](#input\_service\_account\_id) can be set to an existing service account--even one in another project, referenced by full email
-
-- Can modify permissions to allow broader sets of users (even unauthenticated ones) to trigger the function
-    - See the [function\_invokers](#input\_function\_invokers) field
-    - This is particularly useful for resolving [403 forbidden errors](https://cloud.google.com/functions/docs/troubleshooting#private) upon trying to call the function
-
-- Can notify Slack channels if the function crashed or exits with an error
-    - Cloud Monitoring notification channel must already be configured in the UI, within the [google\_project](#input\_google\_project) you plan to use--[configuration page here](https://console.cloud.google.com/monitoring/alerting/notifications)
-    - More than just Slack channels can be set--pass monitoring channel "display names" to [monitoring\_channel\_names](#input\_monitoring\_channel\_names)
-
-- Can sync secrets from Vault to Google Secret Manager, allowing the cloud function's service account to read them without insecure use of the environment
-    - See the function\_vault\_secrets](#input\_function\_vault\_secrets) field--specify the path to the Vault secret, the particular field within the Vault secret, and the environment variable to contain the Secret Manager secret name
-    - Rather than setting environment variables containing Vault secret values, this module sets them containing full names of [Secret Manager secret "versions"](https://cloud.google.com/secret-manager/docs/creating-and-accessing-secrets#access), in the form `projects/*/secrets/*/versions/*`
-    - The module configures Secret Manager permissions such that, from within the cloud function, Secret Manager client libraries can access the secret values without configuration
-    - Example for Python ([client library here](https://cloud.google.com/secret-manager/docs/reference/libraries#client-libraries-install-python)):
-    ```python
-    from google.cloud import secretmanager
-
-    # One "client" can read multiple secrets
-    secret_manager_client = secretmanager.SecretManagerServiceClient()
-
-    # This Terraform module will maintain the MY_SECRET_ID environment variable
-    my_secret_value = secret_manager_client\
-      .access_secret_version(name=os.environ['MY_SECRET_ID'])\
-      .payload.data.decode('UTF-8')
-    ```
-
-    - Example for Java ([client library here](https://cloud.google.com/secret-manager/docs/reference/libraries#client-libraries-install-java)):
-    ```java
-    import com.google.cloud.secretmanager.v1.SecretManagerServiceClient;
-
-    import java.io.IOException;
-
-    class Example {
-        public static void main(String[] args) throws IOException {
-            // One "client" can read multiple secrets
-            try (SecretManagerServiceClient client = SecretManagerServiceClient.create()) {
-                // This Terraform module will maintain the MY_SECRET_ID environment variable
-                String mySecretValue = client
-                        .accessSecretVersion(System.getenv("MY_SECRET_ID"))
-                        .getPayload().getData().toStringUtf8();
-            }
-        }
-    }
-    ```
-
+but it has several other features included.
 
 This documentation is generated via `terraform-docs markdown .`
+
+## Features
+
+<details> 
+<summary>Can create a named service account to avoid the potentially-insecure [App Engine default SA](https://cloud.google.com/functions/docs/securing/function-identity#runtime_service_account)</summary>
+- By default, [service\_account\_create](#input\_service\_account\_create) is `true` and [service\_account\_id](#input\_service\_account\_id) will be set to `{function_name}-sa`
+- [service\_account\_create](#input\_service\_account\_create) can be set to `false` and [service\_account\_id](#input\_service\_account\_id) can be set to an existing service account--even one in another project, referenced by full email
+</details>
+
+<details>
+<summary>Can modify permissions to allow broader sets of users (even unauthenticated ones) to trigger the function</summary>
+- See the [function\_invokers](#input\_function\_invokers) field
+- This is particularly useful for resolving [403 forbidden errors](https://cloud.google.com/functions/docs/troubleshooting#private) upon trying to call the function
+</details>
+
+<details>
+<summary>Can notify Slack channels if the function crashed or exits with an error</summary>
+- Cloud Monitoring notification channel must already be configured in the UI, within the [google\_project](#input\_google\_project) you plan to use--[configuration page here](https://console.cloud.google.com/monitoring/alerting/notifications)
+- More than just Slack channels can be set--pass monitoring channel "display names" to [monitoring\_channel\_names](#input\_monitoring\_channel\_names)
+</details>
+
+<details>
+<summary>Can sync secrets from Vault to Google Secret Manager, allowing the cloud function's service account to read them without insecure use of the environment</summary>
+- See the function\_vault\_secrets](#input\_function\_vault\_secrets) field--specify the path to the Vault secret, the particular field within the Vault secret, and the environment variable to contain the Secret Manager secret name
+- Rather than setting environment variables containing Vault secret values, this module sets them containing full names of [Secret Manager secret "versions"](https://cloud.google.com/secret-manager/docs/creating-and-accessing-secrets#access), in the form `projects/*/secrets/*/versions/*`
+- The module configures Secret Manager permissions such that, from within the cloud function, Secret Manager client libraries can access the secret values without configuration
+
+Example for Python ([client library here](https://cloud.google.com/secret-manager/docs/reference/libraries#client-libraries-install-python)):
+```python
+from google.cloud import secretmanager
+
+# One "client" can read multiple secrets
+secret_manager_client = secretmanager.SecretManagerServiceClient()
+
+# This Terraform module will maintain the MY_SECRET_ID environment variable
+my_secret_value = secret_manager_client\
+  .access_secret_version(name=os.environ['MY_SECRET_ID'])\
+  .payload.data.decode('UTF-8')
+```
+
+Example for Java ([client library here](https://cloud.google.com/secret-manager/docs/reference/libraries#client-libraries-install-java)):
+```java
+import com.google.cloud.secretmanager.v1.SecretManagerServiceClient;
+
+import java.io.IOException;
+
+class Example {
+    public static void main(String[] args) throws IOException {
+        // One "client" can read multiple secrets
+        try (SecretManagerServiceClient client = SecretManagerServiceClient.create()) {
+            // This Terraform module will maintain the MY_SECRET_ID environment variable
+            String mySecretValue = client
+                    .accessSecretVersion(System.getenv("MY_SECRET_ID"))
+                    .getPayload().getData().toStringUtf8();
+        }
+    }
+}
+```
+</details>
 
 [//]: # (BEGIN_TF_DOCS)
 
