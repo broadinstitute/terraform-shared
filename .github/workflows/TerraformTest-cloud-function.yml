@@ -3,6 +3,7 @@ name: Terraform Test - wfl-instance module
 env:
   terraform_directory: "terraform-modules/cloud-function"
   terraform_version: "0.12.19"
+  VAULT_ADDR: "https://example.com"
 
 defaults:
   run:
