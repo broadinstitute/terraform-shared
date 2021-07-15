@@ -10,25 +10,36 @@ This documentation is generated via `terraform-docs markdown .`
 ## Features
 
 <details> 
-<summary>Can create a named service account to avoid the potentially-insecure [App Engine default SA](https://cloud.google.com/functions/docs/securing/function-identity#runtime_service_account)</summary>
+<summary>
+
+### Can create a named service account to avoid the potentially-insecure App Engine default service account
+
+</summary>
+
 - By default, [service\_account\_create](#input\_service\_account\_create) is `true` and [service\_account\_id](#input\_service\_account\_id) will be set to `{function_name}-sa`
 - [service\_account\_create](#input\_service\_account\_create) can be set to `false` and [service\_account\_id](#input\_service\_account\_id) can be set to an existing service account--even one in another project, referenced by full email
+
 </details>
 
 <details>
 <summary>Can modify permissions to allow broader sets of users (even unauthenticated ones) to trigger the function</summary>
+
 - See the [function\_invokers](#input\_function\_invokers) field
 - This is particularly useful for resolving [403 forbidden errors](https://cloud.google.com/functions/docs/troubleshooting#private) upon trying to call the function
+
 </details>
 
 <details>
 <summary>Can notify Slack channels if the function crashed or exits with an error</summary>
+
 - Cloud Monitoring notification channel must already be configured in the UI, within the [google\_project](#input\_google\_project) you plan to use--[configuration page here](https://console.cloud.google.com/monitoring/alerting/notifications)
 - More than just Slack channels can be set--pass monitoring channel "display names" to [monitoring\_channel\_names](#input\_monitoring\_channel\_names)
+
 </details>
 
 <details>
 <summary>Can sync secrets from Vault to Google Secret Manager, allowing the cloud function's service account to read them without insecure use of the environment</summary>
+
 - See the function\_vault\_secrets](#input\_function\_vault\_secrets) field--specify the path to the Vault secret, the particular field within the Vault secret, and the environment variable to contain the Secret Manager secret name
 - Rather than setting environment variables containing Vault secret values, this module sets them containing full names of [Secret Manager secret "versions"](https://cloud.google.com/secret-manager/docs/creating-and-accessing-secrets#access), in the form `projects/*/secrets/*/versions/*`
 - The module configures Secret Manager permissions such that, from within the cloud function, Secret Manager client libraries can access the secret values without configuration
@@ -64,6 +75,7 @@ class Example {
     }
 }
 ```
+
 </details>
 
 [//]: # (BEGIN_TF_DOCS)
