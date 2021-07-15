@@ -167,7 +167,7 @@ Type: `string`
 
 ### <a name="input_function_entry_point"></a> [function\_entry\_point](#input\_function\_entry\_point)
 
-Description: The exact name of the function/class in the code to run. Defaults to `{function_name}`.
+Description: The exact name of the function/class in the code to run.
 
 Type: `string`
 

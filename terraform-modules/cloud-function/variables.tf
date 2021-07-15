@@ -76,7 +76,7 @@ variable "function_runtime" {
 
 variable "function_entry_point" {
   type        = string
-  description = "The exact name of the function/class in the code to run. Defaults to `{function_name}`."
+  description = "The exact name of the function/class in the code to run."
 }
 
 # Trigger
