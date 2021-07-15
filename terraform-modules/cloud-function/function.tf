@@ -31,13 +31,9 @@ resource "google_cloudfunctions_function" "function" {
     content {
       event_type = event_trigger["event_type"]
       resource   = event_trigger["resource"]
-      dynamic "failure_policy" {
-        for_each = [event_trigger["retry"]]
-        content {
-          retry = failure_policy
-        }
+      failure_policy {
+        retry = event_trigger["retry"]
       }
-
     }
   }
   trigger_http = var.function_trigger_http ? true : null
