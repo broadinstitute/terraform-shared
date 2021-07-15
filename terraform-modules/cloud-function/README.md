@@ -11,9 +11,7 @@ This documentation is generated via `terraform-docs markdown .`
 
 <details> 
 <summary>
-
-### Can create a named service account to avoid the potentially-insecure App Engine default service account
-
+Can create a named service account to avoid the potentially-insecure App Engine default service account
 </summary>
 
 - By default, [service\_account\_create](#input\_service\_account\_create) is `true` and [service\_account\_id](#input\_service\_account\_id) will be set to `{function_name}-sa`
