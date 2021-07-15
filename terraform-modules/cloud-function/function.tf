@@ -16,8 +16,8 @@ resource "google_cloudfunctions_function" "function" {
   region  = var.google_region
   service_account_email = (
     var.service_account_create ?
-    google_service_account.create_function_sa.email[0] :
-    data.google_service_account.get_function_sa.email[0]
+    google_service_account.create_function_sa[0].email :
+    data.google_service_account.get_function_sa[0].email
   )
 
   # Required
@@ -63,7 +63,7 @@ resource "google_cloudfunctions_function" "function" {
   # Secrets and environment
   environment_variables = merge(
     {
-      for k, v in var.function_vault_secrets : v["env_var_for_secret_name"] => google_secret_manager_secret_version.secret_manager_secret_data[k].id
+      for k, v in var.function_vault_secrets : v["env_var_for_secret_name"] => google_secret_manager_secret_version.secret_manager_secret_version[k].id
     },
     var.function_insecure_environment_variables
   )

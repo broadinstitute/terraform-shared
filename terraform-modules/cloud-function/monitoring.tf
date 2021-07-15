@@ -1,7 +1,7 @@
 data "google_monitoring_notification_channel" "monitoring_channel" {
   for_each     = var.monitoring_channel_names
   project      = var.google_project
-  display_name = var.failure_alert_channel
+  display_name = each.value
 }
 
 resource "google_monitoring_alert_policy" "alert_policy" {

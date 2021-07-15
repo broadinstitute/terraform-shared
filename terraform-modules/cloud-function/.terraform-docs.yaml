@@ -3,6 +3,19 @@ version: ">= 0.14.0"
 formatter: markdown
 
 content: |-
+  ## Example
+
+  <details>
+  <summary>
+  Click to expand
+  </summary>
+
+  ```hcl
+  {{ include "test/test.tf" }}
+  ```
+
+  </details>
+
   {{ .Providers }}
 
   {{ .Inputs }}
