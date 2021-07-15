@@ -57,9 +57,9 @@ from google.cloud import secretmanager
 # One "client" can read multiple secrets
 secret_manager_client = secretmanager.SecretManagerServiceClient()
 
-# This Terraform module will maintain the MY_SECRET_ID environment variable
+# This Terraform module will maintain the MY_SECRET_NAME environment variable
 my_secret_value = secret_manager_client\
-  .access_secret_version(name=os.environ['MY_SECRET_ID'])\
+  .access_secret_version(name=os.environ['MY_SECRET_NAME'])\
   .payload.data.decode('UTF-8')
 ```
 
@@ -73,9 +73,9 @@ class Example {
     public static void main(String[] args) throws IOException {
         // One "client" can read multiple secrets
         try (SecretManagerServiceClient client = SecretManagerServiceClient.create()) {
-            // This Terraform module will maintain the MY_SECRET_ID environment variable
+            // This Terraform module will maintain the MY_SECRET_NAME environment variable
             String mySecretValue = client
-                    .accessSecretVersion(System.getenv("MY_SECRET_ID"))
+                    .accessSecretVersion(System.getenv("MY_SECRET_NAME"))
                     .getPayload().getData().toStringUtf8();
         }
     }
