@@ -24,7 +24,7 @@ resource "google_secret_manager_secret" "secret_manager_secret" {
 resource "google_secret_manager_secret_version" "secret_manager_secret_version" {
   for_each    = var.function_vault_secrets
   secret      = google_secret_manager_secret.secret_manager_secret[each.key].id
-  secret_data = data.vault_generic_secret.vault_secret[each.key].data[each.value["vault_json_key"]]
+  secret_data = data.vault_generic_secret.vault_secret[each.key].data[each.value["vault_secret_json_key"]]
 }
 
 resource "google_secret_manager_secret_iam_member" "function_sa_access" {
