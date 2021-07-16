@@ -20,7 +20,7 @@ resource "google_monitoring_alert_policy" "alert_policy" {
         fetch cloud_function
         | metric 'cloudfunctions.googleapis.com/function/execution_count'
         | filter
-            resource.project_id == '${data.google_project.number}'
+            resource.project_id == '${data.google_project.project_numeric_id.number}'
             && (resource.function_name == '${google_cloudfunctions_function.function.name}')
             && (${local.monitoring_failure_statuses_filter})
         | align rate(var.monitoring_failure_trigger_period)
