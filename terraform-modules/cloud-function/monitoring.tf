@@ -7,7 +7,7 @@ data "google_monitoring_notification_channel" "monitoring_channel" {
 resource "google_monitoring_alert_policy" "alert_policy" {
   count                 = length(var.monitoring_channel_names) > 0 ? 1 : 0
   display_name          = "${google_cloudfunctions_function.function.name}-failed"
-  notification_channels = data.google_monitoring_notification_channel.monitoring_channel[*]
+  notification_channels = data.google_monitoring_notification_channel.monitoring_channel[*].name
   combiner              = "OR"
   conditions {
     display_name = "crash/error executions for ${google_cloudfunctions_function.function.name}"
