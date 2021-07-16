@@ -318,5 +318,5 @@ variable "monitoring_failure_trigger_period" {
 }
 
 locals {
-  monitoring_failure_statuses_filter = join(" && ", [for s in var.monitoring_failure_statuses: "metric.status != '${s}'"])
+  monitoring_failure_statuses_filter = join(" && ", [for s in var.monitoring_success_statuses: "metric.status != '${s}'"])
 }
