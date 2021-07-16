@@ -283,6 +283,22 @@ variable "function_max_instances" {
 # Monitoring
 #
 
+variable "monitoring_success_statuses" {
+  type = set(string)
+  description = <<-EOT
+    Set of function execution statuses that should be considered successful, and should not alert.
+
+    For HTTP functions especially, it might be desirable to have 'error' executions
+    not alert, because 400-series responses are considered errors by GCP.
+
+    Possible execution statuses:
+    'ok', 'timeout', 'error', 'crash', 'out of memory', 'out of quota', 'load error', 'load timeout',
+    'connection error', 'invalid header', 'request too large', 'system error', 'response error',
+    'invalid message'
+  EOT
+  default = [ "ok" ]
+}
+
 variable "monitoring_channel_names" {
   type        = set(string)
   description = "Optional set of already-configured Cloud Monitoring channel display names to notify upon function crashes."
@@ -298,5 +314,9 @@ variable "monitoring_failure_trigger_count" {
 variable "monitoring_failure_trigger_period" {
   type        = string
   description = "The period of time to count failures in to compare with `{monitoring_failure_trigger_count}`."
-  default     = "60s"
+  default     = "1m"
+}
+
+locals {
+  monitoring_failure_statuses_filter = join(" && ", [for s in var.monitoring_failure_statuses: "metric.status != '${s}'"])
 }
