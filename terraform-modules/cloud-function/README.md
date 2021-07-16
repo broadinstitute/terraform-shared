@@ -98,7 +98,7 @@ Click to expand
 ```hcl
 module "test_cloud_function" {
   # Change the trailing ref to adjust version
-  source = "github.com/broadinstitute/terraform-shared.git//terraform-modules/cloud-function?ref=b3983d8"
+  source = "github.com/broadinstitute/terraform-shared.git//terraform-modules/cloud-function?ref=cloud-function-1.0.0"
 
   providers = {
     google = google
@@ -477,11 +477,11 @@ Default: `1`
 
 ### <a name="input_monitoring_failure_trigger_period"></a> [monitoring\_failure\_trigger\_period](#input\_monitoring\_failure\_trigger\_period)
 
-Description: The period of time to count failures in to compare with `{monitoring_failure_trigger_count}`.
+Description: The period of time (in seconds) to count failures in to compare with `{monitoring_failure_trigger_count}`.
 
 Type: `string`
 
-Default: `"1m"`
+Default: `"60s"`
 
 ## Outputs
 

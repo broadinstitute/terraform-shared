@@ -1,6 +1,6 @@
 module "test_cloud_function" {
   # Change the trailing ref to adjust version
-  source = "github.com/broadinstitute/terraform-shared.git//terraform-modules/cloud-function?ref=b3983d8"
+  source = "github.com/broadinstitute/terraform-shared.git//terraform-modules/cloud-function?ref=cloud-function-1.0.0"
 
   providers = {
     google = google
