@@ -29,10 +29,10 @@ resource "google_cloudfunctions_function" "function" {
   dynamic "event_trigger" {
     for_each = var.function_event_trigger != null ? [var.function_event_trigger] : []
     content {
-      event_type = event_trigger["event_type"]
-      resource   = event_trigger["resource"]
+      event_type = event_trigger.value["event_type"]
+      resource   = event_trigger.value["resource"]
       failure_policy {
-        retry = event_trigger["retry"]
+        retry = event_trigger.value["retry"]
       }
     }
   }
@@ -45,13 +45,13 @@ resource "google_cloudfunctions_function" "function" {
     for_each = var.function_source_repository != null ? [var.function_source_repository] : []
     content {
       url = "https://source.developers.google.com/projects/${
-        source_repository["repository_google_project"]
+        source_repository.value["repository_google_project"]
         }/repos/${
-        source_repository["repository_name"]
+        source_repository.value["repository_name"]
         }/fixed-aliases/${
-        source_repository["repository_tag"]
+        source_repository.value["repository_tag"]
         }/paths/${
-        source_repository["repository_path"]
+        source_repository.value["repository_path"]
       }"
     }
   }
