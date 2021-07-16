@@ -17,7 +17,7 @@ resource "google_monitoring_alert_policy" "alert_policy" {
         resource.type="cloud_function"
         resource.label."function_name"="${google_cloudfunctions_function.function.name}"
         resource.label."project_id"="${var.google_project}"
-        metric.label."status"=="crash"
+        metric.label."status"="crash"
       EOT
       duration   = var.monitoring_failure_trigger_period
       comparison = "COMPARISON_GT"
