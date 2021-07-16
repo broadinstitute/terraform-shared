@@ -4,6 +4,10 @@ data "google_monitoring_notification_channel" "monitoring_channel" {
   display_name = each.key
 }
 
+data "google_project" "project_numeric_id" {
+  project_id = var.google_project
+}
+
 resource "google_monitoring_alert_policy" "alert_policy" {
   count                 = length(var.monitoring_channel_names) > 0 ? 1 : 0
   display_name          = "${google_cloudfunctions_function.function.name}-failed"
@@ -16,7 +20,7 @@ resource "google_monitoring_alert_policy" "alert_policy" {
         fetch cloud_function
         | metric 'cloudfunctions.googleapis.com/function/execution_count'
         | filter
-            resource.project_id == '${var.google_project}'
+            resource.project_id == '${data.google_project.number}'
             && (resource.function_name == '${google_cloudfunctions_function.function.name}')
             && (${local.monitoring_failure_statuses_filter})
         | align rate(var.monitoring_failure_trigger_period)
