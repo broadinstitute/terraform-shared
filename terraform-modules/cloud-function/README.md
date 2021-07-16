@@ -33,11 +33,12 @@ Can modify permissions to allow broader sets of users (even unauthenticated ones
 
 <details>
 <summary>
-Can notify Slack channels if the function crashed or exits with an error
+Can notify Slack channels if the function fails
 </summary>
 
 - Cloud Monitoring notification channel must already be configured in the UI, within the [google\_project](#input\_google\_project) you plan to use--[configuration page here](https://console.cloud.google.com/monitoring/alerting/notifications)
 - More than just Slack channels can be set--pass monitoring channel "display names" to [monitoring\_channel\_names](#input\_monitoring\_channel\_names)
+- Adjust what is considered a failure via [monitoring\_success\_statuses](#input\_monitoring\_success\_statuses)--for HTTP functions, you may not want to alert on 'error' executions, since those include 400-series responses to clients
 
 </details>
 
@@ -436,9 +437,31 @@ Type: `number`
 
 Default: `null`
 
+### <a name="input_monitoring_success_statuses"></a> [monitoring\_success\_statuses](#input\_monitoring\_success\_statuses)
+
+Description: Set of function execution statuses that should be considered successful, and should not alert.
+
+For HTTP functions especially, it might be desirable to have 'error' executions  
+not alert, because 400-series responses are considered errors by GCP.
+
+Possible execution statuses:
+'ok', 'timeout', 'error', 'crash', 'out of memory', 'out of quota', 'load error', 'load timeout',
+'connection error', 'invalid header', 'request too large', 'system error', 'response error',
+'invalid message'
+
+Type: `set(string)`
+
+Default:
+
+```json
+[
+  "ok"
+]
+```
+
 ### <a name="input_monitoring_channel_names"></a> [monitoring\_channel\_names](#input\_monitoring\_channel\_names)
 
-Description: Optional set of already-configured Cloud Monitoring channel display names to notify upon function failures.
+Description: Optional set of already-configured Cloud Monitoring channel display names to notify upon function crashes.
 
 Type: `set(string)`
 
@@ -458,7 +481,7 @@ Description: The period of time to count failures in to compare with `{monitorin
 
 Type: `string`
 
-Default: `"60s"`
+Default: `"1m"`
 
 ## Outputs
 
