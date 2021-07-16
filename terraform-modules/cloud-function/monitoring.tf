@@ -10,14 +10,14 @@ resource "google_monitoring_alert_policy" "alert_policy" {
   notification_channels = [for channel in data.google_monitoring_notification_channel.monitoring_channel : channel.name]
   combiner              = "OR"
   conditions {
-    display_name = "crash/error executions for ${google_cloudfunctions_function.function.name}"
+    display_name = "crash executions for ${google_cloudfunctions_function.function.name}"
     condition_threshold {
       filter     = <<-EOT
         metric.type="cloudfunctions.googleapis.com/function/execution_count"
         resource.type="cloud_function"
         resource.label."function_name"="${google_cloudfunctions_function.function.name}"
         resource.label."project_id"="${var.google_project}"
-        metric.label."status"!="ok"
+        metric.label."status"=="crash"
       EOT
       duration   = var.monitoring_failure_trigger_period
       comparison = "COMPARISON_GT"

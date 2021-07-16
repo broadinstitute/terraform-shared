@@ -285,7 +285,7 @@ variable "function_max_instances" {
 
 variable "monitoring_channel_names" {
   type        = set(string)
-  description = "Optional set of already-configured Cloud Monitoring channel display names to notify upon function failures."
+  description = "Optional set of already-configured Cloud Monitoring channel display names to notify upon function crashes."
   default     = []
 }
 
