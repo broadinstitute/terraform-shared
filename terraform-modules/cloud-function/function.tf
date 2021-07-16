@@ -51,7 +51,7 @@ resource "google_cloudfunctions_function" "function" {
         }/fixed-aliases/${
         source_repository["repository_tag"]
         }/paths/${
-        source_repo["repository_path"]
+        source_repository["repository_path"]
       }"
     }
   }
