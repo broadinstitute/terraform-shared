@@ -313,8 +313,8 @@ variable "monitoring_failure_trigger_count" {
 
 variable "monitoring_failure_trigger_period" {
   type        = string
-  description = "The period of time to count failures in to compare with `{monitoring_failure_trigger_count}`."
-  default     = "1m"
+  description = "The period of time (in seconds) to count failures in to compare with `{monitoring_failure_trigger_count}`."
+  default     = "60s"
 }
 
 locals {
