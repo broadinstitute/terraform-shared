@@ -1,13 +1,13 @@
 data "google_monitoring_notification_channel" "monitoring_channel" {
   for_each     = var.monitoring_channel_names
   project      = var.google_project
-  display_name = each.value
+  display_name = each.key
 }
 
 resource "google_monitoring_alert_policy" "alert_policy" {
   count                 = length(var.monitoring_channel_names) > 0 ? 1 : 0
   display_name          = "${google_cloudfunctions_function.function.name}-failed"
-  notification_channels = data.google_monitoring_notification_channel.monitoring_channel[*].name
+  notification_channels = [for channel in data.google_monitoring_notification_channel.monitoring_channel : channel.name]
   combiner              = "OR"
   conditions {
     display_name = "crash/error executions for ${google_cloudfunctions_function.function.name}"
