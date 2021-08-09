@@ -3,10 +3,11 @@ resource google_container_node_pool pool {
 
   count = var.enable ? 1 : 0
 
-  depends_on = [var.dependencies]
-  name       = var.name
-  location   = var.location
-  cluster    = var.master_name
+  depends_on        = [var.dependencies]
+  name              = var.name
+  location          = var.location
+  cluster           = var.master_name
+  max_pods_per_node = var.max_pods_per_node
 
   # Scaling settings -- only one of node_count or autoscaling should be supplied
   node_count = var.node_count
