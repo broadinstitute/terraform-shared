@@ -26,6 +26,12 @@ variable location {
   description = "Location where the node pool should be provisioned."
 }
 
+variable max_pods_per_node {
+  type        = number
+  description = "If provided, override the max number of pods per node in this pool."
+  default     = null
+}
+
 variable node_count {
   type        = number
   description = "Number of nodes to provision in the pool. Required if autoscaling not set"
