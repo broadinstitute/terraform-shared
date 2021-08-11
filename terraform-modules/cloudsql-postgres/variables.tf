@@ -123,7 +123,7 @@ variable "cloudsql_maintenance_window_day" {
 }
 
 variable "cloudsql_maintenance_window_hour" {
-  default = "7"
+  default = "2"
   description = "The default hour of the day for the custom GCE sql instance maintenance window for CloudSQL instances. Valid values: 0-23."
 }
 
