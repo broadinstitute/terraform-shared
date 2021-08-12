@@ -113,22 +113,26 @@ variable "cloudsql_database_flags" {
 }
 
 variable "cloudsql_maintenance_window_enable" {
-  default = "0"
+  type        = bool
+  default     = false
   description = "Enable custom GCE sql instance maintenance window for CloudSQL instances."
 }
 
 variable "cloudsql_maintenance_window_day" {
-  default = "6"
+  type        = number
+  default     = 6
   description = "The default day of the week for the custom GCE sql instance maintenance window for CloudSQL instances. Valid values: 1-7 (Monday = 1; Sunday = 7)."
 }
 
 variable "cloudsql_maintenance_window_hour" {
-  default = "2"
+  type        = number
+  default     = 2
   description = "The default hour of the day for the custom GCE sql instance maintenance window for CloudSQL instances. Valid values: 0-23."
 }
 
 variable "cloudsql_maintenance_window_update_track" {
-  default = "stable"
+  type        = string
+  default     = "stable"
   description = "The default update track for determining the relative order for receiving GCE sql instance updates during a maintenance window for CloudSQL instances. Valid values: stable (receive later), or canary (receive earlier). Note: These values are relative to each other for GCE sql instances within a single GCE project."
 }
 

@@ -44,9 +44,9 @@ resource "google_sql_database_instance" "cloudsql_instance" {
     dynamic "maintenance_window" {
       for_each = var.cloudsql_maintenance_window_enable ? [1] : []
       content {
-        day             = "${var.cloudsql_maintenance_window_day}"
-        hour            = "${var.cloudsql_maintenance_window_hour}"
-        update_track    = "${var.cloudsql_maintenance_window_update_track}"
+        day             = var.cloudsql_maintenance_window_day
+        hour            = var.cloudsql_maintenance_window_hour
+        update_track    = var.cloudsql_maintenance_window_update_track
       }
     }
 
