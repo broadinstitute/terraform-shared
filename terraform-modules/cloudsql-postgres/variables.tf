@@ -112,25 +112,29 @@ variable "cloudsql_database_flags" {
   description = "Database flags to pass to the CloudSQL instance"
 }
 
-# variable "cloudsql_maintenance_window_enable" {
-#   default = "0"
-#   description = "Enable custom GCE sql instance maintenance window for CloudSQL instances."
-# }
+variable "cloudsql_maintenance_window_enable" {
+  type        = bool
+  default     = false
+  description = "Enable custom GCE sql instance maintenance window for CloudSQL instances."
+}
 
-# variable "cloudsql_maintenance_window_day" {
-#   default = "6"
-#   description = "The default day of the week for the custom GCE sql instance maintenance window for CloudSQL instances. Valid values: 1-7 (Monday = 1; Sunday = 7)."
-# }
+variable "cloudsql_maintenance_window_day" {
+  type        = number
+  default     = 6
+  description = "The default day of the week for the custom GCE sql instance maintenance window for CloudSQL instances. Valid values: 1-7 (Monday = 1; Sunday = 7)."
+}
 
-# variable "cloudsql_maintenance_window_hour" {
-#   default = "7"
-#   description = "The default hour of the day for the custom GCE sql instance maintenance window for CloudSQL instances. Valid values: 0-23."
-# }
+variable "cloudsql_maintenance_window_hour" {
+  type        = number
+  default     = 2
+  description = "The default hour of the day for the custom GCE sql instance maintenance window for CloudSQL instances. Valid values: 0-23."
+}
 
-# variable "cloudsql_maintenance_window_update_track" {
-#   default = "stable"
-#   description = "The default update track for determining the relative order for receiving GCE sql instance updates during a maintenance window for CloudSQL instances. Valid values: stable (receive later), or canary (receive earlier). Note: These values are relative to each other for GCE sql instances within a single GCE project."
-# }
+variable "cloudsql_maintenance_window_update_track" {
+  type        = string
+  default     = "stable"
+  description = "The default update track for determining the relative order for receiving GCE sql instance updates during a maintenance window for CloudSQL instances. Valid values: stable (receive later), or canary (receive earlier). Note: These values are relative to each other for GCE sql instances within a single GCE project."
+}
 
 variable "app_dbs" {
   description = "List of db name and username pairs"

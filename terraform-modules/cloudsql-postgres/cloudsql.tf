@@ -41,11 +41,14 @@ resource "google_sql_database_instance" "cloudsql_instance" {
       }
     }
 
-    #    maintenance_window {
-    #        day             = "${var.cloudsql_maintenance_window_day}"
-    #        hour            = "${var.cloudsql_maintenance_window_hour}"
-    #        update_track    = "${var.cloudsql_maintenance_window_update_track}"
-    #    }
+    dynamic "maintenance_window" {
+      for_each = var.cloudsql_maintenance_window_enable ? [1] : []
+      content {
+        day             = var.cloudsql_maintenance_window_day
+        hour            = var.cloudsql_maintenance_window_hour
+        update_track    = var.cloudsql_maintenance_window_update_track
+      }
+    }
 
     ip_configuration {
       ipv4_enabled    = var.private_enable == true ? false : true
