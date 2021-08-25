@@ -83,7 +83,7 @@ variable use_new_stackdriver_apis {
 
 variable enable_workload_identity {
   type        = bool
-  default     = false
+  default     = true
   description = "If true, enables k8s<->GCP SA linking in the cluster. See: https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity."
 }
 
