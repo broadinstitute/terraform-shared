@@ -53,7 +53,7 @@ resource "google_monitoring_alert_policy" "uptime_alert" {
   }
 
   user_labels = merge(
-    var.user_labels,
+    var.alert_labels,
     var.enable_revere_service_labels ? local.revere_service_labels : {}
   )
 }
