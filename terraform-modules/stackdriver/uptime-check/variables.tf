@@ -86,9 +86,13 @@ variable "revere_service_degredation" {
 }
 
 locals {
-  split_service_name              = split("-", var.service)
-  last_service_name_chunk         = local.split_service_name[max(0, length(local.split_service_name) - 1)]
-  all_but_last_service_name_chunk = join("-", slice(local.split_service_name, 0, max(0, length(split_service_name) - 1)))
+  split_service_name      = split("-", var.service)
+  last_service_name_chunk = local.split_service_name[max(0, length(local.split_service_name) - 1)]
+  all_but_last_service_name_chunk = join(
+    "-", slice(
+      local.split_service_name, 0, max(0, length(local.split_service_name) - 1)
+    )
+  )
   revere_service_labels = {
     revere-service-name        = var.revere_service_name == null ? local.all_but_last_service_name_chunk : var.revere_service_name
     revere-service-environment = var.revere_service_environment == null ? local.last_service_name_chunk : var.revere_service_environment
