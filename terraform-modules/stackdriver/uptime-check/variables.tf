@@ -62,8 +62,6 @@ variable "revere_service_name" {
     [Revere](https://github.com/broadinstitute/revere).
 
     By default, uses all but the last part of `var.service` (splitting on hyphens).
-    More information on Revere's label usage available
-    [here](https://github.com/broadinstitute/revere/blob/main/docs/gcp_alert_policy_labels.md).
   EOT
 }
 
@@ -75,8 +73,6 @@ variable "revere_service_environment" {
     [Revere](https://github.com/broadinstitute/revere).
 
     By default, uses the last part of `var.service` (splitting on hyphens).
-    More information on Revere's label usage available
-    [here](https://github.com/broadinstitute/revere/blob/main/docs/gcp_alert_policy_labels.md).
   EOT
 }
 
@@ -86,10 +82,6 @@ variable "revere_service_degredation" {
   description = <<-EOT
     Override what is degraded upon this alert firing as understood by
     [Revere](https://github.com/broadinstitute/revere).
-
-    By default, uses "uptime".
-    More information on Revere's label usage available
-    [here](https://github.com/broadinstitute/revere/blob/main/docs/gcp_alert_policy_labels.md).
   EOT
 }
 
