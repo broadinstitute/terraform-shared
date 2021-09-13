@@ -70,11 +70,11 @@ resource google_container_node_pool pool {
       enable_integrity_monitoring = var.enable_integrity_monitoring
     }
   }
-  # Ignore changes to taints. We set them up at pool creation time, but don't
-  # update them afterwards, because it could trigger node pool recreation and cause
-  # an outage. See
+  # Ignore changes to taints and initial node count. We set them up at pool creation
+  # time, but don't update them afterwards, because it could trigger node pool
+  # recreation and cause an outage. See
   # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/container_cluster#taint
   lifecycle {
-    ignore_changes = [node_config[0].taint]
+    ignore_changes = [node_config[0].taint, initial_node_count]
   }
 }
