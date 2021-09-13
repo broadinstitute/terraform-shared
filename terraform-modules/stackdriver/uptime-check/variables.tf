@@ -76,7 +76,7 @@ variable "revere_service_environment" {
   EOT
 }
 
-variable "revere_service_degredation" {
+variable "revere_service_degradation" {
   type        = string
   default     = "uptime"
   description = <<-EOT
@@ -96,7 +96,7 @@ locals {
   revere_service_labels = {
     revere-service-name        = var.revere_service_name == null ? local.all_but_last_service_name_chunk : var.revere_service_name
     revere-service-environment = var.revere_service_environment == null ? local.last_service_name_chunk : var.revere_service_environment
-    revere-service-degredation = var.revere_service_degredation
+    revere-service-degradation = var.revere_service_degradation
   }
 }
 
