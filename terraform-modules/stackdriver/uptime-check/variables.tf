@@ -41,63 +41,24 @@ locals {
   port       = var.https_enabled ? "443" : "80"
 }
 
-variable "enable_revere_service_labels" {
-  type        = bool
-  default     = false
-  description = <<-EOT
-    Whether to enable Revere's labeling scheme that allows it to
-    programmatically understand notifications triggered by this
-    alert policy.
+#
+# Revere (https://github.com/broadinstitute/revere)
+#
 
-    More information on Revere's label usage available
+variable "revere_label_configuration" {
+  type = object({
+    enable_revere_service_labels = bool
+    revere_service_name          = string
+    revere_service_environment   = string
+    revere_alert_type_uptime     = string
+  })
+  default     = null
+  description = <<-EOT
+    Configuration for alert labels allowing Revere to understand alerts.
+
+    More information is available
     [here](https://github.com/broadinstitute/revere/blob/main/docs/gcp_alert_policy_labels.md).
   EOT
-}
-
-variable "revere_service_name" {
-  type        = string
-  default     = null
-  description = <<-EOT
-    Override the name of the service this alert monitors as understood by
-    [Revere](https://github.com/broadinstitute/revere).
-
-    By default, uses all but the last part of `var.service` (splitting on hyphens).
-  EOT
-}
-
-variable "revere_service_environment" {
-  type        = string
-  default     = null
-  description = <<-EOT
-    Override the environment of the service this alert monitors as understood by
-    [Revere](https://github.com/broadinstitute/revere).
-
-    By default, uses the last part of `var.service` (splitting on hyphens).
-  EOT
-}
-
-variable "revere_service_degradation" {
-  type        = string
-  default     = "uptime"
-  description = <<-EOT
-    Override what is degraded upon this alert firing as understood by
-    [Revere](https://github.com/broadinstitute/revere).
-  EOT
-}
-
-locals {
-  split_service_name      = split("-", var.service)
-  last_service_name_chunk = local.split_service_name[max(0, length(local.split_service_name) - 1)]
-  all_but_last_service_name_chunk = join(
-    "-", slice(
-      local.split_service_name, 0, max(0, length(local.split_service_name) - 1)
-    )
-  )
-  revere_service_labels = {
-    revere-service-name        = var.revere_service_name == null ? local.all_but_last_service_name_chunk : var.revere_service_name
-    revere-service-environment = var.revere_service_environment == null ? local.last_service_name_chunk : var.revere_service_environment
-    revere-service-degradation = var.revere_service_degradation
-  }
 }
 
 #

@@ -54,7 +54,11 @@ resource "google_monitoring_alert_policy" "uptime_alert" {
 
   user_labels = merge(
     var.alert_labels,
-    var.enable_revere_service_labels ? local.revere_service_labels : {}
+    var.revere_label_configuration != null && var.revere_label_configuration.enable_revere_service_labels ? {
+      revere-service-name        = var.revere_label_configuration.revere_service_name
+      revere-service-environment = var.revere_label_configuration.revere_service_environment
+      revere-alert-type          = var.revere_label_configuration.revere_alert_type_uptime
+    } : {}
   )
 }
 
