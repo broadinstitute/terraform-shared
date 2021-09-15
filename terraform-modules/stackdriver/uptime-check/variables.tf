@@ -30,9 +30,35 @@ variable "notification_channels" {
   default     = []
 }
 
+variable "alert_labels" {
+  type        = map(string)
+  description = "Extra user labels to apply to the alert policy"
+  default     = {}
+}
+
 locals {
   check_name = "${var.service}-uptime"
   port       = var.https_enabled ? "443" : "80"
+}
+
+#
+# Revere (https://github.com/broadinstitute/revere)
+#
+
+variable "revere_label_configuration" {
+  type = object({
+    enable_revere_service_labels = bool
+    revere_service_name          = string
+    revere_service_environment   = string
+    revere_alert_type_uptime     = string
+  })
+  default     = null
+  description = <<-EOT
+    Configuration for alert labels allowing Revere to understand alerts.
+
+    More information is available
+    [here](https://github.com/broadinstitute/revere/blob/main/docs/gcp_alert_policy_labels.md).
+  EOT
 }
 
 #
