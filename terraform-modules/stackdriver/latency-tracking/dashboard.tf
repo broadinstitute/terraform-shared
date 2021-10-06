@@ -4,8 +4,8 @@ locals {
   # - Terraform only allows indexes to be derived from lists (no counted loops still, but `index` works)
   # - We assemble a list of lexicographically sorted endpoint names, putting the ones with alerts first
   ordered_endpoints = concat(
-    sort([for name, config in local.merged_endpoints : name if config.enable_alerts]),
-    sort([for name, config in local.merged_endpoints : name if ! config.enable_alerts])
+    sort([for name, config in local.final_computed_endpoints : name if config.enable_alerts]),
+    sort([for name, config in local.final_computed_endpoints : name if ! config.enable_alerts])
   )
   # Second, we assemble a heatmap widget for every endpoint.
   # - This is the graph that appears regardless of whether alerting is enabled
@@ -14,7 +14,7 @@ locals {
   # - Not a ton of configuration here because there's a button to open it up in the explorer
   #   where you can poke around the data
   heatmap_widgets = {
-    for name, config in local.merged_endpoints : name => <<EOT
+    for name, config in local.final_computed_endpoints : name => <<EOT
           "title": "Latency: ${var.service} ${name} in ${var.environment}",
           "xyChart": {
             "chartOptions": {
@@ -62,14 +62,14 @@ EOT
 # - If the endpoint has alerting enabled, grab a graph showing that specific alert condition
 # - If not, add a text widget noting that to avoid confusion
 alert_widgets = {
-  for name, config in local.merged_endpoints : name => config.enable_alerts ? <<EOT
+  for name, config in local.final_computed_endpoints : name => config.enable_alerts ? <<EOT
           "alertChart": {
             "name": "${google_monitoring_alert_policy.latency_alert[name].name}"
           }
 EOT
   : <<EOT
           "text": {
-            "content": "If you'd like to add an alert targeting this endpoint (`${config.endpoint_regex}`), you can do so wherever ${var.service}-${var.environment}'s [latency-tracking](https://github.com/broadinstitute/terraform-shared/tree/master/terraform-modules/stackdriver/latency-tracking) module is instantiated.",
+            "content": "If you'd like to add an alert targeting this endpoint (`${config.computed_regex}`), you can do so wherever ${var.service}-${var.environment}'s [latency-tracking](https://github.com/broadinstitute/terraform-shared/tree/master/terraform-modules/stackdriver/latency-tracking) module is instantiated.",
             "format": "MARKDOWN"
           },
           "title": "No latency alert configured for ${var.service} ${name} in ${var.environment}"
@@ -121,7 +121,7 @@ EOT
 }
 
 resource "google_monitoring_dashboard" "latency_dashboard" {
-  count = length(local.merged_endpoints) > 0 ? 1 : 0
+  count = length(local.final_computed_endpoints) > 0 ? 1 : 0
 
   project        = var.google_project
   dashboard_json = local.dashboard

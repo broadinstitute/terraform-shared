@@ -1,12 +1,16 @@
 ## Requirements
 
-No requirements.
+The following requirements are needed by this module:
+
+- <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) (>= 0.15)
+
+- <a name="requirement_google"></a> [google](#requirement\_google) (>=3.65.0)
 
 ## Providers
 
 The following providers are used by this module:
 
-- <a name="provider_google"></a> [google](#provider\_google)
+- <a name="provider_google"></a> [google](#provider\_google) (>=3.65.0)
 
 ## Modules
 
@@ -79,9 +83,13 @@ Default: `null`
 
 ### <a name="input_default_endpoint_config"></a> [default\_endpoint\_config](#input\_default\_endpoint\_config)
 
-Description: Optionally set default alert configurations across all `endpoints`. Any attributes not set  
+Description: Set default configurations across all `endpoints`. Any attributes not set  
 will use the default values.
 
+Required:
+- `fully_qualified_domain_name` must be a full and exact domain name
+
+Optionally set:
 - `alert_threshold_milliseconds` must be a positive whole number, for the latency limit to trigger on.
 - `alert_rolling_window_duration` must be at least 1, for the window to aggregate data.
 - `alert_rolling_window_percentile` must be one of 5, 50, 95, or 99, for the percentile to track.
@@ -93,6 +101,8 @@ Type:
 
 ```hcl
 object({
+    fully_qualified_domain_name     = string
+
     enable_alerts                   = optional(bool)
     alert_threshold_milliseconds    = optional(number)
     alert_rolling_window_duration   = optional(number)
@@ -119,14 +129,18 @@ Default:
 
 Description: Configure each endpoint pattern to track the latency of. Each entry's key is used for naming  
 cloud resources, and the value attributes set how to identify the endpoint and any overrides  
-for the alert or Revere alert label configuration.
+for the domain name, alert, or Revere alert label configuration.
 
 For `endpoint_regex`, recall that the Regex must be escaped through Terraform.
 
 ```hcl
+default_endpoint_config = {
+  fully_qualified_domain_name = "example.com"
+}
+
 endpoints = {
   "status" = {
-    endpoint_regex               = "https://example\\.com/status"
+    endpoint_regex               = "/status"
     enable_alerts                = true
     alert_threshold_milliseconds = 750
   }
@@ -138,6 +152,8 @@ Type:
 ```hcl
 map(object({
     endpoint_regex = string
+
+    fully_qualified_domain_name     = optional(string)
 
     enable_alerts                   = optional(bool)
     alert_threshold_milliseconds    = optional(number)

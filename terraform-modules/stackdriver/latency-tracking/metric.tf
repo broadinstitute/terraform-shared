@@ -1,5 +1,5 @@
 resource "google_logging_metric" "latency_metric" {
-  for_each = local.merged_endpoints
+  for_each = local.final_computed_endpoints
 
   project = var.google_project
   name = "${var.service}-${var.environment}-${var.environment}-${each.key}-endpoint-latency"
@@ -7,7 +7,7 @@ resource "google_logging_metric" "latency_metric" {
   filter = <<-EOT
     resource.type="http_load_balancer" AND
     resource.labels.project_id="${var.google_project}" AND
-    httpRequest.requestUrl=~"${each.value.endpoint_regex}"
+    httpRequest.requestUrl=~"${each.value.computed_regex}"
   EOT
 
   metric_descriptor {

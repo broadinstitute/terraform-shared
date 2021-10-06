@@ -52,6 +52,8 @@ variable "revere_label_configuration" {
 
 variable "default_endpoint_config" {
   type = object({
+    fully_qualified_domain_name     = string
+
     enable_alerts                   = optional(bool)
     alert_threshold_milliseconds    = optional(number)
     alert_rolling_window_duration   = optional(number)
@@ -60,9 +62,13 @@ variable "default_endpoint_config" {
     alert_notification_channels     = optional(list(string))
   })
   description = <<-EOT
-    Optionally set default alert configurations across all `endpoints`. Any attributes not set
+    Set default configurations across all `endpoints`. Any attributes not set
     will use the default values.
 
+    Required:
+    - `fully_qualified_domain_name` must be a full and exact domain name
+
+    Optionally set:
     - `alert_threshold_milliseconds` must be a positive whole number, for the latency limit to trigger on.
     - `alert_rolling_window_duration` must be at least 1, for the window to aggregate data.
     - `alert_rolling_window_percentile` must be one of 5, 50, 95, or 99, for the percentile to track.
@@ -97,6 +103,8 @@ variable "endpoints" {
   type = map(object({
     endpoint_regex = string
 
+    fully_qualified_domain_name     = optional(string)
+
     enable_alerts                   = optional(bool)
     alert_threshold_milliseconds    = optional(number)
     alert_rolling_window_minutes    = optional(number)
@@ -112,14 +120,18 @@ variable "endpoints" {
   description = <<-EOT
     Configure each endpoint pattern to track the latency of. Each entry's key is used for naming
     cloud resources, and the value attributes set how to identify the endpoint and any overrides
-    for the alert or Revere alert label configuration.
+    for the domain name, alert, or Revere alert label configuration.
 
     For `endpoint_regex`, recall that the Regex must be escaped through Terraform.
 
     ```hcl
+    default_endpoint_config = {
+      fully_qualified_domain_name = "example.com"
+    }
+
     endpoints = {
       "status" = {
-        endpoint_regex               = "https://example\\.com/status"
+        endpoint_regex               = "/status"
         enable_alerts                = true
         alert_threshold_milliseconds = 750
       }
@@ -131,11 +143,19 @@ variable "endpoints" {
 
 locals {
   # Disabled is equivalent to zero endpoints specified
-  merged_endpoints = var.enabled ? {
+  partially_merged_endpoints = var.enabled ? {
     for name, config in var.endpoints : name => merge(
       (var.revere_label_configuration == null ? {} : var.revere_label_configuration),
       local.baseline_endpoint_config,
       config
     )
   } : {}
+  final_computed_endpoints = {
+    for name, config in local.partially_merged_endpoints : name => merge(
+      config,
+      {
+        computed_regex = "https://${replace(config.fully_qualified_domain_name, ".", "\\.")}${config.endpoint_regex}"
+      }
+    )
+  }
 }

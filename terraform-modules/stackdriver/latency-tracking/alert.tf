@@ -1,6 +1,6 @@
 resource "google_monitoring_alert_policy" "latency_alert" {
   for_each = {
-    for name, config in local.merged_endpoints : name => config
+    for name, config in local.final_computed_endpoints : name => config
     if config.enable_alerts
   }
 
@@ -11,7 +11,7 @@ resource "google_monitoring_alert_policy" "latency_alert" {
   documentation {
     content   = <<-EOT
       Latency for the *${var.service} ${each.key}* endpoint *in ${var.environment}* matched by
-      `${each.value.endpoint_regex}` exceeded ${each.value.alert_threshold_milliseconds}ms
+      `${each.value.computed_regex}` exceeded ${each.value.alert_threshold_milliseconds}ms
       for the ${each.value.alert_rolling_window_percentile}th percentile over
       ${each.value.alert_rolling_window_minutes} minutes
     EOT
