@@ -69,7 +69,7 @@ alert_widgets = {
 EOT
   : <<EOT
           "text": {
-            "content": "If you'd like to add an alert targeting this endpoint (`${config.computed_regex}`), you can do so wherever ${var.service}-${var.environment}'s [latency-tracking](https://github.com/broadinstitute/terraform-shared/tree/master/terraform-modules/stackdriver/latency-tracking) module is instantiated.",
+            "content": "If you'd like to add an alert targeting this endpoint (`${replace(config.computed_regex, "\\", "\\\\")}`), you can do so wherever ${var.service}-${var.environment}'s [latency-tracking](https://github.com/broadinstitute/terraform-shared/tree/master/terraform-modules/stackdriver/latency-tracking) module is instantiated.",
             "format": "MARKDOWN"
           },
           "title": "No latency alert configured for ${var.service} ${name} in ${var.environment}"
