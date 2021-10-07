@@ -56,7 +56,7 @@ variable "default_endpoint_config" {
 
     enable_alerts                   = optional(bool)
     alert_threshold_milliseconds    = optional(number)
-    alert_rolling_window_duration   = optional(number)
+    alert_rolling_window_minutes    = optional(number)
     alert_rolling_window_percentile = optional(number)
     alert_retest_window_minutes     = optional(number)
     alert_notification_channels     = optional(list(string))
@@ -70,7 +70,7 @@ variable "default_endpoint_config" {
 
     Optionally set:
     - `alert_threshold_milliseconds` must be a positive whole number, for the latency limit to trigger on.
-    - `alert_rolling_window_duration` must be at least 1, for the window to aggregate data.
+    - `alert_rolling_window_minutes` must be at least 1, for the window to aggregate data.
     - `alert_rolling_window_percentile` must be one of 5, 50, 95, or 99, for the percentile to track.
     - `alert_retest_window_minutes` must be a non-negative number, for the duration the issue must persist
     after being triggered by the rolling window before truly sending the alert.
