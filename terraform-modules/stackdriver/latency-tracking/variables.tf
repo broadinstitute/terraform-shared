@@ -91,6 +91,7 @@ variable "default_endpoint_config" {
 locals {
   # Merge defaults here in case only some values passed via default_endpoint_config
   baseline_endpoint_config = defaults(var.default_endpoint_config, {
+    fully_qualified_domain_name     = ""
     enable_alerts                   = false
     alert_threshold_milliseconds    = 1000
     alert_rolling_window_minutes    = 5
