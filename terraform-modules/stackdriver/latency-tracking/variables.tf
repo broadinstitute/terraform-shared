@@ -19,7 +19,7 @@ variable "service" {
 }
 
 variable "environment" {
-  type = string
+  type        = string
   description = "The environment the service being tracked is in, used for dashboard/metric/alert names."
 }
 
@@ -52,7 +52,7 @@ variable "revere_label_configuration" {
 
 variable "default_endpoint_config" {
   type = object({
-    fully_qualified_domain_name     = string
+    fully_qualified_domain_name = string
 
     enable_alerts                   = optional(bool)
     alert_threshold_milliseconds    = optional(number)
@@ -78,7 +78,7 @@ variable "default_endpoint_config" {
   EOT
   # Note defaults here so it appears in documentation
   default = {
-    fully_qualified_domain_name     = ""
+    fully_qualified_domain_name     = null
     enable_alerts                   = false
     alert_threshold_milliseconds    = 1000
     alert_rolling_window_minutes    = 5
@@ -90,22 +90,23 @@ variable "default_endpoint_config" {
 
 locals {
   # Merge defaults here in case only some values passed via default_endpoint_config
-  baseline_endpoint_config = defaults(var.default_endpoint_config, {
-    fully_qualified_domain_name     = ""
-    enable_alerts                   = false
-    alert_threshold_milliseconds    = 1000
-    alert_rolling_window_minutes    = 5
-    alert_rolling_window_percentile = 99
-    alert_retest_window_minutes     = 0
-    alert_notification_channels     = []
-  })
+  baseline_endpoint_config = merge(
+    { alert_notification_channels = [] },
+    defaults(var.default_endpoint_config, {
+      enable_alerts                   = false
+      alert_threshold_milliseconds    = 1000
+      alert_rolling_window_minutes    = 5
+      alert_rolling_window_percentile = 99
+      alert_retest_window_minutes     = 0
+    })
+  )
 }
 
 variable "endpoints" {
   type = map(object({
     endpoint_regex = string
 
-    fully_qualified_domain_name     = optional(string)
+    fully_qualified_domain_name = optional(string)
 
     enable_alerts                   = optional(bool)
     alert_threshold_milliseconds    = optional(number)
@@ -140,7 +141,7 @@ variable "endpoints" {
     }
     ```
   EOT
-  default = {}
+  default     = {}
 }
 
 locals {
