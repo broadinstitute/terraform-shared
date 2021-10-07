@@ -173,7 +173,7 @@ locals {
     for name, config in local.partially_merged_endpoints : name => merge(
       config,
       {
-        computed_regex = "https://${replace(config.fully_qualified_domain_name, ".", "\\.")}${config.endpoint_regex}"
+        computed_regex = "https://${replace(config.fully_qualified_domain_name, ".", "\\\\.")}${config.endpoint_regex}"
       }
     )
   }
