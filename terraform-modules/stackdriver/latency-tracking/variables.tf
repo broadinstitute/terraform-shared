@@ -145,13 +145,29 @@ variable "endpoints" {
 }
 
 locals {
-  # Disabled is equivalent to zero endpoints specified
+  # - "Disabled" is equivalent to "zero endpoints specified"
+  # - We can't use `merge` because config's `null`s are considered non-empty
+  # - We can't use `defaults` because it has poor handling of simply-typed lists (notification channels),
+  #   and we can't remove that from the baseline config object without complicating the configuration UX
+  # - This leaves us with `coalesce` as a function that actually intelligently handles `null`
   partially_merged_endpoints = var.enabled ? {
-    for name, config in var.endpoints : name => merge(
-      (var.revere_label_configuration == null ? {} : var.revere_label_configuration),
-      local.baseline_endpoint_config,
-      config
-    )
+    for name, config in var.endpoints : name => {
+      endpoint_regex = config.endpoint_regex
+
+      fully_qualified_domain_name = coalesce(config.fully_qualified_domain_name, local.baseline_endpoint_config.fully_qualified_domain_name)
+
+      enable_alerts                   = coalesce(config.enable_alerts, local.baseline_endpoint_config.enable_alerts)
+      alert_threshold_milliseconds    = coalesce(config.alert_threshold_milliseconds, local.baseline_endpoint_config.alert_threshold_milliseconds)
+      alert_rolling_window_minutes    = coalesce(config.alert_rolling_window_minutes, local.baseline_endpoint_config.alert_rolling_window_minutes)
+      alert_rolling_window_percentile = coalesce(config.alert_rolling_window_percentile, local.baseline_endpoint_config.alert_rolling_window_percentile)
+      alert_retest_window_minutes     = coalesce(config.alert_retest_window_minutes, local.baseline_endpoint_config.alert_retest_window_minutes)
+      alert_notification_channels     = coalesce(config.alert_notification_channels, local.baseline_endpoint_config.alert_notification_channels)
+
+      enable_revere_service_labels = coalesce(config.enable_revere_service_labels, var.revere_label_configuration.enable_revere_service_labels)
+      revere_service_name          = coalesce(config.revere_service_name, var.revere_label_configuration.revere_service_name)
+      revere_service_environment   = coalesce(config.revere_service_environment, var.revere_label_configuration.revere_service_environment)
+      revere_alert_type_latency    = coalesce(config.revere_alert_type_latency, var.revere_label_configuration.revere_alert_type_latency)
+    }
   } : {}
   final_computed_endpoints = {
     for name, config in local.partially_merged_endpoints : name => merge(
