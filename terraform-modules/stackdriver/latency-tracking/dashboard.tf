@@ -15,46 +15,46 @@ locals {
   #   where you can poke around the data
   heatmap_widgets = {
     for name, config in local.final_computed_endpoints : name => <<EOT
-          "title": "Latency: ${var.service} ${name} in ${var.environment}",
-          "xyChart": {
-            "chartOptions": {
-              "mode": "COLOR"
-            },
-            "dataSets": [
-              {
-                "minAlignmentPeriod": "60s",
-                "plotType": "HEATMAP",
-                "targetAxis": "Y1",
-                "timeSeriesQuery": {
-                  "apiSource": "DEFAULT_CLOUD",
-                  "timeSeriesFilter": {
-                    "aggregation": {
-                      "alignmentPeriod": "60s",
-                      "crossSeriesReducer": "REDUCE_SUM",
-                      "groupByFields": [],
-                      "perSeriesAligner": "ALIGN_DELTA"
-                    },
-                    "filter": "metric.type=\"logging.googleapis.com/user/${google_logging_metric.latency_metric[name].name}\" AND resource.type=\"l7_lb_rule\""
-                  }
+        "title": "Latency: ${var.service} ${name} in ${var.environment}",
+        "xyChart": {
+          "chartOptions": {
+            "mode": "COLOR"
+          },
+          "dataSets": [
+            {
+              "minAlignmentPeriod": "60s",
+              "plotType": "HEATMAP",
+              "targetAxis": "Y1",
+              "timeSeriesQuery": {
+                "apiSource": "DEFAULT_CLOUD",
+                "timeSeriesFilter": {
+                  "aggregation": {
+                    "alignmentPeriod": "60s",
+                    "crossSeriesReducer": "REDUCE_SUM",
+                    "groupByFields": [],
+                    "perSeriesAligner": "ALIGN_DELTA"
+                  },
+                "filter": "metric.type=\"logging.googleapis.com/user/${google_logging_metric.latency_metric[name].name}\" AND resource.type=\"l7_lb_rule\""
                 }
               }
-            ],
-            ${config.enable_alerts ? <<EOTnested
-            "thresholds": [
-              {
-                "label": "alert threshold",
-                "targetAxis": "Y1",
-                "value": ${config.alert_threshold_milliseconds / 1000}
-              }
-            ],
+            }
+          ],
+          ${config.enable_alerts ? <<EOTnested
+          "thresholds": [
+            {
+              "label": "alert threshold",
+              "targetAxis": "Y1",
+              "value": ${config.alert_threshold_milliseconds / 1000}
+            }
+          ],
 EOTnested
   : "\"thresholds\": [],"}
-            "timeshiftDuration": "0s",
-            "yAxis": {
-              "label": "y1Axis",
-              "scale": "LINEAR"
-            }
+          "timeshiftDuration": "0s",
+          "yAxis": {
+            "label": "y1Axis",
+            "scale": "LINEAR"
           }
+        }
 EOT
 }
 
@@ -63,57 +63,43 @@ EOT
 # - If not, add a text widget noting that to avoid confusion
 alert_widgets = {
   for name, config in local.final_computed_endpoints : name => config.enable_alerts ? <<EOT
-          "alertChart": {
-            "name": "${google_monitoring_alert_policy.latency_alert[name].name}"
-          }
+        "alertChart": {
+          "name": "${google_monitoring_alert_policy.latency_alert[name].name}"
+        }
 EOT
   : <<EOT
-          "text": {
-            "content": "If you'd like to add an alert targeting this endpoint (`${replace(config.computed_regex, "\\", "\\\\")}`), you can do so wherever ${var.service}-${var.environment}'s [latency-tracking](https://github.com/broadinstitute/terraform-shared/tree/master/terraform-modules/stackdriver/latency-tracking) module is instantiated.",
-            "format": "MARKDOWN"
-          },
-          "title": "No latency alert configured for ${var.service} ${name} in ${var.environment}"
+        "text": {
+          "content": "If you'd like to add an alert targeting this endpoint (`${replace(config.computed_regex, "\\", "\\\\")}`), you can do so wherever ${var.service}-${var.environment}'s [latency-tracking](https://github.com/broadinstitute/terraform-shared/tree/master/terraform-modules/stackdriver/latency-tracking) module is instantiated.",
+          "format": "MARKDOWN"
+        },
+        "title": "No latency alert configured for ${var.service} ${name} in ${var.environment}"
 EOT
 }
 
-# Fourth, we finally assemble a list of all tiles, each containing a widget and position info
-# - The order of the tiles in the JSON technically doesn't matter, but the xPos and yPos do
-# - We iterate over the ordered list to keep the execution order stable
-# - We still have to call `index` to get the actual numerical index
+# Fourth, we finally assemble a list of all widgets,
+# - Position info is derived from order
 # - We leave off the trailing comma so it can be added as the separator
 #   (so we don't have an actual trailing comma in the JSON)
-tiles = [
+widgets = [
   for name in local.ordered_endpoints : <<EOT
       {
-        "height": 1,
-        "widget": {
 ${local.heatmap_widgets[name]}
-        },
-        "width": 1,
-        "xPos": 0,
-        "yPos": ${index(local.ordered_endpoints, name)}
       },
       {
-        "height": 1,
-        "widget": {
 ${local.alert_widgets[name]}
-        },
-        "width": 1,
-        "xPos": 1,
-        "yPos": ${index(local.ordered_endpoints, name)}
       }
 EOT
 ]
 
-# Last, we can join the list of tiles and add the surrounding JSON
+# Last, we can join the list of widgets and add the surrounding JSON
 dashboard = <<EOT
 {
   "category": "CUSTOM",
   "displayName": "${var.service}-${var.environment}-endpoint-latency",
-  "mosaicLayout": {
+  "gridLayout": {
     "columns": 2,
-    "tiles": [
-${join(",\n", local.tiles)}
+    "widgets": [
+${join(",\n", local.widgets)}
     ]
   }
 }
