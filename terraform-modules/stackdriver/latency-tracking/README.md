@@ -1,3 +1,10 @@
+# latency-tracking
+
+Terraform module enabling per-endpoint latency tracking and alerting based on Google external HTTPS load balancers.
+
+These docs are computed with `terraform-docs .`.
+
+[//]: # (BEGIN_TF_DOCS)
 ## Requirements
 
 The following requirements are needed by this module:
@@ -91,7 +98,7 @@ Required:
 
 Optionally set:
 - `alert_threshold_milliseconds` must be a positive whole number, for the latency limit to trigger on.
-- `alert_rolling_window_duration` must be at least 1, for the window to aggregate data.
+- `alert_rolling_window_minutes` must be at least 1, for the window to aggregate data.
 - `alert_rolling_window_percentile` must be one of 5, 50, 95, or 99, for the percentile to track.
 - `alert_retest_window_minutes` must be a non-negative number, for the duration the issue must persist  
 after being triggered by the rolling window before truly sending the alert.
@@ -101,11 +108,11 @@ Type:
 
 ```hcl
 object({
-    fully_qualified_domain_name     = string
+    fully_qualified_domain_name = string
 
     enable_alerts                   = optional(bool)
     alert_threshold_milliseconds    = optional(number)
-    alert_rolling_window_duration   = optional(number)
+    alert_rolling_window_minutes    = optional(number)
     alert_rolling_window_percentile = optional(number)
     alert_retest_window_minutes     = optional(number)
     alert_notification_channels     = optional(list(string))
@@ -121,7 +128,8 @@ Default:
   "alert_rolling_window_minutes": 5,
   "alert_rolling_window_percentile": 99,
   "alert_threshold_milliseconds": 1000,
-  "enable_alerts": false
+  "enable_alerts": false,
+  "fully_qualified_domain_name": null
 }
 ```
 
@@ -153,7 +161,7 @@ Type:
 map(object({
     endpoint_regex = string
 
-    fully_qualified_domain_name     = optional(string)
+    fully_qualified_domain_name = optional(string)
 
     enable_alerts                   = optional(bool)
     alert_threshold_milliseconds    = optional(number)
@@ -174,3 +182,5 @@ Default: `{}`
 ## Outputs
 
 No outputs.
+
+[//]: # (END_TF_DOCS)
