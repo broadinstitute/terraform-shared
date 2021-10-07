@@ -21,10 +21,7 @@ resource "google_monitoring_alert_policy" "latency_alert" {
   conditions {
     display_name = "${var.service}-${var.environment}-${each.key}-endpoint-latency-alert-condition"
     condition_threshold {
-      filter = <<-EOT
-        resource.type = "l7_lb_rule" AND
-        metric.type = "logging.googleapis.com/user/${google_logging_metric.latency_metric[each.key].name}
-      EOT
+      filter = "resource.type = \"l7_lb_rule\" AND metric.type = \"logging.googleapis.com/user/${google_logging_metric.latency_metric[each.key].name}\""
       aggregations {
         alignment_period     = "${floor(each.value.alert_rolling_window_minutes * 60)}s"
         cross_series_reducer = "REDUCE_NONE"
