@@ -1,7 +1,6 @@
 locals {
   # First, we contend with dashboard's indexing.
   # - We have an unordered map of endpoints
-  # - Terraform only allows indexes to be derived from lists (no counted loops still, but `index` works)
   # - We assemble a list of lexicographically sorted endpoint names, putting the ones with alerts first
   ordered_endpoints = concat(
     sort([for name, config in local.final_computed_endpoints : name if config.enable_alerts]),
@@ -15,7 +14,7 @@ locals {
   #   where you can poke around the data
   heatmap_widgets = {
     for name, config in local.final_computed_endpoints : name => <<EOT
-        "title": "Latency: ${var.service} ${name} in ${var.environment}",
+        "title": "Latency (exponential view): ${var.service} ${name} in ${var.environment}",
         "xyChart": {
           "chartOptions": {
             "mode": "COLOR"
