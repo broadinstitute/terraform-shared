@@ -125,7 +125,9 @@ variable "endpoints" {
     cloud resources, and the value attributes set how to identify the endpoint and any overrides
     for the domain name, alert, or Revere alert label configuration.
 
-    For `endpoint_regex`, recall that the Regex must be escaped through Terraform.
+    For `endpoint_regex`, recall that the Regex must be escaped through Terraform if you're using complex sequences.
+
+    Usage example:
 
     ```hcl
     default_endpoint_config = {
