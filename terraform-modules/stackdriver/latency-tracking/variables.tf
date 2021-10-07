@@ -78,7 +78,7 @@ variable "default_endpoint_config" {
   EOT
   # Note defaults here so it appears in documentation
   default = {
-    fully_qualified_domain_name     = null
+    fully_qualified_domain_name     = ""
     enable_alerts                   = false
     alert_threshold_milliseconds    = 1000
     alert_rolling_window_minutes    = 5
