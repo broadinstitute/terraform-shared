@@ -108,6 +108,11 @@ EOT
 resource "google_monitoring_dashboard" "latency_dashboard" {
   count = length(local.final_computed_endpoints) > 0 ? 1 : 0
 
+  depends_on = [
+    "null_resource.pause_after_metric_change",
+    "null_resource.pause_after_alert_change"
+  ]
+
   project        = var.google_project
   dashboard_json = local.dashboard
 }

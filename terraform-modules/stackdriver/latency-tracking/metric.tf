@@ -29,3 +29,13 @@ resource "google_logging_metric" "latency_metric" {
     }
   }
 }
+
+resource "null_resource" "pause_after_metric_change" {
+  triggers = {
+    metric_ids = join(",", google_logging_metric.latency_metric.*.id)
+  }
+  provisioner "local-exec" {
+    command    = "sleep ${var.resource_creation_delay_seconds}"
+    on_failure = continue
+  }
+}

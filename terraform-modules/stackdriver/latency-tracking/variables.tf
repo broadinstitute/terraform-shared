@@ -23,6 +23,17 @@ variable "environment" {
   description = "The environment the service being tracked is in, used for dashboard/metric/alert names."
 }
 
+variable "resource_creation_delay_seconds" {
+  type        = number
+  default     = 3
+  description = <<-EOT
+    Number of seconds to wait between creation of metrics/alerts and alerts/dashboard.
+
+    This is a hack! It is necessary because it apparently takes a split second **after** TF believes resources
+    are created before they can be used in other monitoring resources.
+  EOT
+}
+
 #
 # Revere (https://github.com/broadinstitute/revere)
 #

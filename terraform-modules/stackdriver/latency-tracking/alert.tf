@@ -4,6 +4,8 @@ resource "google_monitoring_alert_policy" "latency_alert" {
     if config.enable_alerts
   }
 
+  depends_on = ["null_resource.pause_after_metric_change"]
+
   project      = var.google_project
   display_name = "${var.service}-${var.environment}-${each.key}-endpoint-latency-alert"
   combiner     = "OR"
@@ -43,4 +45,14 @@ resource "google_monitoring_alert_policy" "latency_alert" {
     revere-service-environment = each.value.revere_service_environment
     revere-alert-type          = each.value.revere_alert_type_latency
   } : null
+}
+
+resource "null_resource" "pause_after_alert_change" {
+  triggers = {
+    metric_ids = join(",", google_monitoring_alert_policy.latency_alert.*.id)
+  }
+  provisioner "local-exec" {
+    command    = "sleep ${var.resource_creation_delay_seconds}"
+    on_failure = continue
+  }
 }
