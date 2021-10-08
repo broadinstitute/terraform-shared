@@ -1,0 +1,66 @@
+name: Terraform Test - latency-tracking module
+
+env:
+  terraform_directory: "terraform-modules/stackdriver/latency-tracking"
+  terraform_version: "1.0.8"
+
+defaults:
+  run:
+    working-directory: "terraform-modules/stackdriver/latency-tracking"
+
+on:
+  pull_request:
+    branches: 
+      - master
+    paths:
+      - terraform-modules/stackdriver/latency-tracking/**
+    
+jobs:
+  terraform_test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: ${{ env.terraform_version }}
+
+      # Run Terraform fmt (kind of a linter)
+    - name: Terraform format check
+      id: fmt
+      run: terraform fmt
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Run Terraform init
+    - name: Terraform init
+      id: init
+      run: terraform init
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Run Terraform validate
+    - name: Terraform validate
+      id: validate
+      run: terraform validate
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Terraform test format check
+      id: test-fmt
+      run: cd test && terraform fmt
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Terraform test init
+      id: test-init
+      run: cd test && terraform init
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Terraform test validate
+      id: test-validate
+      run: cd test && terraform validate
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
