@@ -46,3 +46,21 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+    - name: Terraform test format check
+      id: test-fmt
+      run: cd test && terraform fmt
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Terraform test init
+      id: test-init
+      run: cd test && terraform init
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Terraform test validate
+      id: test-validate
+      run: cd test && terraform validate
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
