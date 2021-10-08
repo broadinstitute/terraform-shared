@@ -91,7 +91,6 @@ EOT
 # Last, we can join the list of widgets and add the surrounding JSON
 dashboard = <<EOT
 {
-  "category": "CUSTOM",
   "displayName": "${var.service}-${var.environment}-endpoint-latency",
   "gridLayout": {
     "columns": "2",
