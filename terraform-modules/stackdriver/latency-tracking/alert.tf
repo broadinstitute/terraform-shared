@@ -49,7 +49,7 @@ resource "google_monitoring_alert_policy" "latency_alert" {
 
 resource "null_resource" "pause_after_alert_change" {
   triggers = {
-    metric_ids = join(",", google_monitoring_alert_policy.latency_alert[*].id)
+    metric_ids = join(",", values(google_monitoring_alert_policy.latency_alert)[*].id)
   }
   provisioner "local-exec" {
     command    = "sleep ${var.resource_creation_delay_seconds}"
