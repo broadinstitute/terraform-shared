@@ -4,7 +4,7 @@ locals {
   # - We assemble a list of lexicographically sorted endpoint names, putting the ones with alerts first
   ordered_endpoints = concat(
     sort([for name, config in local.final_computed_endpoints : name if config.enable_alerts]),
-    sort([for name, config in local.final_computed_endpoints : name if ! config.enable_alerts])
+    sort([for name, config in local.final_computed_endpoints : name if !config.enable_alerts])
   )
   # Second, we assemble a heatmap widget for every endpoint.
   # - This is the graph that appears regardless of whether alerting is enabled
@@ -75,7 +75,7 @@ EOT
 EOT
 }
 
-# Fourth, we finally assemble a list of all widgets,
+# Fourth, we finally assemble a list of all widgets
 # - Position info is derived from order
 # - We leave off the trailing comma so it can be added as the separator
 #   (so we don't have an actual trailing comma in the JSON)
