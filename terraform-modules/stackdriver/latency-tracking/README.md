@@ -8,6 +8,66 @@ These docs are computed with `terraform-docs .`.
 
 [//]: # (BEGIN_TF_DOCS)
 
+## Example
+
+<details>
+<summary>
+Click to expand
+</summary>
+
+```hcl
+module "latency_tracking" {
+  # Adjust trailing ref to select version
+  source = "github.com/broadinstitute/terraform-shared.git//terraform-modules/stackdriver/latency-tracking?ref=DDO-1582-latency-tracking"
+
+  # Assume the standard set of variables and locals available within ap-deployments/terra-monitoring submodules
+  enabled        = var.enable && var.allow_latency_tracking
+  google_project = var.google_project
+  service        = "example-service"
+  environment    = terraform.workspace
+
+  # Revere labels usually configured by parent module, leave as-is
+  revere_label_configuration = var.revere_label_configuration
+
+  # See docs for options and defaults, all can be overridden per-endpoint
+  default_endpoint_config = {
+    fully_qualified_domain_name = local.fqdn
+    alert_notification_channels = concat(local.critical_notification_channels, local.non_critical_notification_channels)
+    enable_alerts               = true
+  }
+
+  endpoints = {
+    status = {
+      # Only required field is `endpoint_regex`
+      endpoint_regex = "/status"
+    },
+    version = {
+      endpoint_regex = "/version"
+      # Alerts can be enabled/disabled per-endpoint
+      enable_alerts = false
+    },
+    get-person = {
+      # Regex supported, but must be escaped through Terraform
+      endpoint_regex = "/api/v1/person/\\d+"
+      # `request_method` can optionally narrow the filter
+      request_method = "GET"
+    },
+    post-person = {
+      endpoint_regex = "/api/v1/person/\\d+"
+      request_method = "POST"
+      # Optional alert customization can be done in `default_endpoint_config` or here per-endpoint
+      alert_threshold_milliseconds    = 1500
+      alert_rolling_window_minutes    = 10
+      alert_rolling_window_percentile = 99
+      alert_retest_window_minutes     = 10
+    }
+  }
+}
+
+```
+
+</details>
+
 ## Requirements
 
 The following requirements are needed by this module:
@@ -15,24 +75,6 @@ The following requirements are needed by this module:
 - <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) (>= 0.15)
 
 - <a name="requirement_google"></a> [google](#requirement\_google) (>=3.65.0)
-
-## Providers
-
-The following providers are used by this module:
-
-- <a name="provider_google"></a> [google](#provider\_google) (>=3.65.0)
-
-## Modules
-
-No modules.
-
-## Resources
-
-The following resources are used by this module:
-
-- [google_logging_metric.latency_metric](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/logging_metric) (resource)
-- [google_monitoring_alert_policy.latency_alert](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/monitoring_alert_policy) (resource)
-- [google_monitoring_dashboard.latency_dashboard](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/monitoring_dashboard) (resource)
 
 ## Required Inputs
 
@@ -142,29 +184,15 @@ Description: Configure each endpoint pattern to track the latency of. Each entry
 cloud resources, and the value attributes set how to identify the endpoint and any overrides  
 for the domain name, alert, or Revere alert label configuration.
 
-For `endpoint_regex`, recall that the Regex must be escaped through Terraform if you're using complex sequences.
-
-Usage example:
-
-```hcl
-default_endpoint_config = {
-  fully_qualified_domain_name = "example.com"
-}
-
-endpoints = {
-  "status" = {
-    endpoint_regex               = "/status"
-    enable_alerts                = true
-    alert_threshold_milliseconds = 750
-  }
-}
-```
+- `endpoint_regex` should start with the leading "/", and remember that characters must be escaped through Terraform
+- `request_method`, if provided, should be an all-caps HTTP method like "GET" or "POST"
 
 Type:
 
 ```hcl
 map(object({
     endpoint_regex = string
+    request_method = optional(string)
 
     fully_qualified_domain_name = optional(string)
 
