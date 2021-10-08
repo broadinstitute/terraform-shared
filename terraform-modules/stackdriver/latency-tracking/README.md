@@ -69,6 +69,8 @@ The following requirements are needed by this module:
 
 - <a name="requirement_google"></a> [google](#requirement\_google) (>=3.65.0)
 
+- <a name="requirement_null"></a> [null](#requirement\_null) (>=3.1.0)
+
 ## Required Inputs
 
 The following input variables are required:
@@ -102,6 +104,17 @@ Description: Whether this module is enabled.
 Type: `bool`
 
 Default: `true`
+
+### <a name="input_resource_creation_delay_seconds"></a> [resource\_creation\_delay\_seconds](#input\_resource\_creation\_delay\_seconds)
+
+Description: Number of seconds to wait between creation of metrics/alerts and alerts/dashboard.
+
+This is a hack! It is necessary because it apparently takes a split second **after** TF believes resources  
+are created before they can be used in other monitoring resources.
+
+Type: `number`
+
+Default: `3`
 
 ### <a name="input_revere_label_configuration"></a> [revere\_label\_configuration](#input\_revere\_label\_configuration)
 
