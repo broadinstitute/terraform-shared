@@ -25,7 +25,6 @@ locals {
               "plotType": "HEATMAP",
               "targetAxis": "Y1",
               "timeSeriesQuery": {
-                "apiSource": "DEFAULT_CLOUD",
                 "timeSeriesFilter": {
                   "aggregation": {
                     "alignmentPeriod": "60s",
@@ -96,7 +95,7 @@ dashboard = <<EOT
   "category": "CUSTOM",
   "displayName": "${var.service}-${var.environment}-endpoint-latency",
   "gridLayout": {
-    "columns": 2,
+    "columns": "2",
     "widgets": [
 ${join(",\n", local.widgets)}
     ]
