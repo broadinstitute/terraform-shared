@@ -31,6 +31,7 @@ resource "google_logging_metric" "latency_metric" {
 }
 
 resource "null_resource" "pause_after_metric_change" {
+  count = length(local.final_computed_endpoints) > 0 ? 1 : 0
   triggers = {
     metric_ids = join(",", values(google_logging_metric.latency_metric)[*].id)
   }

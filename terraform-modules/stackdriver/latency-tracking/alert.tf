@@ -48,6 +48,7 @@ resource "google_monitoring_alert_policy" "latency_alert" {
 }
 
 resource "null_resource" "pause_after_alert_change" {
+  count = length(local.final_computed_endpoints) > 0 ? 1 : 0
   triggers = {
     metric_ids = join(",", values(google_monitoring_alert_policy.latency_alert)[*].id)
   }
