@@ -105,6 +105,7 @@ locals {
 variable "endpoints" {
   type = map(object({
     endpoint_regex = string
+    request_method = optional(string)
 
     fully_qualified_domain_name = optional(string)
 
@@ -125,23 +126,8 @@ variable "endpoints" {
     cloud resources, and the value attributes set how to identify the endpoint and any overrides
     for the domain name, alert, or Revere alert label configuration.
 
-    For `endpoint_regex`, recall that the Regex must be escaped through Terraform if you're using complex sequences.
-
-    Usage example:
-
-    ```hcl
-    default_endpoint_config = {
-      fully_qualified_domain_name = "example.com"
-    }
-
-    endpoints = {
-      "status" = {
-        endpoint_regex               = "/status"
-        enable_alerts                = true
-        alert_threshold_milliseconds = 750
-      }
-    }
-    ```
+    - `endpoint_regex` should start with the leading "/", and remember that characters must be escaped through Terraform
+    - `request_method`, if provided, should be an all-caps HTTP method like "GET" or "POST" 
   EOT
   default     = {}
 }
@@ -155,6 +141,7 @@ locals {
   partially_merged_endpoints = var.enabled ? {
     for name, config in var.endpoints : name => {
       endpoint_regex = config.endpoint_regex
+      request_method = config.request_method
 
       fully_qualified_domain_name = coalesce(config.fully_qualified_domain_name, local.baseline_endpoint_config.fully_qualified_domain_name)
 
