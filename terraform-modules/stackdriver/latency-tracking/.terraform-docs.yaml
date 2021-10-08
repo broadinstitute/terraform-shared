@@ -5,16 +5,9 @@ formatter: markdown document
 content: |-
   ## Example
 
-  <details>
-  <summary>
-  Click to expand
-  </summary>
-
   ```hcl
   {{ include "test/test.tf" }}
   ```
-
-  </details>
 
   {{ .Requirements }}
 

@@ -4,16 +4,11 @@ Terraform module enabling per-endpoint latency tracking and alerting based on Go
 
 Note that services without an external HTTPS load balancer--for example, without a standard ingress--cannot be used with this module.
 
-These docs are computed with `terraform-docs .`.
+These docs are computed with `terraform-docs .`
 
 [//]: # (BEGIN_TF_DOCS)
 
 ## Example
-
-<details>
-<summary>
-Click to expand
-</summary>
 
 ```hcl
 module "latency_tracking" {
@@ -65,8 +60,6 @@ module "latency_tracking" {
 }
 
 ```
-
-</details>
 
 ## Requirements
 
@@ -214,6 +207,10 @@ Default: `{}`
 
 ## Outputs
 
-No outputs.
+The following outputs are exported:
+
+### <a name="output_dashboard_url"></a> [dashboard\_url](#output\_dashboard\_url)
+
+Description: The URL of the created dashboard, or null if no endpoints are being tracked.
 
 [//]: # (END_TF_DOCS)
