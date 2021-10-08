@@ -1,3 +1,5 @@
+# This file just contains stubs, necessary for test.tf to pass validation
+
 variable "enable" {
   default = true
 }
