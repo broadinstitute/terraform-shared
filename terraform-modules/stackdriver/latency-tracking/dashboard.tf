@@ -29,7 +29,6 @@ locals {
                   "aggregation": {
                     "alignmentPeriod": "60s",
                     "crossSeriesReducer": "REDUCE_SUM",
-                    "groupByFields": [],
                     "perSeriesAligner": "ALIGN_DELTA"
                   },
                 "filter": "metric.type=\"logging.googleapis.com/user/${google_logging_metric.latency_metric[name].name}\" AND resource.type=\"l7_lb_rule\""
