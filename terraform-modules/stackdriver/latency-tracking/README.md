@@ -4,6 +4,14 @@ Terraform module enabling per-endpoint latency tracking and alerting based on Go
 
 Note that services without an external HTTPS load balancer--for example, without a standard ingress--cannot be used with this module.
 
+> ### Note for the implementation-curious:
+> This module makes use of the null provider, local-exec provisioner, and manual depends_on relationships to have the applying Terraform
+> executable literally run `sleep` in between applying the three different resource classes here. This is to avoid race conditions
+> on Google's end where a metric or alert can't immediately be referenced from an alert or dashboard.
+>
+> Briefly, the null resources are empty resources that "trigger" exactly once based on changes to endpoints or alerts, that triggering causes
+> local-exec's `sleep`s to run, and manual depends_on relationships prevent other resources from starting until the sleeps are done.
+
 These docs are computed with `terraform-docs .`
 
 [//]: # (BEGIN_TF_DOCS)
@@ -107,7 +115,7 @@ Default: `true`
 
 ### <a name="input_resource_creation_delay_seconds"></a> [resource\_creation\_delay\_seconds](#input\_resource\_creation\_delay\_seconds)
 
-Description: Number of seconds to wait between creation of metrics/alerts and alerts/dashboard.
+Description: Number of seconds to wait between creation of metrics/alerts and alerts/dashboard. Set to 0 to disable.
 
 This is a hack! It is necessary because it apparently takes a split second **after** TF believes resources  
 are created before they can be used in other monitoring resources.

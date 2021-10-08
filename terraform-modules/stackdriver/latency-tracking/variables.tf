@@ -27,7 +27,7 @@ variable "resource_creation_delay_seconds" {
   type        = number
   default     = 3
   description = <<-EOT
-    Number of seconds to wait between creation of metrics/alerts and alerts/dashboard.
+    Number of seconds to wait between creation of metrics/alerts and alerts/dashboard. Set to 0 to disable.
 
     This is a hack! It is necessary because it apparently takes a split second **after** TF believes resources
     are created before they can be used in other monitoring resources.
