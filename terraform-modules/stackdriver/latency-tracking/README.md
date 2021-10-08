@@ -1,6 +1,8 @@
 # latency-tracking
 
-Terraform module enabling per-endpoint latency tracking and alerting based on Google external HTTPS load balancers.
+Terraform module enabling per-endpoint latency tracking and alerting based on Google external HTTPS load balancers. 
+
+Note that services without an external HTTPS load balancer--for example, without a standard ingress--cannot be used with this module.
 
 These docs are computed with `terraform-docs .`.
 
