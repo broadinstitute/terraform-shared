@@ -1,6 +1,6 @@
 module "latency_tracking" {
   # Adjust trailing ref to select version
-  source = "github.com/broadinstitute/terraform-shared.git//terraform-modules/stackdriver/latency-tracking?ref=DDO-1582-latency-tracking"
+  source = "github.com/broadinstitute/terraform-shared.git//terraform-modules/stackdriver/latency-tracking?ref=latency-tracking-1.0.0"
 
   # Assume the standard set of variables and locals available within ap-deployments/terra-monitoring submodules
   enabled        = var.enable && var.allow_latency_tracking
