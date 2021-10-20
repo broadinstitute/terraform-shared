@@ -53,6 +53,12 @@ variable disk_size_gb {
   description = "Size of disk to allocate for each node in the pool."
 }
 
+variable disk_type {
+  type        = string
+  description = "Type of disk to use for node boot disk. Can be pd-standard, pd-ssd, or pd-balanced"
+  default     = null
+}
+
 variable service_account {
   type        = string
   default     = null
