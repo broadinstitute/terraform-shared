@@ -79,12 +79,6 @@ variable "cloudsql_activation_policy" {
   description = "The default activation policy for CloudSQL instances"
 }
 
-variable "cloudsql_replication_type" {
-  type        = string
-  default     = "SYNCHRONOUS"
-  description = "The default replication type for CloudSQL instances"
-}
-
 variable "cloudsql_insights_config" {
   type        = map
   default     = {}

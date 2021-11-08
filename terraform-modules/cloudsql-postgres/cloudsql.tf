@@ -29,7 +29,6 @@ resource "google_sql_database_instance" "cloudsql_instance" {
     activation_policy = var.cloudsql_activation_policy
     disk_autoresize   = var.cloudsql_disk_autoresize
     disk_type         = var.cloudsql_disk_type
-    replication_type  = var.cloudsql_replication_type
     tier              = var.cloudsql_tier
 
     backup_configuration {
