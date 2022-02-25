@@ -7,8 +7,7 @@ module "ip-dns" {
     google.dns_provider = google.dns_provider
   }
 
-  auth_proxy_dns_name    = "${var.instance_id}-wfl"
-  auth_proxy_dns_zone    = var.dns_zone
-  auth_proxy_dns_project = var.dns_zone
+  auth_proxy_dns_name = "${var.instance_id}-wfl"
+  auth_proxy_dns_zone = var.dns_zone
 }
 
