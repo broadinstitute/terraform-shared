@@ -11,7 +11,7 @@ variable "instance_id" {
 
 variable "instance_id_label_prefix" {
   type    = string
-  default = null
+  default = ""
 }
 
 variable "owner" {
