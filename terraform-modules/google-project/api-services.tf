@@ -3,6 +3,6 @@ module "enable-services" {
   providers = {
     google.target = google.target
   }
-  project     = "${google_project.project.name}"
+  project     = google_project.project.name
   services    = var.apis_to_enable
 }

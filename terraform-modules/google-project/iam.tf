@@ -23,7 +23,7 @@ resource "google_project_iam_member" "roles-to-grant-by-email-and-type" {
   count = length(var.roles_to_grant_by_email_and_type)
   project     = google_project.project.name
   role    = var.roles_to_grant_by_email_and_type[count.index].role
-  member  = "${var.roles_to_grant_by_email_and_type[count.index].id_type == "" ? "serviceAccount" : var.roles_to_grant_by_email_and_type[count.index].id_type}:${var.roles_to_grant_by_email_and_type[count.index].email}"
+  member  = var.roles_to_grant_by_email_and_type[count.index].id_type == "" ? "serviceAccount" : var.roles_to_grant_by_email_and_type[count.index].id_type}:${var.roles_to_grant_by_email_and_type[count.index].email
 }
 
 resource "google_service_account_key" "service-accounts-with-keys" {
@@ -36,5 +36,5 @@ provider "vault" {}
 resource "vault_generic_secret" "app_account_key" {
   count = length(var.service_accounts_to_create_with_keys)
   path = var.service_accounts_to_create_with_keys[count.index].key_vault_path
-  data_json = "${base64decode(google_service_account_key.service-accounts-with-keys[count.index].private_key)}"
+  data_json = base64decode(google_service_account_key.service-accounts-with-keys[count.index].private_key)
 }
