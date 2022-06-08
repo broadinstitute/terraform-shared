@@ -36,5 +36,5 @@ provider "vault" {}
 resource "vault_generic_secret" "app_account_key" {
   count = length(var.service_accounts_to_create_with_keys)
   path = var.service_accounts_to_create_with_keys[count.index].key_vault_path
-  data_json = "${base64decode(google_service_account_key.service-accounts-with-keys[count.index].private_key)}"
+  data_json = base64decode(google_service_account_key.service-accounts-with-keys[count.index].private_key)
 }
