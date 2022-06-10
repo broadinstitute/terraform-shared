@@ -31,8 +31,6 @@ resource "google_service_account_key" "service-accounts-with-keys" {
   service_account_id = google_service_account.service-accounts-with-keys[count.index].name
 }
 
-provider "vault" {}
-
 resource "vault_generic_secret" "app_account_key" {
   count = length(var.service_accounts_to_create_with_keys)
   path = var.service_accounts_to_create_with_keys[count.index].key_vault_path
