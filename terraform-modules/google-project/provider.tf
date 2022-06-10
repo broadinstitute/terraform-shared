@@ -2,7 +2,8 @@ required_providers {
   google = {
     source = "hashicorp/google"
     configuration_aliases = [
-      target,
+      google.target,
+      target
     ]
   }
   vault = {
