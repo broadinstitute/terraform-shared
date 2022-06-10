@@ -3,8 +3,7 @@ terraform {
     google = {
       source = "hashicorp/google"
       configuration_aliases = [
-        google.target,
-        target
+        google.target
       ]
     }
     vault = {
