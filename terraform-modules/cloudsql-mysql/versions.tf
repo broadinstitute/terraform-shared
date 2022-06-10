@@ -1,3 +1,11 @@
 terraform {
-  required_version = ">= 0.12"
+  required_providers {
+    google = {
+      source = "hashicorp/google"
+      configuration_aliases = [
+        google.target
+      ]
+    }
+  }
+  required_version = ">= 1.0.0"
 }
