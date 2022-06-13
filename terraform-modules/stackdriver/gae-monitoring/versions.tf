@@ -1,7 +1,12 @@
 terraform {
-  required_version = ">= 0.12"
-
   required_providers {
-    google = "~> 3.9"
+    google = {
+      source = "hashicorp/google"
+      version = "~> 3.9"
+      configuration_aliases = [
+        google.target
+      ]
+    }
   }
+  required_version = ">= 1.0.0"
 }

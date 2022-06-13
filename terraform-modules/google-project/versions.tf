@@ -6,6 +6,9 @@ terraform {
         google.target
       ]
     }
+    vault = {
+      source = "hashicorp/vault"
+    }
   }
   required_version = ">= 1.0.0"
 }
