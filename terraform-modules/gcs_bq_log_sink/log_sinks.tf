@@ -24,7 +24,7 @@ resource "google_bigquery_dataset_access" "access" {
   count         = local.enable_bigquery ? 1 : 0
   dataset_id    = google_bigquery_dataset.logs[0].dataset_id
   role          = "OWNER"
-  special_group = "allAuthenticatedUsers"
+  special_group = "projectReaders"
   depends_on    = [google_bigquery_dataset.logs,google_logging_project_sink.bigquery-log-sink,var.dependencies]
 }
 
