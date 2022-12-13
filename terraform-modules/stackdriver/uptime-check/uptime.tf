@@ -9,7 +9,7 @@ resource "google_monitoring_uptime_check_config" "uptime_check" {
     path         = var.path
     port         = local.port
     use_ssl      = var.https_enabled
-    validate_ssl = var.https_enabled
+    validate_ssl = local.validate_ssl
   }
 
   monitored_resource {
@@ -19,4 +19,8 @@ resource "google_monitoring_uptime_check_config" "uptime_check" {
       host       = var.fqdn
     }
   }
+}
+
+local {
+  validate_ssl = var.validate_ssl == false ? validate_ssl : var.https_enabled
 }
