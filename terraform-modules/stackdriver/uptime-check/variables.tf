@@ -76,6 +76,12 @@ variable "https_enabled" {
   default     = true
 }
 
+variable "validate_ssl" {
+  type        = bool
+  description = "whether to perform ssl validation as part of uptime check"
+  default     = true
+}
+
 variable "resource_type" {
   type        = string
   description = "The GCP resource type that the uptime check will monitor. Defaults to checking a fqdn"
