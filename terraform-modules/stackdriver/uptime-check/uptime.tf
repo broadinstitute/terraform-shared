@@ -21,6 +21,6 @@ resource "google_monitoring_uptime_check_config" "uptime_check" {
   }
 }
 
-local {
+locals {
   validate_ssl = var.validate_ssl == false ? validate_ssl : var.https_enabled
 }
