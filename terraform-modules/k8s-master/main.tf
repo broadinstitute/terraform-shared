@@ -80,7 +80,7 @@ resource google_container_cluster cluster {
 
   # CIS compliance: Enable PodSecurityPolicyController
   pod_security_policy_config {
-    enabled = true
+    enabled = var.enforce_pod_security_policy
   }
 
   dynamic "workload_identity_config" {
