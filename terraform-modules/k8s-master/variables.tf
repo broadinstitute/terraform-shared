@@ -122,3 +122,9 @@ variable istio_auth {
   default     = "AUTH_NONE"
   description = "Istio auth mode"
 }
+
+variable enforce_pod_security_policy {
+  type        = bool
+  default     = true
+  description = "whether to enable requirement for pods to have a pod security policy associated"
+}
