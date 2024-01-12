@@ -50,14 +50,21 @@ resource google_container_node_pool pool {
     # Protect node metadata
     workload_metadata_config {
       # Workload Identity only works when using the metadata server.
-      node_metadata = var.enable_workload_identity ? "GKE_METADATA_SERVER" : "SECURE"
+    mode = var.enable_workload_identity ? "GKE_METADATA" : "MODE_UNSPECIFIED"
     }
 
     metadata = var.metadata
     labels   = var.labels
     tags     = var.tags
 
-    taint = var.taints
+    dynamic "taint" {
+      for_each = var.taints
+      content {
+        effect = taint.value.effect
+        key    = taint.value.key
+        value  = taint.value.value
+      }
+    }
 
     oauth_scopes = [
       "https://www.googleapis.com/auth/compute",
