@@ -2,6 +2,7 @@
 resource "google_storage_bucket" "config-bucket" {
   name       = "${var.owner}-${var.service}-config"
   project    = var.project
+  location   = var.instance_region
   versioning {
     enabled = "true"
   }
