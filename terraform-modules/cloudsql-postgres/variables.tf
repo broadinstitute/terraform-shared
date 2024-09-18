@@ -80,7 +80,12 @@ variable "cloudsql_activation_policy" {
 }
 
 variable "cloudsql_insights_config" {
-  type        = object
+  type        = object({
+    query_insights_enabled  = bool,
+    query_string_length     = number,
+    record_application_tags = bool,
+    record_client_address   = bool,
+  })
   default     = {}
   description = "Config parameters for Query Insights"
 }
