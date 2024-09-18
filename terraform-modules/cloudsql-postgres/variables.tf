@@ -80,7 +80,7 @@ variable "cloudsql_activation_policy" {
 }
 
 variable "cloudsql_insights_config" {
-  type        = map
+  type        = object
   default     = {}
   description = "Config parameters for Query Insights"
 }
