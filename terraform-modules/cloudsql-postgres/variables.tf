@@ -86,12 +86,12 @@ variable "cloudsql_insights_config" {
     record_application_tags = bool,
     record_client_address   = bool,
   })
-  default     = object({
+  default     = {
     query_insights_enabled  = false,
     query_string_length     = null,
     record_application_tags = null,
     record_client_address   = null
-  })
+  }
   description = "Config parameters for Query Insights"
 }
 locals {
