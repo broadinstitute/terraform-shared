@@ -128,3 +128,21 @@ variable enforce_pod_security_policy {
   default     = true
   description = "whether to enable requirement for pods to have a pod security policy associated"
 }
+
+variable maintenance_policy {
+  type        = object({
+    recurring_window = object({
+      start_time = string,
+      end_time = string,
+      recurrence = string
+    })
+  })
+  description = "Maintenance policy for the cluster"
+  default     = {
+    recurring_window = {
+      start_time = null,
+      end_time = null,
+      recurrence = null
+    }
+  }
+}
