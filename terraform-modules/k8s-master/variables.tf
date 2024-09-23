@@ -132,16 +132,18 @@ variable enforce_pod_security_policy {
 variable maintenance_policy {
   type        = object({
     recurring_window = object({
+      enabled    = bool
       start_time = string,
-      end_time = string,
+      end_time   = string,
       recurrence = string
     })
   })
   description = "Maintenance policy for the cluster"
   default     = {
     recurring_window = {
+      enabled    = false,
       start_time = null,
-      end_time = null,
+      end_time   = null,
       recurrence = null
     }
   }
