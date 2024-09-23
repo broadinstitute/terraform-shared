@@ -23,11 +23,14 @@ resource google_container_cluster cluster {
 
   min_master_version = data.google_container_engine_versions.cluster_versions.latest_master_version
 
-  maintenance_policy {
-    recurring_window {
-      end_time   = var.maintenance_policy.recurring_window.end_time
-      recurrence = var.maintenance_policy.recurring_window.recurrence
-      start_time = var.maintenance_policy.recurring_window.start_time
+  dynamic "maintenance_policy" {
+    for_each = var.maintenance_policy.enabled ? [1] : []
+    content {
+      recurring_window {
+        start_time = var.maintenance_policy.recurring_window.start_time
+        end_time   = var.maintenance_policy.recurring_window.end_time
+        recurrence = var.maintenance_policy.recurring_window.recurrence
+      }
     }
   }
 
