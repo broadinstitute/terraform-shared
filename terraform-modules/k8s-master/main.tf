@@ -23,7 +23,13 @@ resource google_container_cluster cluster {
 
   min_master_version = data.google_container_engine_versions.cluster_versions.latest_master_version
 
-  maintenance_policy = var.maintenance_policy
+  maintenance_policy {
+    recurring_window {
+      end_time   = var.maintenance_policy.recurring_window.end_time
+      recurrence = var.maintenance_policy.recurring_window.recurrence
+      start_time = var.maintenance_policy.recurring_window.start_time
+    }
+  }
 
   release_channel {
     channel = var.release_channel
