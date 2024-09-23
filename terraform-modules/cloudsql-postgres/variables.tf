@@ -203,7 +203,7 @@ variable "cloudsql_retained_backups" {
 
 variable "cloudsql_backup_location" {
   type        = string
-  default     = "us"
+  default     = null
   description = "Location for backups"
 }
 
