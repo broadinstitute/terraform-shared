@@ -201,6 +201,12 @@ variable "cloudsql_retained_backups" {
   description = "Number of days to retain backups"
 }
 
+variable "cloudsql_backup_location" {
+  type        = string
+  default     = "us"
+  description = "Location for backups"
+}
+
 locals {
   private_network = var.enable_private_services ? var.private_network_self_link : var.existing_vpc_network
 }
