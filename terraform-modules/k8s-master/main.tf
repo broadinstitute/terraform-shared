@@ -27,9 +27,9 @@ resource google_container_cluster cluster {
     for_each = var.maintenance_policy.enabled ? [1] : []
     content {
       recurring_window {
-        start_time = var.maintenance_policy.recurring_window.start_time
-        end_time   = var.maintenance_policy.recurring_window.end_time
-        recurrence = var.maintenance_policy.recurring_window.recurrence
+        start_time = var.maintenance_policy.start_time
+        end_time   = var.maintenance_policy.end_time
+        recurrence = var.maintenance_policy.recurrence
       }
     }
   }
