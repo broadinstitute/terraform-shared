@@ -55,7 +55,7 @@ variable "group_by_labels" {
   default = {
     node_name             = "resource.labels.node_name"
     node_health_condition = "metric.label.condition"
-    cluster_name          = "resource.labels.cluster_name"
+    cluster_name          = "resource.label.cluster_name"
     namespace_name        = "resource.label.namespace_name"
     deployment            = "metric.label.deployment"
     pod_name              = "resource.label.pod_name"
