@@ -23,6 +23,8 @@ resource google_container_cluster cluster {
 
   min_master_version = data.google_container_engine_versions.cluster_versions.latest_master_version
 
+  maintenance_policy = var.maintenance_policy
+
   release_channel {
     channel = var.release_channel
   }
