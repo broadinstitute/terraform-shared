@@ -64,16 +64,12 @@ resource google_container_cluster cluster {
 
   # CIS compliance: disable legacy Auth
   enable_legacy_abac = false
-
-  # CIS compliance: disable basic auth -- this creates a certificate and
-  # disables basic auth by not specifying a user / pasword.
-  # See https://www.terraform.io/docs/providers/google/r/container_cluster.html#master_auth
+  
+  # https://www.terraform.io/docs/providers/google/r/container_cluster.html#master_auth
   master_auth {
     client_certificate_config {
       issue_client_certificate = true
     }
-    username = ""
-    password = ""
   }
 
   # CIS compliance: Enable Network Policy
