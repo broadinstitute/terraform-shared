@@ -33,7 +33,7 @@ resource "google_compute_resource_policy" "resource-policy" {
   project = var.project
   region = var.instance_region
   name = "${var.instance_name}-resource-policy"
-  count = var.enable_resource_policy == "1" ? 1 : 0
+  count = var.enable_resource_policy? 1 : 0
 
   instance_schedule_policy {
     vm_start_schedule = var.instance_schedule_vm_start

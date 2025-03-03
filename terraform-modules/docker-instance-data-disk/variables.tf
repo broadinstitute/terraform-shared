@@ -140,9 +140,11 @@ variable "instance_data_disk_name" {
   description = "default disk type for docker volume"
 }
 
-# control adding resource policy to instances
+# control adding resource policy to GCE instances
+# sets instance schedules to start/stop VMs automatically via cron schedule
+# see https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_resource_policy#example-usage---resource-policy-instance-schedule-policy
 variable "enable_resource_policy" {
-  default = "0"
+  default = false
 }
 
 variable "instance_schedule_vm_start" {
