@@ -78,7 +78,7 @@ resource "google_compute_instance" "instance" {
   }
 
   # instance resource policies
-  resource_policies = var.enable_resource_policy == "1" ? [ google_compute_resource_policy.resource-policy.self_link ] : null
+  resource_policies = var.enable_resource_policy? [ google_compute_resource_policy.resource-policy.self_link ] : null
 
   lifecycle {
     prevent_destroy = false
