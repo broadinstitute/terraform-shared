@@ -29,10 +29,11 @@ data "google_compute_subnetwork" "instance-subnetwork" {
 
 # instance resource policy for adding start/stop schedule
 resource "google_compute_resource_policy" "resource-policy" {
+  count    = var.enable_resource_policy ? 1 : 0
   provider = google.target
-  project = var.project
-  region = var.instance_region
-  name = "${var.instance_name}-resource-policy"
+  project  = var.project
+  region   = var.instance_region
+  name     = "${var.instance_name}-resource-policy"
 
   instance_schedule_policy {
     vm_start_schedule {
@@ -81,7 +82,7 @@ resource "google_compute_instance" "instance" {
   }
 
   # instance resource policies
-  resource_policies = var.enable_resource_policy? [ google_compute_resource_policy.resource-policy.self_link ] : null
+  resource_policies = var.enable_resource_policy ? [ google_compute_resource_policy.resource-policy[0].self_link ] : null
 
   lifecycle {
     prevent_destroy = false
