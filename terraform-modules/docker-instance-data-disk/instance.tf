@@ -33,7 +33,6 @@ resource "google_compute_resource_policy" "resource-policy" {
   project = var.project
   region = var.instance_region
   name = "${var.instance_name}-resource-policy"
-  count = var.enable_resource_policy? 1 : 0
 
   instance_schedule_policy {
     vm_start_schedule {
@@ -82,7 +81,7 @@ resource "google_compute_instance" "instance" {
   }
 
   # instance resource policies
-  resource_policies = var.enable_resource_policy? [ google_compute_resource_policy.resource-policy[count.index].self_link ] : null
+  resource_policies = var.enable_resource_policy? [ google_compute_resource_policy.resource-policy.self_link ] : null
 
   lifecycle {
     prevent_destroy = false
