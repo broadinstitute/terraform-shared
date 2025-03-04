@@ -36,8 +36,12 @@ resource "google_compute_resource_policy" "resource-policy" {
   count = var.enable_resource_policy? 1 : 0
 
   instance_schedule_policy {
-    vm_start_schedule = var.instance_schedule_vm_start
-    vm_stop_schedule = var.instance_schedule_vm_stop
+    vm_start_schedule {
+      schedule = var.instance_schedule_vm_start
+    }
+    vm_stop_schedule {
+      schedule = var.instance_schedule_vm_stop
+    }
     time_zone = var.instance_schedule_time_zone
   }
 }
