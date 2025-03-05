@@ -27,6 +27,25 @@ data "google_compute_subnetwork" "instance-subnetwork" {
   region = var.instance_region
 }
 
+# instance resource policy for adding start/stop schedule
+resource "google_compute_resource_policy" "resource-policy" {
+  count    = var.enable_resource_policy ? 1 : 0
+  provider = google.target
+  project  = var.project
+  region   = var.instance_region
+  name     = "${var.instance_name}-resource-policy"
+
+  instance_schedule_policy {
+    vm_start_schedule {
+      schedule = var.instance_schedule_vm_start
+    }
+    vm_stop_schedule {
+      schedule = var.instance_schedule_vm_stop
+    }
+    time_zone = var.instance_schedule_time_zone
+  }
+}
+
 # GCE instance
 resource "google_compute_instance" "instance" {
   provider = google.target
@@ -61,6 +80,9 @@ resource "google_compute_instance" "instance" {
     source = element(google_compute_disk.instance-data-disk.*.name, count.index)
     device_name = var.instance_data_disk_name
   }
+
+  # instance resource policies
+  resource_policies = var.enable_resource_policy ? [ google_compute_resource_policy.resource-policy[0].self_link ] : null
 
   lifecycle {
     prevent_destroy = false
