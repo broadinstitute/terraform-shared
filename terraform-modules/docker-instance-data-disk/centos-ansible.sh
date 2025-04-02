@@ -20,10 +20,11 @@ source /root/.bashrc
 yum install epel-release -y
 yum update
 yum install python3.12 python3.12-pip git jq python-setuptools -y
-python3.12 -m pip install --upgrade pip virtualenv -y
+python3.12 -m pip install --upgrade pip
+python3.12 -m pip install virtualenv
 virtualenv /usr/local/bin/ansible
 source /usr/local/bin/ansible/bin/activate
-python3.12 -m pip install hvac ansible_merge_vars ansible==2.7.8 -y
+python3.12 -m pip install hvac ansible_merge_vars ansible==2.7.8
 
 # convert labels to env vars
 gcloud compute instances list --filter="name:$(hostname)" --format 'value(labels)' | tr ';' '\n' | while read var ; do key="${var%=*}"; value="${var##*=}" ; key=$(echo $key | tr '[a-z]' '[A-Z]') ; echo "export $key=\"$value\"" ; done  > /etc/bashrc-labels
@@ -41,9 +42,6 @@ ssh-keyscan -H github.com >> ~/.ssh/known_hosts
 
 #find newly added disks without rebooting ie:scratch disks
 /usr/bin/rescan-scsi-bus.sh
-
-#one time anisble run
-ansible-pull provisioner.yml -C ${ANSIBLE_BRANCH} -d /var/lib/ansible/local -U https://github.com/broadinstitute/dsp-ansible-configs.git -i hosts >> /root/ansible-provisioner-firstrun.log 2>&1
 
 # manually install Docker since ansible will only run on python3.6
 dnf -y install dnf-plugins-core
