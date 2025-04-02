@@ -18,7 +18,7 @@ source /root/.bashrc
 
 #install pip and ansible
 yum install epel-release -y
-yum update
+yum update -y
 yum install python3.12 python3.12-pip git jq python-setuptools -y
 python3.12 -m pip install --upgrade pip
 python3.12 -m pip install virtualenv
@@ -45,13 +45,10 @@ ssh-keyscan -H github.com >> ~/.ssh/known_hosts
 
 # manually install Docker since ansible will only run on python3.6
 dnf -y install dnf-plugins-core
-dnf update
+dnf -y update
 dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
 dnf -y install docker-ce docker-ce-cli containerd.io
 systemctl enable --now docker
-
-touch /etc/sysconfig/gce-metadata-run
-chmod 0644 /etc/sysconfig/gce-metadata-run
 
 # add users to Docker group
 useradd jenkins
@@ -61,3 +58,9 @@ usermod -aG docker jenkins
 
 # Prevent dnf from arbitrarily updating docker packages
 echo "exclude=docker*,containerd.io" >> /etc/dnf/dnf.conf
+
+# confirm docker works
+docker run hello-world
+
+touch /etc/sysconfig/gce-metadata-run
+chmod 0644 /etc/sysconfig/gce-metadata-run
