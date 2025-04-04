@@ -1,9 +1,10 @@
-
 # ServiceUsage API
 resource google_project_service serviceusage {
   count    = var.enable_flag ? 1 : 0
   provider = google
-  service = "serviceusage.googleapis.com"
+
+  project            = var.google_project == "" ? null : var.google_project
+  service            = "serviceusage.googleapis.com"
   disable_on_destroy = var.destroy
 }
 
@@ -11,17 +12,20 @@ resource google_project_service serviceusage {
 resource google_project_service cloudresourcemanager {
   count    = var.enable_flag ? 1 : 0
   provider = google
-  service = "cloudresourcemanager.googleapis.com"
-  disable_on_destroy = var.destroy
 
+  project            = var.google_project == "" ? null : var.google_project
+  service            = "cloudresourcemanager.googleapis.com"
+  disable_on_destroy = var.destroy
 }
 
 resource google_project_service required-services {
-  count = var.enable_flag ? length(var.services) : 0
+  count    = var.enable_flag ? length(var.services) : 0
   provider = google
-  service = var.services[count.index]
+  
+  project            = var.google_project == "" ? null : var.google_project
+  service            = var.services[count.index]
   disable_on_destroy = var.destroy
-  depends_on = [
+  depends_on         = [
     google_project_service.cloudresourcemanager,
     google_project_service.serviceusage
   ]
