@@ -37,6 +37,7 @@ resource "google_sql_database_instance" "cloudsql_instance" {
       binary_log_enabled = false
       enabled            = true
       start_time         = "06:00"
+      location           = "us"
       backup_retention_settings {
         retained_backups = var.cloudsql_retained_backups
       }
