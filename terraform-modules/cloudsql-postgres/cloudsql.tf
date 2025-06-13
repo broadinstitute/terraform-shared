@@ -52,17 +52,6 @@ resource "google_sql_database_instance" "cloudsql_instance" {
       }
     }
 
-    #
-    # Suppress spurious Terraform diffs - there's a 0/null comparision issue in the provider
-    #
-    dynamic "maintenance_window" {
-      for_each = var.cloudsql_maintenance_window_enable ? [] : [1]
-      content {
-        day  = null
-        hour = null
-      }
-    }
-
     ip_configuration {
       ipv4_enabled    = var.private_enable == true ? false : true
       private_network = var.private_enable == true ? local.private_network : null
