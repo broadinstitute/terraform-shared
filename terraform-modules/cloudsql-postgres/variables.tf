@@ -219,5 +219,5 @@ data "google_compute_network" "existing_vpc_network" {
 }
 
 locals {
-  private_network = var.enable_private_services ? var.private_network_self_link : var.existing_vpc_network[0].self_link
+  private_network = var.enable_private_services ? var.private_network_self_link : data.google_compute_network.existing_vpc_network[0].self_link
 }
