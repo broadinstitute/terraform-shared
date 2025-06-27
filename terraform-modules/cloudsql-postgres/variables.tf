@@ -177,6 +177,12 @@ variable "private_enable" {
   default     = false
 }
 
+variable "private_enable_public_ip" {
+  type        = bool
+  description = "If true, enable private AND public IPs for the CloudSQL instance"
+  default     = false
+}
+
 variable "enable_private_services" {
   type        = bool
   description = "Enable flag for a private sql instance if set to true, a private sql isntance will be created."
@@ -207,6 +213,11 @@ variable "cloudsql_deletion_protection_enabled" {
   description = "Whether to enable deletion protection"
 }
 
+data "google_compute_network" "existing_vpc_network" {
+  count = var.private_enable && var.existing_vpc_network != null ? 1 : 0
+  name  = var.existing_vpc_network
+}
+
 locals {
-  private_network = var.enable_private_services ? var.private_network_self_link : var.existing_vpc_network
+  private_network = var.private_enable ? (var.enable_private_services ? var.private_network_self_link : data.google_compute_network.existing_vpc_network[0].self_link) : null
 }
