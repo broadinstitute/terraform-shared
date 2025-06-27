@@ -213,6 +213,11 @@ variable "cloudsql_deletion_protection_enabled" {
   description = "Whether to enable deletion protection"
 }
 
+data "google_compute_network" "existing_vpc_network" {
+  count = var.private_enable && var.existing_vpc_network != null ? 1 : 0
+  name  = var.existing_vpc_network
+}
+
 locals {
-  private_network = var.enable_private_services ? var.private_network_self_link : var.existing_vpc_network
+  private_network = var.enable_private_services ? var.private_network_self_link : var.existing_vpc_network[0].self_link
 }
