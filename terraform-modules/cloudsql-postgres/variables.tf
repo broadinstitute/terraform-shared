@@ -177,6 +177,12 @@ variable "private_enable" {
   default     = false
 }
 
+variable "private_enable_public_ip" {
+  type        = bool
+  description = "If true, enable private AND public IPs for the CloudSQL instance"
+  default     = false
+}
+
 variable "enable_private_services" {
   type        = bool
   description = "Enable flag for a private sql instance if set to true, a private sql isntance will be created."
