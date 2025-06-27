@@ -53,7 +53,7 @@ resource "google_sql_database_instance" "cloudsql_instance" {
     }
 
     ip_configuration {
-      ipv4_enabled    = var.private_enable == true ? false : true
+      ipv4_enabled    = (var.private_enable && !var.private_enable_public_ip) ? false : true
       private_network = var.private_enable == true ? local.private_network : null
       require_ssl     = true
       dynamic "authorized_networks" {
