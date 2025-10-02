@@ -131,4 +131,6 @@ resource google_container_cluster cluster {
       auth     = var.istio_auth
     }
   }
+
+  availability_type = var.availability_type
 }

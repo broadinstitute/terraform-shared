@@ -144,3 +144,9 @@ variable maintenance_policy {
     recurrence = null
   }
 }
+
+variable availability_type {
+  type = string
+  default = "ZONAL"
+  description = "Sets availability type"
+}
