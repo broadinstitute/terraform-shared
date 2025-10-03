@@ -101,7 +101,7 @@ resource google_container_cluster cluster {
   enable_shielded_nodes       = var.enable_shielded_nodes
 
   binary_authorization {
-    evaluation_mode = var.binary_authorization_evaluation_mode ? "PROJECT_SINGLETON_POLICY_ENFORCE" : "DISABLED"
+    evaluation_mode = var.enable_binary_authorization ? "PROJECT_SINGLETON_POLICY_ENFORCE" : "DISABLED"
   }
 
   # OMISSION: CIS compliance: Enable Private Cluster
