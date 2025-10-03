@@ -64,7 +64,7 @@ resource google_container_cluster cluster {
 
   # CIS compliance: disable legacy Auth
   enable_legacy_abac = false
-  
+
   # https://www.terraform.io/docs/providers/google/r/container_cluster.html#master_auth
   master_auth {
     client_certificate_config {
@@ -93,14 +93,16 @@ resource google_container_cluster cluster {
   dynamic "workload_identity_config" {
     for_each = var.enable_workload_identity ? ["Placeholder value to force the loop to iterate once"] : []
     content {
-      identity_namespace = "${var.project}.svc.id.goog"
+      workload_pool = "${var.project}.svc.id.goog"
     }
   }
 
   # CIS compliance: shielded nodes, binary authorization
   enable_shielded_nodes       = var.enable_shielded_nodes
-  enable_binary_authorization = var.enable_binary_authorization
 
+  binary_authorization {
+    evaluation_mode = var.enable_binary_authorization ? "PROJECT_SINGLETON_POLICY_ENFORCE" : "DISABLED"
+  }
 
   # OMISSION: CIS compliance: Enable Private Cluster
   private_cluster_config {
