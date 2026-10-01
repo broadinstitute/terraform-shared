@@ -17,6 +17,7 @@ resource "google_compute_backend_service" "load-balancer-backend-service-https" 
   timeout_sec                     = 120
   enable_cdn                      = false
   connection_draining_timeout_sec = 120
+  load_balancing_scheme           = var.load_balancing_scheme
 
   backend {
     group = var.load_balancer_instance_groups
