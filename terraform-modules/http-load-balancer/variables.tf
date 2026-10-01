@@ -59,6 +59,11 @@ variable "load_balancer_rules" {
   default = []
 }
 
+variable "load_balancing_scheme" {
+  description = "Scheme for http load balancer"
+  default     = "EXTERNAL_MANAGED"
+}
+
 # Health check vars
 
 variable "load_balancer_health_check_path" {
