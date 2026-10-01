@@ -52,10 +52,11 @@ resource "google_compute_target_https_proxy" "load-balancer-target-proxy-https" 
 
 # GCE Load Balancer: Global Forwarding Rule HTTPS
 resource "google_compute_global_forwarding_rule" "load-balancer-global-forwarding-rule-https" {
-  provider   = google.target
-  count      = var.enable_flag
-  name       = var.load_balancer_name
-  target     = var.enable_flag == 0 ? "" : google_compute_target_https_proxy.load-balancer-target-proxy-https.0.self_link
-  ip_address = var.enable_flag == 0 ? "" : google_compute_global_address.load-balancer-pub-ip.0.address
-  port_range = "443"
+  provider              = google.target
+  count                 = var.enable_flag
+  name                  = var.load_balancer_name
+  target                = var.enable_flag == 0 ? "" : google_compute_target_https_proxy.load-balancer-target-proxy-https.0.self_link
+  ip_address            = var.enable_flag == 0 ? "" : google_compute_global_address.load-balancer-pub-ip.0.address
+  port_range            = "443"
+  load_balancing_scheme = var.load_balancing_scheme
 }
